@@ -118,6 +118,83 @@ def assign_layer(doc_id, meta, mapping):
     return {"layer": None, "confidence": "unmapped", "note": "no applicable rule"}
 
 
+def layer_reason(meta, layer, fallback_note):
+    title = meta.get("title") or ""
+    canon = meta.get("canon") or ""
+
+    if layer is None:
+        return fallback_note
+
+    def has_any(words):
+        return any(w in title for w in words)
+
+    if layer == 1:
+        if canon == "N" or has_any(["南傳", "長部", "中部", "相應部", "增支部", "小部", "法句", "小誦", "念處", "本生", "阿含", "律"]):
+            return "题名和来源显示为早期经律、南传尼柯耶/小部或汉译阿含相关文本，归第1层。"
+        return "内容属于早期佛教经律或阿含系统，归第1层。"
+
+    if layer == 2:
+        return "文本属于巴利传统注疏或其汉译相关材料，解释早期律论文本，归第2层。"
+
+    if layer == 3:
+        if has_any(["法集", "分別", "界論", "人施設", "雙論", "發趣", "論事"]):
+            return "题名对应南传阿毗达磨七论之一，属部派阿毗达磨根本文献，归第3层。"
+        if has_any(["集異門", "法蘊", "識身", "界身", "品類", "發智", "施設", "阿毗曇"]):
+            return "题名对应说一切有部阿毗达磨根本论书或部派阿毗达磨残存文献，归第3层。"
+        return "内容属于部派阿毗达磨根本文献，归第3层。"
+
+    if layer == 4:
+        if has_any(["大毘婆沙", "毘婆沙"]):
+            return "题名属于毘婆沙类部派大型释论，系统解释阿毗达磨，归第4层。"
+        if has_any(["俱舍", "順正理", "顯宗"]):
+            return "题名属于俱舍/顺正理系统及其注疏，代表部派体系论，归第4层。"
+        if has_any(["清淨道", "攝阿毘達磨", "阿毗達摩攝義", "解脫道", "成實", "那先", "彌蘭"]):
+            return "题名属于南传或部派系统化论书，归第4层部派体系论。"
+        return "内容属于部派佛教系统化论书或其注疏，归第4层。"
+
+    if layer == 5:
+        if has_any(["般若", "金剛", "心經"]):
+            return "题名属于般若系大乘经典、释论或注疏，归第5层。"
+        if has_any(["法華", "華嚴", "十地", "解深密", "如來藏", "勝鬘", "涅槃", "維摩", "淨名", "楞伽", "寶積", "大集"]):
+            return "题名属于早期或核心大乘经典及其释论/注疏，归第5层。"
+        if has_any(["中論", "中觀", "十二門", "百論", "大智度", "瑜伽師地", "因緣心", "佛性"]):
+            return "题名属于中观、般若或瑜伽行基础论书系统，归第5层。"
+        return "内容属于大乘经典、释经论或大乘基础体系论，归第5层。"
+
+    if layer == 6:
+        if has_any(["攝大乘", "唯識", "三十", "三自性", "百法", "辨法法性", "中邊", "集量", "釋量", "因明", "觀所緣", "起信", "入菩薩行"]):
+            return "题名属于唯识、摄大乘、因明量论、起信论或入菩萨行论等成熟体系论，归第6层。"
+        return "内容属于成熟大乘体系论或其直接注释传统，归第6层。"
+
+    if layer == 7:
+        if has_any(["禪", "語錄", "祖堂", "傳燈", "壇經", "公案", "頌古", "牧牛"]):
+            return "题名属于禅宗语录、灯录、公案或修行文献，归第7层宗派体系。"
+        if has_any(["天台", "止觀", "四教", "法華文句", "法華玄義"]):
+            return "题名属于天台宗判教、止观或法华注疏体系，归第7层宗派体系。"
+        if has_any(["華嚴", "法界", "五教", "一乘"]):
+            return "题名属于华严宗经疏、判教或法界观体系，归第7层宗派体系。"
+        if has_any(["淨土", "念佛", "往生", "阿彌陀"]):
+            return "题名属于净土宗念佛、往生或净土注疏资料，归第7层宗派体系。"
+        if has_any(["密", "真言", "瑜伽", "壇", "道場儀", "燄口", "大手印", "大圓滿", "道次第", "宗喀巴", "西藏"]):
+            return "题名属于密教、藏传道次第或相关仪轨修法资料，归第7层宗派体系。"
+        if has_any(["律", "戒", "毘尼", "梵網"]):
+            return "题名属于律宗、戒律注疏或戒法仪轨资料，归第7层宗派体系。"
+        return "内容属于汉传或藏传宗派注疏、语录、仪轨、宗义或宗派史传资料，归第7层。"
+
+    if layer == 8:
+        if canon == "TX":
+            return "来源为《太虚大师全书》，属现代法师著作集，归第8层。"
+        if canon == "Y":
+            return "来源为《印顺法师佛学著作集》，属现代法师著作集，归第8层。"
+        if canon == "YP":
+            return "来源为《演培法师全集》，属现代法师著作集，归第8层。"
+        if canon == "LC":
+            return "来源为吕澂佛学著作集，属近现代佛学著作，归第8层。"
+        return "内容属于近现代佛教人物或现代佛学著作，归第8层。"
+
+    return fallback_note
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("corpus_root", nargs="?", default=None)
@@ -149,6 +226,7 @@ def main():
             skipped += 1
             continue
         layer_info = assign_layer(xml_path.stem, meta, mapping)
+        note = layer_reason(meta, layer_info["layer"], layer_info["note"])
         rel = xml_path.relative_to(corpus_root)
         records.append(
             {
@@ -162,7 +240,7 @@ def main():
                 "no": meta["no"],
                 "layer": layer_info["layer"],
                 "layer_confidence": layer_info["confidence"],
-                "layer_note": layer_info["note"],
+                "layer_note": note,
             }
         )
         if i % 1000 == 0:
