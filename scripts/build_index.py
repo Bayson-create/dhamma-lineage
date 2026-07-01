@@ -135,7 +135,11 @@ def main():
 
     records = []
     skipped = 0
-    xml_files = sorted(corpus_root.glob("*/**/*.xml"))
+    xml_files = []
+    for canon_dir in sorted(p for p in corpus_root.iterdir() if p.is_dir()):
+        if not CANON_DIR_RE.match(canon_dir.name):
+            continue
+        xml_files.extend(sorted(canon_dir.glob("**/*.xml")))
     total = len(xml_files)
     for i, xml_path in enumerate(xml_files, 1):
         if "schema" in xml_path.parts:
