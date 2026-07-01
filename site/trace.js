@@ -13,6 +13,18 @@ function escapeHtml(s) {
   }[c]));
 }
 
+function highlightTerm(snippet, term) {
+  const escSnippet = escapeHtml(snippet);
+  const escTerm = escapeHtml(term);
+  const idx = escSnippet.indexOf(escTerm);
+  if (idx === -1) return escSnippet;
+  return (
+    escSnippet.slice(0, idx) +
+    `<b class="hl">${escTerm}</b>` +
+    escSnippet.slice(idx + escTerm.length)
+  );
+}
+
 // Short input (a technical term like "四念處" or "空性") is matched as an
 // exact substring. Longer input - a whole sentence, a question, a stated
 // opinion - is matched fuzzily: scored by how many of its word-pairs
@@ -89,13 +101,18 @@ async function runTrace(query) {
       html += `<p class="trace-empty-note">此层未检索到与该表述充分相关的文字。这不代表该层"不谈这个道理"，只代表当前语料里没有使用足够接近的措辞——空白本身就是一种证据：它提示这个说法可能是后起的表达，而不是承自这一层的固定术语。</p>`;
     } else {
       html += `<ul class="trace-hits">`;
-      for (const { rec, item } of items.slice(0, 8)) {
+      for (const { rec, item } of items) {
         const rel = useFuzzy ? `<span class="relevance">匹配度 ${Math.round(item.relevance * 100)}%</span>` : "";
-        html += `<li><a href="reader.html?id=${encodeURIComponent(rec.id)}">${escapeHtml(rec.title || rec.id)}</a>${rel}`;
+        html += `<li><div class="hit-doc"><a href="reader.html?id=${encodeURIComponent(rec.id)}">${escapeHtml(rec.title || rec.id)}</a>${rel}`;
         html += `<span class="author">${escapeHtml(rec.author || "")}</span>`;
-        html += `<span class="snippet">${escapeHtml(item.snippet)}</span></li>`;
+        html += `<span class="hit-count">${item.matches.length} 处${item.truncated ? "+" : ""}</span></div>`;
+        html += `<ol class="match-positions">`;
+        for (const m of item.matches) {
+          const href = `reader.html?id=${encodeURIComponent(rec.id)}&off=${m.offset}&len=${m.term.length}`;
+          html += `<li><a href="${href}">${m.juan ? `卷${escapeHtml(m.juan)} · ` : ""}${highlightTerm(m.snippet, m.term)}</a></li>`;
+        }
+        html += `</ol></li>`;
       }
-      if (items.length > 8) html += `<li class="more">…另有 ${items.length - 8} 篇命中，未全部列出</li>`;
       html += `</ul>`;
     }
     html += `</li>`;

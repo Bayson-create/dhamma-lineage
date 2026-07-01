@@ -1,7 +1,20 @@
-.reader-header { text-align: left; padding: 1.2rem 1.5rem; }
+.reader-header { text-align: left; padding: 1.2rem 1.5rem; position: relative; }
 .reader-header .back { color: var(--accent); text-decoration: none; font-size: .9rem; }
 .reader-header h1 { font-size: 1.4rem; margin: .5rem 0 .2rem; }
 .reader-header .meta { color: var(--muted); font-size: .85rem; margin: 0; }
+.script-toggle {
+  position: absolute;
+  right: 1.5rem;
+  top: 1.2rem;
+  padding: .3rem .8rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--accent);
+  font-size: .85rem;
+  cursor: pointer;
+}
+.script-toggle:hover { background: #fffaf2; }
 .reader-content {
   max-width: 720px;
   margin: 0 auto;
@@ -22,4 +35,10 @@
   font-size: .75em;
   vertical-align: super;
   cursor: help;
+}
+.reader-content mark {
+  background: #f6dfae;
+  color: inherit;
+  padding: 0 .1em;
+  border-radius: 3px;
 }

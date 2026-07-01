@@ -1,5 +1,17 @@
 const params = new URLSearchParams(location.search);
 const id = params.get("id");
+const highlightOffset = params.has("off") ? parseInt(params.get("off"), 10) : null;
+const highlightLen = params.has("len") ? Math.max(1, parseInt(params.get("len"), 10) || 1) : 1;
+
+let currentParagraphs = null;
+let scriptMode = "simplified"; // default: CBETA is almost entirely Traditional source text
+
+function convertForDisplay(text) {
+  if (scriptMode === "simplified") {
+    return typeof toSimplified === "function" ? toSimplified(text) : text;
+  }
+  return text;
+}
 
 async function main() {
   if (!id) {
@@ -22,7 +34,10 @@ async function main() {
   // Render from the pre-extracted plain text (data/fulltext/<id>.txt),
   // not the raw TEI XML: the 3.4GB CBETA corpus itself is never published
   // to the static site, only the small per-document text extracted from
-  // it at build time (see scripts/extract_fulltext.py).
+  // it at build time (see scripts/extract_fulltext.py). Character offsets
+  // passed in via ?off= refer to this same extracted text (see
+  // site/doctext.js), so they stay valid whether shown as Simplified or
+  // Traditional - both conversions are strictly 1 char -> 1 char.
   const txtRes = await fetch(`data/fulltext/${encodeURIComponent(rec.id)}.txt`);
   if (!txtRes.ok) {
     document.getElementById("content").innerHTML =
@@ -30,33 +45,68 @@ async function main() {
     return;
   }
   const raw = await txtRes.text();
-  renderBody(raw);
+  currentParagraphs = parseFulltext(raw);
+  renderBody();
 }
 
-function renderBody(raw) {
+function renderBody() {
   const content = document.getElementById("content");
   content.innerHTML = "";
+  if (!currentParagraphs || currentParagraphs.length === 0) {
+    content.innerHTML = "<p>此文本未提取到可显示的段落。</p>";
+    return;
+  }
+
+  const hlParaIndex =
+    highlightOffset !== null ? paragraphAtOffset(currentParagraphs, highlightOffset) : -1;
+
   let currentJuan = null;
-  for (const line of raw.split("\n")) {
-    if (!line) continue;
-    const tab = line.indexOf("\t");
-    const juan = tab === -1 ? "" : line.slice(0, tab);
-    const text = tab === -1 ? line : line.slice(tab + 1);
-    if (!text) continue;
-    if (juan && juan !== currentJuan) {
-      currentJuan = juan;
+  currentParagraphs.forEach((para, i) => {
+    if (para.juan && para.juan !== currentJuan) {
+      currentJuan = para.juan;
       const h = document.createElement("h2");
       h.className = "juan";
-      h.textContent = `卷 ${juan}`;
+      h.textContent = `卷 ${currentJuan}`;
       content.appendChild(h);
     }
+
     const p = document.createElement("p");
-    p.textContent = text;
+    if (i === hlParaIndex) {
+      const localStart = Math.max(0, highlightOffset - para.offset);
+      const localEnd = Math.min(para.text.length, localStart + highlightLen);
+      const before = convertForDisplay(para.text.slice(0, localStart));
+      const hit = convertForDisplay(para.text.slice(localStart, localEnd));
+      const after = convertForDisplay(para.text.slice(localEnd));
+      p.appendChild(document.createTextNode(before));
+      const mark = document.createElement("mark");
+      mark.textContent = hit;
+      p.appendChild(mark);
+      p.appendChild(document.createTextNode(after));
+      p.id = "trace-hit";
+    } else {
+      p.textContent = convertForDisplay(para.text);
+    }
     content.appendChild(p);
-  }
-  if (!content.childElementCount) {
-    content.innerHTML = "<p>此文本未提取到可显示的段落。</p>";
+  });
+
+  if (hlParaIndex !== -1) {
+    // A plain requestAnimationFrame call here is unreliable on first
+    // load: the browser's own scroll-anchoring/restoration can run after
+    // it and silently override the jump. Disabling scroll restoration
+    // and giving layout a beat before scrolling makes it land reliably.
+    if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+    setTimeout(() => {
+      const el = document.getElementById("trace-hit");
+      if (el) el.scrollIntoView({ behavior: "auto", block: "center" });
+    }, 60);
   }
 }
+
+document.getElementById("scriptToggle").addEventListener("click", () => {
+  scriptMode = scriptMode === "simplified" ? "traditional" : "simplified";
+  document.getElementById("scriptToggle").textContent =
+    scriptMode === "simplified" ? "显示繁体" : "显示简体";
+  renderBody();
+});
 
 main();

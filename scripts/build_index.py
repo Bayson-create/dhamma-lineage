@@ -85,7 +85,15 @@ def load_mapping(mapping_path: Path):
         return json.load(f)
 
 
-def assign_layer(meta, mapping):
+def assign_layer(doc_id, meta, mapping):
+    override = mapping.get("text_overrides", {}).get(doc_id)
+    if override is not None:
+        return {
+            "layer": override["layer"],
+            "confidence": override.get("confidence", "high"),
+            "note": override.get("note", "manual override"),
+        }
+
     canon = meta.get("canon")
     vol = meta.get("vol")
     rule = mapping.get("canons", {}).get(canon)
@@ -136,7 +144,7 @@ def main():
         if meta is None:
             skipped += 1
             continue
-        layer_info = assign_layer(meta, mapping)
+        layer_info = assign_layer(xml_path.stem, meta, mapping)
         rel = xml_path.relative_to(corpus_root)
         records.append(
             {

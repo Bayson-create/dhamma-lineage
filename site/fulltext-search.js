@@ -1,12 +1,15 @@
 // Client-side full-text search over the bigram inverted index in
 // data/search_index/. Only fetches the shard files relevant to the
 // query's bigrams, then fetches the small per-document plain-text file
-// for each surviving candidate to verify an exact substring match and
-// extract a snippet. Nothing about the corpus is shipped to the browser
-// up front.
+// for each surviving candidate to verify matches and locate every
+// occurrence (not just the first). Nothing about the corpus is shipped
+// to the browser up front. Requires doctext.js and (optionally) s2t.js
+// to be loaded first.
 
 let manifest = null;
 let docIds = null;
+
+const MAX_MATCHES_PER_DOC = 40;
 
 async function ensureManifest() {
   if (!manifest) {
@@ -53,10 +56,41 @@ async function loadShard(fname) {
   return data;
 }
 
+const docCache = new Map();
+async function fetchDocRecord(docId) {
+  if (docCache.has(docId)) return docCache.get(docId);
+  const raw = await (await fetch(`data/fulltext/${docId}.txt`)).text();
+  const paragraphs = parseFulltext(raw);
+  const fullText = fullTextOf(paragraphs);
+  const record = { paragraphs, fullText };
+  docCache.set(docId, record);
+  return record;
+}
+
+function snippetAround(text, offset, len) {
+  const start = Math.max(0, offset - 20);
+  const end = Math.min(text.length, offset + len + 20);
+  return (start > 0 ? "…" : "") + text.slice(start, end) + (end < text.length ? "…" : "");
+}
+
+function buildMatch(record, offset, len, term) {
+  const paraIndex = paragraphAtOffset(record.paragraphs, offset);
+  const juan = record.paragraphs[paraIndex] ? record.paragraphs[paraIndex].juan : "";
+  return {
+    offset,
+    juan,
+    term,
+    snippet: snippetAround(record.fullText, offset, len),
+  };
+}
+
 /**
- * Returns array of { docId, snippet } for documents whose plain text
- * contains `query` as an exact substring, found via bigram-postings
- * intersection then verified.
+ * Exact substring search: returns every document whose plain text
+ * contains `query` as a literal substring, together with EVERY
+ * occurrence of it in that document (capped at MAX_MATCHES_PER_DOC,
+ * with `truncated: true` if there were more).
+ *
+ * Returns { docId, relevance: 1, matches: [{offset, juan, snippet, term}], truncated }[]
  */
 async function fullTextSearch(query, { limit = 200 } = {}) {
   await ensureManifest();
@@ -109,18 +143,22 @@ async function fullTextSearch(query, { limit = 200 } = {}) {
     while (cursor < toScan.length && results.length < limit) {
       const intId = toScan[cursor++];
       const docId = docIds[intId];
-      const text = await fetchDocText(docId);
-      const idx = text.indexOf(q);
-      if (idx === -1) continue;
-      const start = Math.max(0, idx - 20);
-      const end = Math.min(text.length, idx + q.length + 20);
-      const snippet =
-        (start > 0 ? "…" : "") + text.slice(start, end) + (end < text.length ? "…" : "");
-      results.push({ docId, snippet });
+      const record = await fetchDocRecord(docId);
+      const matches = [];
+      let from = 0;
+      while (matches.length < MAX_MATCHES_PER_DOC) {
+        const idx = record.fullText.indexOf(q, from);
+        if (idx === -1) break;
+        matches.push(buildMatch(record, idx, q.length, q));
+        from = idx + q.length;
+      }
+      if (matches.length === 0) continue;
+      const truncated = record.fullText.indexOf(q, from) !== -1;
+      results.push({ docId, relevance: 1, matches, truncated });
     }
   }
   await Promise.all(Array.from({ length: CONCURRENCY }, worker));
-  if (capped) results.__truncatedScan = true;
+  if (capped) results.truncatedScan = true;
   return results;
 }
 
@@ -129,18 +167,6 @@ function intersect(a, b) {
   const out = new Set();
   for (const x of small) if (big.has(x)) out.add(x);
   return out;
-}
-
-const docTextCache = new Map();
-async function fetchDocText(docId) {
-  if (docTextCache.has(docId)) return docTextCache.get(docId);
-  const raw = await (await fetch(`data/fulltext/${docId}.txt`)).text();
-  const text = raw
-    .split("\n")
-    .map((l) => l.split("\t").slice(1).join("\t"))
-    .join("");
-  docTextCache.set(docId, text);
-  return text;
 }
 
 // Splits on whitespace/punctuation so bigrams never bridge across an
@@ -169,17 +195,21 @@ function queryBigrams(query) {
 
 /**
  * Fuzzy match for a whole sentence, question, or statement: scores every
- * document by how many of the query's distinct bigrams it contains
- * (an OR/coverage match, not "the phrase appears verbatim"), then ranks
- * by that score. This is what makes "接纳自己" or "这是佛陀说的吗" usable
+ * document by how many of the query's distinct bigrams it contains (an
+ * OR/coverage match, not "the phrase appears verbatim"), then ranks by
+ * that score. This is what makes "接纳自己" or "这是佛陀说的吗" usable
  * queries even though that exact wording won't appear in classical
  * Chinese texts - what's being searched for is co-occurrence of the
  * query's constituent word-pairs, not the literal string.
  *
- * Returns { docId, snippet, score, relevance }[], sorted by score desc.
- * relevance is score / (number of query bigrams that exist anywhere in
- * the index), so a query containing some overly-common (pruned)
- * bigrams isn't penalized for them.
+ * For each matching document, every occurrence of every matched bigram
+ * is located (capped at MAX_MATCHES_PER_DOC total, sorted by position)
+ * so the reader can jump to each one individually.
+ *
+ * Returns { docId, score, relevance, matches, truncated }[], sorted by
+ * score desc. relevance is score / (number of query bigrams that exist
+ * anywhere in the index), so a query containing some overly-common
+ * (pruned) bigrams isn't penalized for them.
  */
 async function fuzzySentenceSearch(query, { limit = 60 } = {}) {
   await ensureManifest();
@@ -191,6 +221,7 @@ async function fuzzySentenceSearch(query, { limit = 60 } = {}) {
 
   const scores = new Map(); // intId -> match count
   let effectiveN = 0;
+  const informativeGrams = [];
   for (const bg of grams) {
     if (bg.length < 2) continue; // leftover single char: not index-searchable
     const bucket = bucketFor(bg, manifest.buckets);
@@ -199,6 +230,7 @@ async function fuzzySentenceSearch(query, { limit = 60 } = {}) {
     const ids = shard[bg];
     if (!ids) continue; // pruned (too common) or genuinely absent
     effectiveN++;
+    informativeGrams.push(bg);
     for (const id of ids) scores.set(id, (scores.get(id) || 0) + 1);
   }
   if (effectiveN === 0) {
@@ -219,12 +251,25 @@ async function fuzzySentenceSearch(query, { limit = 60 } = {}) {
     while (cursor < ranked.length) {
       const item = ranked[cursor++];
       const docId = docIds[item.intId];
-      const text = await fetchDocText(docId);
+      const record = await fetchDocRecord(docId);
+      const matches = [];
+      for (const bg of informativeGrams) {
+        if (matches.length >= MAX_MATCHES_PER_DOC) break;
+        let from = 0;
+        while (matches.length < MAX_MATCHES_PER_DOC) {
+          const idx = record.fullText.indexOf(bg, from);
+          if (idx === -1) break;
+          matches.push(buildMatch(record, idx, bg.length, bg));
+          from = idx + bg.length;
+        }
+      }
+      matches.sort((a, b) => a.offset - b.offset);
       results.push({
         docId,
         score: item.count,
         relevance: item.relevance,
-        snippet: bestSnippet(text, grams),
+        matches,
+        truncated: matches.length >= MAX_MATCHES_PER_DOC,
       });
     }
   }
@@ -233,17 +278,4 @@ async function fuzzySentenceSearch(query, { limit = 60 } = {}) {
   results.effectiveGramCount = effectiveN;
   results.totalGramCount = grams.length;
   return results;
-}
-
-function bestSnippet(text, grams) {
-  let bestIdx = -1;
-  for (const bg of grams) {
-    if (bg.length < 2) continue;
-    const idx = text.indexOf(bg);
-    if (idx !== -1 && (bestIdx === -1 || idx < bestIdx)) bestIdx = idx;
-  }
-  if (bestIdx === -1) return text.slice(0, 40) + (text.length > 40 ? "…" : "");
-  const start = Math.max(0, bestIdx - 20);
-  const end = Math.min(text.length, bestIdx + 20);
-  return (start > 0 ? "…" : "") + text.slice(start, end) + (end < text.length ? "…" : "");
 }

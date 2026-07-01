@@ -137,7 +137,8 @@ async function runFullTextSearch(q) {
   }
 
   const modeLabel = mode === "fuzzy" ? "模糊匹配（按关键词覆盖度排序）" : "精确匹配";
-  let html = `<h2 class="fulltext-heading">正文检索结果："${escapeHtml(q)}"（${results.length} 篇命中，${modeLabel}，按层分组）</h2>`;
+  const totalMatches = results.reduce((s, r) => s + r.matches.length, 0);
+  let html = `<h2 class="fulltext-heading">正文检索结果："${escapeHtml(q)}"（${results.length} 篇命中，共 ${totalMatches} 处匹配位置，${modeLabel}，按层分组，全部列出）</h2>`;
   for (const layer of [...LAYER_ORDER, 0]) {
     const items = groups[layer];
     if (items.length === 0) continue;
@@ -145,7 +146,13 @@ async function runFullTextSearch(q) {
     html += `<div class="fulltext-group"><h3>${label}（${items.length}）</h3><ul class="fulltext-list">`;
     for (const { rec, item } of items) {
       const rel = mode === "fuzzy" ? `<span class="relevance">匹配度 ${Math.round(item.relevance * 100)}%</span>` : "";
-      html += `<li><a href="reader.html?id=${encodeURIComponent(rec.id)}">${escapeHtml(rec.title || rec.id)}</a>${rel}<span class="snippet">${escapeHtml(item.snippet)}</span></li>`;
+      html += `<li><div class="hit-doc"><a href="reader.html?id=${encodeURIComponent(rec.id)}">${escapeHtml(rec.title || rec.id)}</a>${rel}<span class="hit-count">${item.matches.length} 处${item.truncated ? "+" : ""}</span></div>`;
+      html += `<ol class="match-positions">`;
+      for (const m of item.matches) {
+        const href = `reader.html?id=${encodeURIComponent(rec.id)}&off=${m.offset}&len=${m.term.length}`;
+        html += `<li><a href="${href}">${m.juan ? `卷${escapeHtml(m.juan)} · ` : ""}${highlightTerm(m.snippet, m.term)}</a></li>`;
+      }
+      html += `</ol></li>`;
     }
     html += `</ul></div>`;
   }
@@ -156,6 +163,18 @@ function escapeHtml(s) {
   return s.replace(/[&<>"']/g, (c) => ({
     "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
   }[c]));
+}
+
+function highlightTerm(snippet, term) {
+  const escSnippet = escapeHtml(snippet);
+  const escTerm = escapeHtml(term);
+  const idx = escSnippet.indexOf(escTerm);
+  if (idx === -1) return escSnippet;
+  return (
+    escSnippet.slice(0, idx) +
+    `<b class="hl">${escTerm}</b>` +
+    escSnippet.slice(idx + escTerm.length)
+  );
 }
 
 loadIndex();

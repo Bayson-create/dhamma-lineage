@@ -10,6 +10,14 @@
     "7": "哲学体系与宗派体系 (Madhyamaka/Yogacara as philosophy; Tiantai/Huayan/Chan/Tibetan lamrim schools)",
     "8": "现代法师 (Modern teachers' collected works)"
   },
+  "_text_overrides_readme": "Per-document corrections, keyed by CBETA id (the xml filename without extension, e.g. 'T30n1564'). Checked BEFORE any canon/volume rule, so this is the mechanism for fixing one specific text without touching the broader canon/volume rule that everything else in that range still relies on. Use this for texts the canon/volume rules get wrong, or for texts from an otherwise-unmapped canon (A/C/K/L/P/S/U/GA/GB/D/ZS/...) that are worth surfacing individually rather than leaving null.",
+  "text_overrides": {
+    "A091n1057": {
+      "layer": 7,
+      "confidence": "medium",
+      "note": "新譯大方廣佛華嚴經音義 - a Huayan glossary/phonetic commentary; canon A (趙城金藏) is otherwise left unmapped as a historical variant edition, but this specific text is worth surfacing under 宗派体系 rather than dropping entirely."
+    }
+  },
   "canons": {
     "N": {
       "layer": 1,
