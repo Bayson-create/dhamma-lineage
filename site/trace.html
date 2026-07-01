@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>法义溯源 · Dhamma Trace</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="trace.css">
+</head>
+<body>
+<header>
+  <h1>法义溯源 <span class="sub">Dhamma Trace</span></h1>
+  <p class="tagline">一个观点，回到佛陀；一种解释，回到证据。</p>
+  <div class="searchbar">
+    <input id="traceInput" type="text" placeholder="输入一句话或一个观点，例如：真诚面对自己、活在当下、放下执著…">
+    <button id="traceBtn">溯源</button>
+  </div>
+  <p class="trace-note">
+    本页只做一件事：在八层文献中逐层检索这句话（或其中的词），如实展示每一层<b>找到了什么</b>与<b>没有找到什么</b>。
+    空白本身就是答案——它不代表某个说法是错的，只代表它在当前语料中不是从早期经典逐层发展下来的。
+    本页不判定对错、不排宗派高下，只呈现证据链；请自行点开原文核实。
+  </p>
+</header>
+
+<main id="traceResult"></main>
+
+<footer>
+  <p>检索基于字符子串匹配，不做语义联想；查无结果不代表"史上从无此说"，只代表当前 CBETA 语料的精确文字层面未检索到。</p>
+</footer>
+
+<script src="layers.js"></script>
+<script src="fulltext-search.js"></script>
+<script src="trace.js"></script>
+</body>
+</html>

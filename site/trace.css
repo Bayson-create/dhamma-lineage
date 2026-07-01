@@ -1,0 +1,65 @@
+.searchbar { display: flex; gap: .5rem; justify-content: center; align-items: center; }
+.searchbar input { flex: 1; }
+.searchbar button {
+  padding: .6rem 1.2rem;
+  border: none;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+}
+.trace-note {
+  max-width: 640px;
+  margin: 1rem auto 0;
+  color: var(--muted);
+  font-size: .85rem;
+}
+.nav-link { margin-top: .5rem; }
+.nav-link a { color: var(--accent); font-size: .9rem; }
+
+#traceResult { max-width: 800px; margin: 1.5rem auto; padding: 0 1.5rem; }
+.trace-status { text-align: center; color: var(--muted); }
+.trace-summary {
+  background: #fffaf2;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: .8rem 1rem;
+  font-size: .95rem;
+}
+
+.trace-layers { list-style: none; margin: 0; padding: 0; counter-reset: layer; }
+.trace-layer {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  margin-bottom: .8rem;
+  overflow: hidden;
+}
+.trace-layer.hit { border-left: 6px solid var(--accent); }
+.trace-layer.empty { border-left: 6px dashed var(--line); background: #faf8f3; }
+
+.trace-layer-head {
+  display: flex;
+  justify-content: space-between;
+  padding: .6rem 1rem;
+  background: #fffaf2;
+}
+.trace-layer.empty .trace-layer-head { background: transparent; }
+.trace-layer-name { font-weight: 600; }
+.trace-layer-count { color: var(--muted); font-size: .85rem; }
+
+.trace-empty-note {
+  padding: .4rem 1rem 1rem;
+  color: var(--muted);
+  font-size: .85rem;
+  margin: 0;
+}
+
+.trace-hits { list-style: none; margin: 0; padding: 0 1rem 1rem; }
+.trace-hits li { padding: .5rem 0; border-top: 1px solid var(--line); }
+.trace-hits li:first-child { border-top: none; }
+.trace-hits a { color: var(--accent); font-weight: 600; text-decoration: none; }
+.trace-hits a:hover { text-decoration: underline; }
+.trace-hits .author { color: var(--muted); font-size: .8rem; margin-left: .5rem; }
+.trace-hits .snippet { display: block; color: var(--muted); font-size: .88rem; margin-top: .2rem; }
+.trace-hits .more { color: var(--muted); font-size: .85rem; font-style: italic; }

@@ -1,0 +1,63 @@
+name: Build and deploy
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "site/**"
+      - "scripts/**"
+      - "data/layer_mapping.json"
+      - ".github/workflows/deploy.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout dhamma-lineage
+        uses: actions/checkout@v4
+
+      - name: Shallow-clone CBETA XML-P5 corpus
+        run: git clone --depth 1 https://github.com/cbeta-org/xml-p5.git corpus
+
+      - name: Build metadata index (8-layer classification)
+        run: python3 scripts/build_index.py corpus -o data/index.json -m data/layer_mapping.json
+
+      - name: Extract plain-text paragraphs
+        run: python3 scripts/extract_fulltext.py corpus --index data/index.json --out-dir data/fulltext
+
+      - name: Build full-text search index
+        run: python3 scripts/build_search_index.py --df-ceiling 0.35 --buckets 256
+
+      - name: Assemble site data
+        run: |
+          mkdir -p site/data
+          cp data/index.json site/data/index.json
+          rm -rf site/data/fulltext site/data/search_index
+          cp -r data/fulltext site/data/fulltext
+          cp -r data/search_index site/data/search_index
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,17 @@
+This project reads and republishes text derived from the CBETA XML-P5 corpus:
+
+  Chinese Buddhist Electronic Text Association (CBETA)
+  https://github.com/cbeta-org/xml-p5
+  https://www.cbeta.org
+
+Per CBETA's terms, the corpus is "available for non-commercial use when
+distributed with [the TEI] header intact." This site is non-commercial,
+carries no advertising, and does not sell access to the texts. The
+extracted plain-text paragraphs served by this site retain their CBETA
+identifier (canon/volume/number) and link back to the original file in
+cbeta-org/xml-p5 so provenance is always traceable.
+
+Some texts in the corpus are drawn from other collections credited within
+CBETA itself, including 太虛大師全書, 印順法師著作集, 演培法師全集, and
+呂澂佛學著作集 — see each text's header for its specific source and
+rights holder.

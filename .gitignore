@@ -1,0 +1,8 @@
+corpus/
+data/fulltext/
+data/search_index/
+data/index.json.bak
+site/data/fulltext/
+site/data/search_index/
+__pycache__/
+*.pyc

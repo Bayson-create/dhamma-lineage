@@ -1,0 +1,61 @@
+{
+  "_readme": "Draft mapping of CBETA canon codes (and, for the Taisho canon, volume ranges that correspond to the traditional bu/部 catalog divisions) to the 8 lineage layers from the diagram. This is a STARTING POINT for human review, not a finished classification -- confidence flags where a canon spans multiple layers or where coverage is partial/non-authoritative. Texts with confidence 'low' or layer null should be reviewed manually before publishing.",
+  "layers": {
+    "1": "巴利经律、阿含 (Early Texts: Pali Vinaya/Nikaya, Agama)",
+    "2": "巴利注疏、复注 (Early commentaries/sub-commentaries)",
+    "3": "部派阿毘达磨 (Sectarian Abhidharma, the seven books)",
+    "4": "部派体系论 (Systematic sectarian treatises: Vibhasa, Kosa, Visuddhimagga...)",
+    "5": "大乘经典及基础体系论 (Mahayana sutras + foundational treatises: Madhyamaka, Yogacarabhumi)",
+    "6": "成熟体系论 (Mature systematic treatises: Samuccaya, Mahayanasamgraha, Vijnaptimatrata, Bodhicaryavatara)",
+    "7": "哲学体系与宗派体系 (Madhyamaka/Yogacara as philosophy; Tiantai/Huayan/Chan/Tibetan lamrim schools)",
+    "8": "现代法师 (Modern teachers' collected works)"
+  },
+  "canons": {
+    "N": {
+      "layer": 1,
+      "confidence": "medium",
+      "note": "汉译南传大藏经，经律部分（N01-N44 等）对应第1层；论藏部分（七论，约N44-N50）应改划至第3层，需按卷号细分，本表未拆分，需人工复核。不是巴利语原典，仅汉译。"
+    },
+    "TX": { "layer": 8, "confidence": "high", "note": "太虚大师全书" },
+    "Y": { "layer": 8, "confidence": "high", "note": "印顺法师著作集" },
+    "YP": { "layer": 8, "confidence": "high", "note": "演培法师全集" },
+    "LC": { "layer": 8, "confidence": "medium", "note": "吕澄著作集，学术性质与现代法师不完全相同，可考虑双标签归7与8" },
+    "ZW": { "layer": 7, "confidence": "low", "note": "藏外佛教文献，混合文献合集，需逐篇复核" },
+    "X": { "layer": 7, "confidence": "medium", "note": "新纂卤续藏，以宗派注疏、禅宗语录为主，部分属经疏部应复核是否近于第5/6层" },
+    "J": { "layer": 7, "confidence": "low", "note": "嘉兴藏，明清语录、宗派文献为主" },
+    "B": { "layer": 7, "confidence": "low", "note": "大藏经补编，混合，需逐篇复核" },
+    "GA": { "layer": null, "confidence": "low", "note": "佛寺志汇刊，属史地理类文献，不属于8层中任一层，建议单列“参考文献”栏目" },
+    "GB": { "layer": null, "confidence": "low", "note": "同 GA" },
+    "ZS": { "layer": null, "confidence": "low", "note": "正史佛教类编，史料汇编，同上" },
+    "D": { "layer": null, "confidence": "low", "note": "国图善本佛典，版本学性质，需按内容重新划入对应层级，不单独成层" },
+    "T": {
+      "_note": "大正藏按卷次区间映射到传统「部」划分，再映射到层级。边界以 CBETA 目录为准，个别经可能跨部，需人工复核。",
+      "volume_ranges": [
+        { "range": [1, 2], "layer": 1, "confidence": "high", "note": "阿含部 · 本缘部起" },
+        { "range": [3, 4], "layer": 5, "confidence": "medium", "note": "本缘部（本生、本缘故事），暂归1还5，需人工复核" },
+        { "range": [5, 8], "layer": 5, "confidence": "high", "note": "般若部" },
+        { "range": [9, 10], "layer": 5, "confidence": "high", "note": "法华部 · 华严部" },
+        { "range": [11, 12], "layer": 5, "confidence": "high", "note": "宝积部 · 涅槗部" },
+        { "range": [13, 13], "layer": 5, "confidence": "high", "note": "大集部" },
+        { "range": [14, 17], "layer": 5, "confidence": "medium", "note": "经集部，含如来藏类等" },
+        { "range": [18, 21], "layer": 7, "confidence": "medium", "note": "密教部，归于宗派体系（藏传相关）" },
+        { "range": [22, 24], "layer": 1, "confidence": "medium", "note": "律部，与第1层经律并列，但是汉译部派律而非巴利律" },
+        { "range": [25, 25], "layer": 5, "confidence": "high", "note": "释经论部，如《大智度论》属大乘基础体系论" },
+        { "range": [26, 29], "layer": 4, "confidence": "high", "note": "毘曇部，大毘婆沙、信舍、顺正理等部派体系论" },
+        { "range": [30, 30], "layer": 5, "confidence": "medium", "note": "中观部·瑜伽部起始，《中论》《瑜伽师地论》属第5层基础体系论，需逐经复核" },
+        { "range": [31, 31], "layer": 6, "confidence": "high", "note": "论集部，集论、摄大乘论、唯识三十论等属成熟体系论" },
+        { "range": [32, 32], "layer": 6, "confidence": "medium", "note": "论集部续，如《成唯识论》" },
+        { "range": [33, 39], "layer": 7, "confidence": "medium", "note": "经疏部，各宗注疏，归入宗派体系" },
+        { "range": [40, 40], "layer": 7, "confidence": "medium", "note": "律疏部" },
+        { "range": [41, 44], "layer": 7, "confidence": "medium", "note": "论疏部，俱舒论记、成唯识论述记等" },
+        { "range": [45, 48], "layer": 7, "confidence": "high", "note": "诸宗部，天台、华严、禅宗等原始宗论" },
+        { "range": [49, 52], "layer": null, "confidence": "low", "note": "史传部，佛教史料，不属于8层中任一层，列为参考文献" },
+        { "range": [53, 54], "layer": null, "confidence": "low", "note": "事汇部·外教部，百科/外教资料，不属于8层中任一层" },
+        { "range": [55, 55], "layer": null, "confidence": "low", "note": "目录部，目录学性质，不属于8层中任一层" },
+        { "range": [56, 84], "layer": 7, "confidence": "low", "note": "古逸部·疑似部，主要为日本宗派文献与疑似经，默认归入宗派体系但不可靠，必须逐篇人工审核" },
+        { "range": [85, 85], "layer": 7, "confidence": "low", "note": "同上" }
+      ]
+    }
+  }
+}
+

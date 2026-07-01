@@ -1,0 +1,80 @@
+:root {
+  --ink: #2a2420;
+  --paper: #faf6ef;
+  --accent: #8a4b2c;
+  --muted: #8a7f70;
+  --line: #e2d8c6;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: "Songti SC", "Noto Serif CJK SC", "PingFang SC", serif;
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.6;
+}
+header {
+  padding: 2rem 1.5rem 1rem;
+  border-bottom: 1px solid var(--line);
+  text-align: center;
+}
+h1 { margin: 0; font-size: 1.8rem; }
+h1 .sub { font-size: 1rem; color: var(--muted); font-weight: normal; margin-left: .5rem; }
+.tagline { color: var(--muted); margin: .5rem 0 1rem; }
+.searchbar input {
+  width: min(480px, 90%);
+  padding: .6rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 1rem;
+}
+main { max-width: 960px; margin: 0 auto; padding: 1.5rem; }
+.layer-block {
+  border: 1px solid var(--line);
+  border-left: 6px solid var(--accent);
+  border-radius: 8px;
+  margin-bottom: 1.2rem;
+  background: #fff;
+  overflow: hidden;
+}
+.layer-header {
+  padding: .8rem 1.2rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  background: #fffaf2;
+}
+.layer-header h2 { margin: 0; font-size: 1.1rem; }
+.layer-count { color: var(--muted); font-size: .85rem; }
+.layer-body { padding: 0 1.2rem 1rem; display: none; }
+.layer-block.open .layer-body { display: block; }
+.text-list { list-style: none; margin: 0; padding: 0; column-width: 260px; }
+.text-list li { padding: .25rem 0; break-inside: avoid; }
+.text-list a { color: var(--ink); text-decoration: none; }
+.text-list a:hover { color: var(--accent); text-decoration: underline; }
+.confidence-low { opacity: .7; }
+.confidence-low::after { content: " (待复核)"; font-size: .75em; color: var(--muted); }
+footer { text-align: center; color: var(--muted); font-size: .8rem; padding: 2rem 1rem; }
+
+.fulltext-results {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 1.5rem 1rem;
+}
+.fulltext-status { color: var(--muted); }
+.fulltext-heading { font-size: 1rem; color: var(--accent); margin: 1rem 0 .5rem; }
+.fulltext-group {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: .6rem 1rem;
+  margin-bottom: .6rem;
+}
+.fulltext-group h3 { margin: .2rem 0 .4rem; font-size: .95rem; }
+.fulltext-list { list-style: none; margin: 0; padding: 0; }
+.fulltext-list li { padding: .35rem 0; border-top: 1px solid var(--line); }
+.fulltext-list li:first-child { border-top: none; }
+.fulltext-list a { color: var(--accent); text-decoration: none; font-weight: 600; }
+.fulltext-list a:hover { text-decoration: underline; }
+.fulltext-list .snippet { display: block; color: var(--muted); font-size: .9rem; margin-top: .15rem; }
