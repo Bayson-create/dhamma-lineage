@@ -100,20 +100,16 @@ async function runTrace(query) {
     if (!isHit) {
       html += `<p class="trace-empty-note">此层未检索到与该表述充分相关的文字。这不代表该层"不谈这个道理"，只代表当前语料里没有使用足够接近的措辞——空白本身就是一种证据：它提示这个说法可能是后起的表达，而不是承自这一层的固定术语。</p>`;
     } else {
-      html += `<ul class="trace-hits">`;
-      for (const { rec, item } of items) {
+      const docLis = items.map(({ rec, item }) => {
         const rel = useFuzzy ? `<span class="relevance">匹配度 ${Math.round(item.relevance * 100)}%</span>` : "";
-        html += `<li><div class="hit-doc"><a href="reader.html?id=${encodeURIComponent(rec.id)}">${escapeHtml(rec.title || rec.id)}</a>${rel}`;
-        html += `<span class="author">${escapeHtml(rec.author || "")}</span>`;
-        html += `<span class="hit-count">${item.matches.length} 处${item.truncated ? "+" : ""}</span></div>`;
-        html += `<ol class="match-positions">`;
-        for (const m of item.matches) {
+        const positionLis = item.matches.map((m) => {
           const href = `reader.html?id=${encodeURIComponent(rec.id)}&off=${m.offset}&len=${m.term.length}`;
-          html += `<li><a href="${href}">${m.juan ? `卷${escapeHtml(m.juan)} · ` : ""}${highlightTerm(m.snippet, m.term)}</a></li>`;
-        }
-        html += `</ol></li>`;
-      }
-      html += `</ul>`;
+          return `<li><a href="${href}">${m.juan ? `卷${escapeHtml(m.juan)} · ` : ""}${highlightTerm(m.snippet, m.term)}</a></li>`;
+        });
+        const positionsHtml = `<ol class="match-positions">${collapsibleItems(positionLis, 5, "处")}</ol>`;
+        return `<li><div class="hit-doc"><a href="reader.html?id=${encodeURIComponent(rec.id)}">${escapeHtml(rec.title || rec.id)}</a>${rel}<span class="author">${escapeHtml(rec.author || "")}</span><span class="hit-count">${item.matches.length} 处${item.truncated ? "+" : ""}</span></div>${positionsHtml}</li>`;
+      });
+      html += `<ul class="trace-hits">${collapsibleItems(docLis, 5, "篇")}</ul>`;
     }
     html += `</li>`;
   }

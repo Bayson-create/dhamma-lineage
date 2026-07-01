@@ -97,3 +97,15 @@ footer { text-align: center; color: var(--muted); font-size: .8rem; padding: 2re
 }
 .match-positions a:hover { color: var(--accent); text-decoration: underline; }
 .match-positions a mark, .match-positions a b.hl { color: var(--accent); font-weight: 600; }
+
+.clx-toggle-row { list-style: none; margin: .3rem 0 0; }
+.clx-toggle {
+  border: 1px dashed var(--line);
+  background: transparent;
+  color: var(--accent);
+  border-radius: 999px;
+  padding: .2rem .8rem;
+  font-size: .82rem;
+  cursor: pointer;
+}
+.clx-toggle:hover { background: #fffaf2; }

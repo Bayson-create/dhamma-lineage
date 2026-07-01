@@ -143,18 +143,16 @@ async function runFullTextSearch(q) {
     const items = groups[layer];
     if (items.length === 0) continue;
     const label = layer === 0 ? "未归入八层 · 参考资料" : LAYER_NAMES[layer];
-    html += `<div class="fulltext-group"><h3>${label}（${items.length}）</h3><ul class="fulltext-list">`;
-    for (const { rec, item } of items) {
+    const docLis = items.map(({ rec, item }) => {
       const rel = mode === "fuzzy" ? `<span class="relevance">匹配度 ${Math.round(item.relevance * 100)}%</span>` : "";
-      html += `<li><div class="hit-doc"><a href="reader.html?id=${encodeURIComponent(rec.id)}">${escapeHtml(rec.title || rec.id)}</a>${rel}<span class="hit-count">${item.matches.length} 处${item.truncated ? "+" : ""}</span></div>`;
-      html += `<ol class="match-positions">`;
-      for (const m of item.matches) {
+      const positionLis = item.matches.map((m) => {
         const href = `reader.html?id=${encodeURIComponent(rec.id)}&off=${m.offset}&len=${m.term.length}`;
-        html += `<li><a href="${href}">${m.juan ? `卷${escapeHtml(m.juan)} · ` : ""}${highlightTerm(m.snippet, m.term)}</a></li>`;
-      }
-      html += `</ol></li>`;
-    }
-    html += `</ul></div>`;
+        return `<li><a href="${href}">${m.juan ? `卷${escapeHtml(m.juan)} · ` : ""}${highlightTerm(m.snippet, m.term)}</a></li>`;
+      });
+      const positionsHtml = `<ol class="match-positions">${collapsibleItems(positionLis, 5, "处")}</ol>`;
+      return `<li><div class="hit-doc"><a href="reader.html?id=${encodeURIComponent(rec.id)}">${escapeHtml(rec.title || rec.id)}</a>${rel}<span class="hit-count">${item.matches.length} 处${item.truncated ? "+" : ""}</span></div>${positionsHtml}</li>`;
+    });
+    html += `<div class="fulltext-group"><h3>${label}（${items.length}）</h3><ul class="fulltext-list">${collapsibleItems(docLis, 5, "篇")}</ul></div>`;
   }
   box.innerHTML = html;
 }
