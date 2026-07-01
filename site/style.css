@@ -78,3 +78,11 @@ footer { text-align: center; color: var(--muted); font-size: .8rem; padding: 2re
 .fulltext-list a { color: var(--accent); text-decoration: none; font-weight: 600; }
 .fulltext-list a:hover { text-decoration: underline; }
 .fulltext-list .snippet { display: block; color: var(--muted); font-size: .9rem; margin-top: .15rem; }
+.relevance {
+  margin-left: .5rem;
+  font-size: .75rem;
+  color: var(--accent);
+  background: #f4e9dd;
+  border-radius: 999px;
+  padding: .05rem .5rem;
+}

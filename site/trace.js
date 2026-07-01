@@ -13,6 +13,17 @@ function escapeHtml(s) {
   }[c]));
 }
 
+// Short input (a technical term like "四念處" or "空性") is matched as an
+// exact substring. Longer input - a whole sentence, a question, a stated
+// opinion - is matched fuzzily: scored by how many of its word-pairs
+// co-occur in each text, since that exact modern wording will essentially
+// never appear verbatim in classical Chinese. A layer only counts as
+// "命中" if some text clears RELEVANCE_HIT_THRESHOLD; weaker, noisier
+// overlaps are dropped rather than padding the layer with false hits.
+const FUZZY_THRESHOLD_LEN = 6;
+const RELEVANCE_HIT_THRESHOLD = 0.5;
+const RELEVANCE_SHOW_THRESHOLD = 0.34;
+
 async function runTrace(query) {
   const box = document.getElementById("traceResult");
   const q = query.trim();
@@ -24,46 +35,65 @@ async function runTrace(query) {
 
   await ensureIndex();
 
+  const useFuzzy = q.length > FUZZY_THRESHOLD_LEN;
   let results;
   try {
-    results = await fullTextSearch(q, { limit: 300 });
+    if (useFuzzy) {
+      results = await fuzzySentenceSearch(q, { limit: 400 });
+    } else {
+      const exact = await fullTextSearch(q, { limit: 400 });
+      results = exact.map((r) => ({ ...r, relevance: 1 }));
+      if (results.length === 0) {
+        // an exact short term with no verbatim hits still gets a fuzzy pass
+        results = await fuzzySentenceSearch(q, { limit: 400 });
+      }
+    }
   } catch (err) {
+    if (err.code === "NO_INFORMATIVE_TERMS") {
+      box.innerHTML = `<p class="trace-status">"${escapeHtml(q)}"里没有可用于检索的常见词组，换个说法试试。</p>`;
+      return;
+    }
     box.innerHTML = `<p class="trace-status">检索出错：${escapeHtml(String(err))}</p>`;
     return;
   }
 
+  const shown = results.filter((r) => r.relevance >= RELEVANCE_SHOW_THRESHOLD);
+
   const groups = {};
   for (const l of LAYER_ORDER) groups[l] = [];
-  for (const { docId, snippet } of results) {
-    const rec = INDEX_BY_ID.get(docId);
+  for (const item of shown) {
+    const rec = INDEX_BY_ID.get(item.docId);
     if (!rec || !LAYER_ORDER.includes(rec.layer)) continue; // reference-only material excluded from the lineage view
-    groups[rec.layer].push({ rec, snippet });
+    groups[rec.layer].push({ rec, item });
   }
 
-  const hitLayers = LAYER_ORDER.filter((l) => groups[l].length > 0);
+  const hitLayers = LAYER_ORDER.filter((l) => groups[l].some(({ item }) => item.relevance >= RELEVANCE_HIT_THRESHOLD));
+  const modeNote = useFuzzy ? "（模糊匹配：按关键词共现程度排序，非逐字匹配）" : "";
   const summary =
     hitLayers.length === 0
-      ? `八层文献中均未检索到"${escapeHtml(q)}"的精确文字匹配。`
+      ? `八层文献中均未检索到与"${escapeHtml(q)}"充分相关的文字${modeNote}。`
       : `命中层级：${hitLayers.map((l) => "第" + l + "层").join("、")}；空白层级：${
           LAYER_ORDER.filter((l) => !hitLayers.includes(l)).map((l) => "第" + l + "层").join("、") || "无"
-        }。`;
+        }${modeNote}。`;
 
   let html = `<p class="trace-summary">${summary}</p><ol class="trace-layers">`;
 
   for (const layer of LAYER_ORDER) {
-    const items = groups[layer];
-    html += `<li class="trace-layer ${items.length ? "hit" : "empty"}">`;
+    const items = groups[layer].sort((a, b) => b.item.relevance - a.item.relevance);
+    const isHit = items.some(({ item }) => item.relevance >= RELEVANCE_HIT_THRESHOLD);
+    html += `<li class="trace-layer ${isHit ? "hit" : "empty"}">`;
     html += `<div class="trace-layer-head"><span class="trace-layer-name">${LAYER_NAMES[layer]}</span>`;
-    html += `<span class="trace-layer-count">${items.length ? items.length + " 篇命中" : "空白"}</span></div>`;
+    html += `<span class="trace-layer-count">${isHit ? items.length + " 篇命中" : "空白"}</span></div>`;
 
-    if (items.length === 0) {
-      html += `<p class="trace-empty-note">此层未检索到与该表述精确匹配的文字。这不代表该层"不谈这个道理"，只代表当前语料里没有使用完全相同的措辞——空白本身就是一种证据：它提示这个说法可能是后起的表达，而不是承自这一层的固定术语。</p>`;
+    if (!isHit) {
+      html += `<p class="trace-empty-note">此层未检索到与该表述充分相关的文字。这不代表该层"不谈这个道理"，只代表当前语料里没有使用足够接近的措辞——空白本身就是一种证据：它提示这个说法可能是后起的表达，而不是承自这一层的固定术语。</p>`;
     } else {
       html += `<ul class="trace-hits">`;
-      for (const { rec, snippet } of items.slice(0, 8)) {
-        html += `<li><a href="reader.html?id=${encodeURIComponent(rec.id)}">${escapeHtml(rec.title || rec.id)}</a>`;
+      for (const { rec, item } of items.slice(0, 8)) {
+        const rel = useFuzzy ? `<span class="relevance">匹配度 ${Math.round(item.relevance * 100)}%</span>` : "";
+        html += `<li><a href="reader.html?id=${encodeURIComponent(rec.id)}">${escapeHtml(rec.title || rec.id)}</a>${rel}`;
         html += `<span class="author">${escapeHtml(rec.author || "")}</span>`;
-        html += `<span class="snippet">${escapeHtml(snippet)}</span></li>`;
+        html += `<span class="snippet">${escapeHtml(item.snippet)}</span></li>`;
       }
       if (items.length > 8) html += `<li class="more">…另有 ${items.length - 8} 篇命中，未全部列出</li>`;
       html += `</ul>`;

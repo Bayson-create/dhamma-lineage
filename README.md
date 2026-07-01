@@ -3,8 +3,8 @@
 A static, citation-first Buddhist canon explorer built on [CBETA XML-P5](https://github.com/cbeta-org/xml-p5). It does three things:
 
 1. **Browse by lineage** — the corpus (5,000+ texts) is classified into 8 historical layers, from early Pali-derived texts through Abhidharma, Mahayana sutras, mature treatises, sectarian schools, to modern teachers' collected works. Layers with no matching text are shown as empty, not hidden — the gap is itself information.
-2. **Full-text search** — client-side, no server, no LLM. A character-bigram inverted index lets the static site search across the whole corpus and return results grouped by layer.
-3. **Dhamma Trace (法义溯源)** — give it a phrase or an idea (e.g. "接纳自己", "放下执著"). It searches every layer for that exact wording and shows, layer by layer, where it is attested and where it is silent. It does not rank traditions, and it does not synthesize an answer with an LLM — every result links back to the primary source so you can verify it yourself.
+2. **Full-text search** — client-side, no server, no LLM. A character-bigram inverted index lets the static site search across the whole corpus and return results grouped by layer. Queries are accepted in either Simplified or Traditional Chinese (normalized via a bundled char-level map, `site/s2t.js`), since the corpus itself is almost entirely Traditional. Short queries (technical terms like 四念處) are matched as an exact substring; longer input (a full sentence, a question, an opinion) is matched fuzzily — scored by how many of its word-pairs co-occur in each text — since that exact modern wording will essentially never appear verbatim in classical Chinese.
+3. **Dhamma Trace (法义溯源)** — give it a phrase or an idea (e.g. "接纳自己", "放下执著", or a full question like "这是佛陀说的吗"). It searches every layer using the same exact/fuzzy logic above and shows, layer by layer, where it is attested and where it is silent, with a match-relevance score for fuzzy hits. It does not rank traditions, and it does not synthesize an answer with an LLM — every result links back to the primary source so you can verify it yourself.
 
 ## Why no LLM in the trace feature
 

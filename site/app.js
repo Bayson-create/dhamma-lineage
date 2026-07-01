@@ -83,24 +83,44 @@ document.getElementById("searchInput").addEventListener("input", (e) => {
   }
 });
 
+// Short queries (single terms, technical vocabulary like "四念處") use
+// exact substring search. Longer input - a full sentence, a question, a
+// stated opinion - uses the fuzzy bigram-coverage search instead, since
+// requiring that exact wording to appear verbatim in classical Chinese
+// would almost always return nothing.
+const FUZZY_THRESHOLD_LEN = 6;
+
 async function runFullTextSearch(q) {
   const mySeq = ++searchSeq;
   const box = document.getElementById("fulltextResults");
   box.hidden = false;
   box.innerHTML = `<p class="fulltext-status">正文检索"${escapeHtml(q)}"中…</p>`;
 
+  const useFuzzy = q.length > FUZZY_THRESHOLD_LEN;
   let results;
+  let mode = useFuzzy ? "fuzzy" : "exact";
   try {
-    results = await fullTextSearch(q, { limit: 200 });
+    results = useFuzzy
+      ? await fuzzySentenceSearch(q, { limit: 200 })
+      : await fullTextSearch(q, { limit: 200 });
+    if (!useFuzzy && results.length === 0) {
+      // an exact phrase with no verbatim hits still deserves a fuzzy pass
+      results = await fuzzySentenceSearch(q, { limit: 200 });
+      mode = "fuzzy";
+    }
   } catch (err) {
     if (mySeq !== searchSeq) return;
+    if (err.code === "NO_INFORMATIVE_TERMS") {
+      box.innerHTML = `<p class="fulltext-status">"${escapeHtml(q)}"里没有可用于检索的常见词组，换个说法试试。</p>`;
+      return;
+    }
     box.innerHTML = `<p class="fulltext-status">正文检索出错：${escapeHtml(String(err))}</p>`;
     return;
   }
   if (mySeq !== searchSeq) return; // a newer keystroke superseded this search
 
   if (results.length === 0) {
-    box.innerHTML = `<p class="fulltext-status">正文中未检索到"${escapeHtml(q)}"。</p>`;
+    box.innerHTML = `<p class="fulltext-status">正文中未检索到与"${escapeHtml(q)}"相关的内容。</p>`;
     return;
   }
 
@@ -109,21 +129,23 @@ async function runFullTextSearch(q) {
   for (const l of LAYER_ORDER) groups[l] = [];
   groups[0] = []; // unmapped / reference material
 
-  for (const { docId, snippet } of results) {
-    const rec = byId.get(docId);
+  for (const item of results) {
+    const rec = byId.get(item.docId);
     if (!rec) continue;
     const layer = LAYER_ORDER.includes(rec.layer) ? rec.layer : 0;
-    groups[layer].push({ rec, snippet });
+    groups[layer].push({ rec, item });
   }
 
-  let html = `<h2 class="fulltext-heading">正文检索结果："${escapeHtml(q)}"（${results.length} 处命中，按层分组）</h2>`;
+  const modeLabel = mode === "fuzzy" ? "模糊匹配（按关键词覆盖度排序）" : "精确匹配";
+  let html = `<h2 class="fulltext-heading">正文检索结果："${escapeHtml(q)}"（${results.length} 篇命中，${modeLabel}，按层分组）</h2>`;
   for (const layer of [...LAYER_ORDER, 0]) {
     const items = groups[layer];
     if (items.length === 0) continue;
     const label = layer === 0 ? "未归入八层 · 参考资料" : LAYER_NAMES[layer];
     html += `<div class="fulltext-group"><h3>${label}（${items.length}）</h3><ul class="fulltext-list">`;
-    for (const { rec, snippet } of items) {
-      html += `<li><a href="reader.html?id=${encodeURIComponent(rec.id)}">${escapeHtml(rec.title || rec.id)}</a><span class="snippet">${escapeHtml(snippet)}</span></li>`;
+    for (const { rec, item } of items) {
+      const rel = mode === "fuzzy" ? `<span class="relevance">匹配度 ${Math.round(item.relevance * 100)}%</span>` : "";
+      html += `<li><a href="reader.html?id=${encodeURIComponent(rec.id)}">${escapeHtml(rec.title || rec.id)}</a>${rel}<span class="snippet">${escapeHtml(item.snippet)}</span></li>`;
     }
     html += `</ul></div>`;
   }

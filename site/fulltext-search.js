@@ -60,7 +60,7 @@ async function loadShard(fname) {
  */
 async function fullTextSearch(query, { limit = 200 } = {}) {
   await ensureManifest();
-  const q = query.trim();
+  const q = (typeof toTraditional === "function" ? toTraditional(query) : query).trim();
   if (q.length < 1) return [];
 
   let candidateInts = null;
@@ -141,4 +141,109 @@ async function fetchDocText(docId) {
     .join("");
   docTextCache.set(docId, text);
   return text;
+}
+
+// Splits on whitespace/punctuation so bigrams never bridge across an
+// unrelated clause boundary, then bigrams each remaining run of
+// characters. Single leftover characters are kept as 1-char terms (they
+// don't narrow the index, but they're still shown so callers can report
+// which words of the query were actually informative).
+const PUNCT_RE =
+  /[\s,.，。！？；：、“”"'‘’《》〈〉「」『』（）()\[\]—…·\-~,!?;:]+/;
+
+function segmentQuery(query) {
+  return query.split(PUNCT_RE).filter(Boolean);
+}
+
+function queryBigrams(query) {
+  const grams = new Set();
+  for (const seg of segmentQuery(query)) {
+    if (seg.length === 1) {
+      grams.add(seg);
+      continue;
+    }
+    for (let i = 0; i < seg.length - 1; i++) grams.add(seg.slice(i, i + 2));
+  }
+  return Array.from(grams);
+}
+
+/**
+ * Fuzzy match for a whole sentence, question, or statement: scores every
+ * document by how many of the query's distinct bigrams it contains
+ * (an OR/coverage match, not "the phrase appears verbatim"), then ranks
+ * by that score. This is what makes "接纳自己" or "这是佛陀说的吗" usable
+ * queries even though that exact wording won't appear in classical
+ * Chinese texts - what's being searched for is co-occurrence of the
+ * query's constituent word-pairs, not the literal string.
+ *
+ * Returns { docId, snippet, score, relevance }[], sorted by score desc.
+ * relevance is score / (number of query bigrams that exist anywhere in
+ * the index), so a query containing some overly-common (pruned)
+ * bigrams isn't penalized for them.
+ */
+async function fuzzySentenceSearch(query, { limit = 60 } = {}) {
+  await ensureManifest();
+  const norm = (typeof toTraditional === "function" ? toTraditional(query) : query).trim();
+  if (!norm) return [];
+
+  const grams = queryBigrams(norm);
+  if (grams.length === 0) return [];
+
+  const scores = new Map(); // intId -> match count
+  let effectiveN = 0;
+  for (const bg of grams) {
+    if (bg.length < 2) continue; // leftover single char: not index-searchable
+    const bucket = bucketFor(bg, manifest.buckets);
+    const fname = `shard_${String(bucket).padStart(3, "0")}.json`;
+    const shard = await loadShard(fname);
+    const ids = shard[bg];
+    if (!ids) continue; // pruned (too common) or genuinely absent
+    effectiveN++;
+    for (const id of ids) scores.set(id, (scores.get(id) || 0) + 1);
+  }
+  if (effectiveN === 0) {
+    const err = new Error("query has no bigram informative enough to search on");
+    err.code = "NO_INFORMATIVE_TERMS";
+    throw err;
+  }
+
+  const ranked = Array.from(scores.entries())
+    .map(([intId, count]) => ({ intId, count, relevance: count / effectiveN }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, limit);
+
+  const results = [];
+  const CONCURRENCY = 12;
+  let cursor = 0;
+  async function worker() {
+    while (cursor < ranked.length) {
+      const item = ranked[cursor++];
+      const docId = docIds[item.intId];
+      const text = await fetchDocText(docId);
+      results.push({
+        docId,
+        score: item.count,
+        relevance: item.relevance,
+        snippet: bestSnippet(text, grams),
+      });
+    }
+  }
+  await Promise.all(Array.from({ length: CONCURRENCY }, worker));
+  results.sort((a, b) => b.score - a.score);
+  results.effectiveGramCount = effectiveN;
+  results.totalGramCount = grams.length;
+  return results;
+}
+
+function bestSnippet(text, grams) {
+  let bestIdx = -1;
+  for (const bg of grams) {
+    if (bg.length < 2) continue;
+    const idx = text.indexOf(bg);
+    if (idx !== -1 && (bestIdx === -1 || idx < bestIdx)) bestIdx = idx;
+  }
+  if (bestIdx === -1) return text.slice(0, 40) + (text.length > 40 ? "…" : "");
+  const start = Math.max(0, bestIdx - 20);
+  const end = Math.min(text.length, bestIdx + 20);
+  return (start > 0 ? "…" : "") + text.slice(start, end) + (end < text.length ? "…" : "");
 }
