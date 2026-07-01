@@ -56,6 +56,30 @@ main { max-width: 960px; margin: 0 auto; padding: 1.5rem; }
 .confidence-low { opacity: .7; }
 .confidence-low::after { content: " (待复核)"; font-size: .75em; color: var(--muted); }
 footer { text-align: center; color: var(--muted); font-size: .8rem; padding: 2rem 1rem; }
+footer a { color: var(--accent); }
+.copyright-panel {
+  max-width: 680px;
+  margin: .8rem auto 0;
+  text-align: left;
+}
+.copyright-panel summary {
+  width: max-content;
+  margin: 0 auto;
+  color: var(--accent);
+  cursor: pointer;
+  list-style-position: inside;
+}
+.copyright-panel summary:hover { text-decoration: underline; }
+.copyright-panel div {
+  margin-top: .7rem;
+  padding: .85rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fffaf2;
+  line-height: 1.7;
+}
+.copyright-panel p { margin: 0 0 .55rem; }
+.copyright-panel p:last-child { margin-bottom: 0; }
 
 .fulltext-results {
   max-width: 960px;

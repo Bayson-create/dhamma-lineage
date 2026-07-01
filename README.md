@@ -49,8 +49,22 @@ cp -r data/search_index site/data/search_index
 python3 -m http.server -d site 8000
 ```
 
-## License and attribution
+## 版权声明 · Copyright Notice
 
-Code in this repository (`site/`, `scripts/`) is licensed under Apache 2.0 (see `LICENSE`).
+本项目（八层分层规则、检索网页、阅读器网页与构建脚本）由 **[Bayson-create](https://github.com/Bayson-create)** 设计开发，© 2026 Bayson-create。代码以 [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0) 开源；项目原创文字内容（README、分层说明、界面说明、非经文性的整理文字）以 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) 共享，欢迎自由使用、转载、修改、二次开发，敬请注明出处并附本仓库链接。
 
-The Buddhist texts themselves are not ours: they are CBETA's [xml-p5](https://github.com/cbeta-org/xml-p5) corpus, "available for non-commercial use when distributed with [the TEI] header intact." This site reads that corpus at build time and does not redistribute the raw XML as a separate download; every text's title/author/CBETA id (canon.volume.number) accompanies its extracted content on the reader page so provenance and the original file are always one click away. See `NOTICE` for the full attribution CBETA asks for.
+### CBETA 文献来源
+
+本项目索引与阅读器所显示的佛教文献来自 [CBETA XML-P5](https://github.com/cbeta-org/xml-p5) 语料库。佛典原文、校勘信息、TEI 标记及相关权利不属于本项目；CBETA 语料按其自身条件提供，通常要求非商业使用并保留 TEI header 中的来源与权利信息。本项目在构建时读取 CBETA XML，网页端显示从 XML 抽取的正文段落，并在每篇文本中保留标题、作者、CBETA id、藏经/册/号等来源信息，以便追溯原始文件。
+
+部分文献还来自 CBETA 收录的其他著作集或机构出版物，例如太虚大师全书、印顺法师佛学著作集、演培法师全集、吕澂佛学著作集等；具体来源与权利归属请以每篇 CBETA TEI header 为准。详见本仓库的 [`NOTICE`](NOTICE)。
+
+### 免责声明
+
+本项目用于学习、检索、研究与个人阅读辅助，不销售文本访问权限，不以本项目声明替代 CBETA 或各原权利方的正式授权条款。若转载、再发布或商用任何 CBETA 来源文本，请自行核对 CBETA 及相关权利方的最新许可要求。
+
+---
+
+**Copyright**: © 2026 [Bayson-create](https://github.com/Bayson-create). Code under [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0); project-original written content under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+
+**Text attribution**: Buddhist texts are derived from [CBETA XML-P5](https://github.com/cbeta-org/xml-p5). The texts, TEI markup, and source rights remain with CBETA and the original credited rights holders. This project is non-commercial and preserves per-text provenance through CBETA ids and metadata; see [`NOTICE`](NOTICE).
