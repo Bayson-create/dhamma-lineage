@@ -17,6 +17,22 @@ from xml.etree import ElementTree as ET
 
 NS = "{http://www.tei-c.org/ns/1.0}"
 
+# Any of these is treated as a "paragraph-like" text block. CBETA texts
+# routinely carry body text outside <p> - verse lines (<l>, grouped under
+# <lg>), list items, section headings, translator/author bylines,
+# glossary entries - and a p-only extractor silently drops all of it
+# (this was a real bug: e.g. verse commentaries like 中論 lose every
+# gatha, since Kumārajīva's translation puts each verse line in <l>, not
+# <p>). Nesting is handled the same way <p> nesting always was: entering
+# any BLOCK_TAG increments a shared depth counter, and the buffer only
+# flushes when that depth returns to 0, so a block tag nested inside
+# another (e.g. <item><p>...</p></item>) doesn't prematurely split.
+BLOCK_TAGS = {
+    "p", "l", "item", "head", "byline", "entry", "form", "title",
+    "argument", "opener", "closer", "trailer", "salute", "signed",
+    "epigraph", "postscript", "dateline",
+}
+
 
 def extract_paragraphs(xml_path: Path):
     """Stream-parse the body, yielding (juan, paragraph_text)."""
@@ -25,7 +41,7 @@ def extract_paragraphs(xml_path: Path):
     context = ET.iterparse(str(xml_path), events=("start", "end"))
     in_body = False
     p_buf = []
-    p_depth = 0
+    block_depth = 0
 
     for event, el in context:
         tag = el.tag
@@ -36,20 +52,26 @@ def extract_paragraphs(xml_path: Path):
                 in_body = True
             elif in_body and local == "div" and el.get("type") == "juan":
                 juan = el.get("n") or juan
-            elif in_body and local == "p":
-                p_depth += 1
-                if p_depth == 1:
+            elif in_body and local in BLOCK_TAGS:
+                block_depth += 1
+                if block_depth == 1:
                     p_buf = []
-            elif in_body and p_depth >= 1 and el.text:
+                # A block tag's OWN leading text (e.g. <p>夫宗極絕...<lb/>...)
+                # must be captured here too, not just its children's text -
+                # this was previously dropped for every single paragraph
+                # whose first line preceded a <lb/> or other child element.
+                if el.text:
+                    p_buf.append(el.text)
+            elif in_body and block_depth >= 1 and el.text:
                 p_buf.append(el.text)
 
         elif event == "end":
-            if in_body and p_depth >= 1:
+            if in_body and block_depth >= 1:
                 if el.tail:
                     p_buf.append(el.tail)
-            if local == "p" and in_body:
-                p_depth -= 1
-                if p_depth == 0:
+            if local in BLOCK_TAGS and in_body:
+                block_depth -= 1
+                if block_depth == 0:
                     text = "".join(p_buf)
                     text = " ".join(text.split())
                     if text:

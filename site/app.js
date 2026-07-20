@@ -68,8 +68,12 @@ document.getElementById("searchInput").addEventListener("input", (e) => {
     return;
   }
 
+  // Titles/authors in the index are Traditional (the corpus is almost
+  // entirely Traditional); normalize the query the same way full-text
+  // search does so typing Simplified still matches.
+  const qTrad = typeof toTraditional === "function" ? toTraditional(q) : q;
   const filtered = INDEX.filter(
-    (r) => (r.title || "").includes(q) || (r.author || "").includes(q)
+    (r) => (r.title || "").includes(qTrad) || (r.author || "").includes(qTrad)
   );
   render(filtered);
   document.querySelectorAll(".layer-block").forEach((b) => {
