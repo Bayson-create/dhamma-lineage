@@ -18,6 +18,18 @@ async function ensureManifest() {
   }
 }
 
+// Canonicalizes a query to the character variants used by the corpus
+// (CBETA text run through OpenCC's plain s2t, which prefers older
+// variants like 爲 over the modern-standard 為). Simplified input and
+// modern-traditional input both need normalizing to that same variant,
+// so route everything through simplified first: toSimplified collapses
+// variant traditional characters (為 and 爲 alike) to one simplified
+// form, then toTraditional re-expands to the corpus's preferred variant.
+function normalizeForSearch(text) {
+  const simplified = typeof toSimplified === "function" ? toSimplified(text) : text;
+  return typeof toTraditional === "function" ? toTraditional(simplified) : simplified;
+}
+
 function bucketFor(bigram, buckets) {
   // must match scripts/build_search_index.py's zlib.crc32 % buckets
   let crc = crc32(bigram);
@@ -94,7 +106,7 @@ function buildMatch(record, offset, len, term) {
  */
 async function fullTextSearch(query, { limit = 200 } = {}) {
   await ensureManifest();
-  const q = (typeof toTraditional === "function" ? toTraditional(query) : query).trim();
+  const q = normalizeForSearch(query).trim();
   if (q.length < 1) return [];
 
   let candidateInts = null;
@@ -213,7 +225,7 @@ function queryBigrams(query) {
  */
 async function fuzzySentenceSearch(query, { limit = 60 } = {}) {
   await ensureManifest();
-  const norm = (typeof toTraditional === "function" ? toTraditional(query) : query).trim();
+  const norm = normalizeForSearch(query).trim();
   if (!norm) return [];
 
   const grams = queryBigrams(norm);
