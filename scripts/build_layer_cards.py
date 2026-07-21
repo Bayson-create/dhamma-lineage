@@ -47,12 +47,12 @@ LAYER_CARD_DEFS = {
     6: [
         ("abhidharmasamuccaya", "阿毗達磨集論", ["阿毗達磨集", "阿毘達磨集", "大乘阿毘達磨雜集"], None),
         ("mahayanasamgraha", "攝大乘論", ["攝大乘"], None),
-        ("vijnaptimatrata", "成唯識論", ["成唯識"], None),
+        ("vijnaptimatrata", "成唯識論", ["成唯識", "唯識三十", "唯識二十", "百法明門"], None),
         ("bodhicaryavatara", "入菩薩行論", ["入菩薩行"], None),
     ],
     7: [
         ("madhyamaka_school", "中觀", ["中觀"], "哲学体系"),
-        ("yogacara_school", "唯識", ["唯識"], "哲学体系"),
+        ("yogacara_school", "唯識", ["唯識", "八識規矩", "八識"], "哲学体系"),
         ("tiantai", "天台", ["天台", "止觀", "四教", "法華文句", "法華玄義"], "宗派体系"),
         ("huayan_school", "華嚴", ["華嚴", "法界", "五教", "一乘"], "宗派体系"),
         ("chan", "禪宗", ["禪", "語錄", "祖堂", "傳燈", "壇經", "公案", "頌古", "牧牛"], "宗派体系"),
