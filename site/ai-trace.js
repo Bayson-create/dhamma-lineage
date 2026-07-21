@@ -56,7 +56,7 @@ async function runAiTrace(q) {
 
   try {
     const data = await apiFetch(`/api/dhamma/trace?q=${encodeURIComponent(q)}`);
-    renderAiTraceResult(data);
+    await renderAiTraceResult(data);
     status.textContent = data.from_cache
       ? "（命中缓存，本次未消耗额度）"
       : `本次消耗 ¥${data.charged_rmb.toFixed(4)}${
@@ -83,31 +83,85 @@ const AI_LAYER_LABELS = Object.assign({}, LAYER_NAMES, {
   unmatched: "未匹配到分层索引",
 });
 
-function renderAiTraceResult(data) {
+/* Locates a FoJin snippet inside dhamma-lineage's own extracted fulltext
+ * (data/fulltext/<id>.txt, the same file reader.js highlights against),
+ * so we can deep-link to the exact spot with ?off=&len= like the existing
+ * bigram trace already does. FoJin's snippet is normally a verbatim CBETA
+ * excerpt, but whitespace can be normalized differently, so a couple of
+ * fallback candidates are tried before giving up (in which case the link
+ * still works, just without a highlighted jump target). */
+const _fulltextCache = new Map();
+
+async function fetchFulltextParagraphs(id) {
+  if (_fulltextCache.has(id)) return _fulltextCache.get(id);
+  const promise = fetch(`data/fulltext/${encodeURIComponent(id)}.txt`)
+    .then((res) => (res.ok ? res.text() : null))
+    .then((raw) => (raw ? parseFulltext(raw) : null))
+    .catch(() => null);
+  _fulltextCache.set(id, promise);
+  return promise;
+}
+
+function findSnippetOffset(fullText, snippet) {
+  const stripped = snippet.replace(/\s+/g, "");
+  const candidates = [snippet, stripped];
+  for (const cand of candidates) {
+    if (!cand) continue;
+    const idx = fullText.indexOf(cand);
+    if (idx !== -1) return { offset: idx, len: cand.length };
+  }
+  // Snippet may be truncated right at an arbitrary character by FoJin -
+  // a middle slice avoids that truncation boundary.
+  if (stripped.length > 40) {
+    const mid = stripped.slice(10, 40);
+    const idx = fullText.indexOf(mid);
+    if (idx !== -1) return { offset: idx, len: mid.length };
+  }
+  return null;
+}
+
+async function buildHitLink(h) {
+  const base = h.dhamma_lineage_id ? `reader.html?id=${encodeURIComponent(h.dhamma_lineage_id)}` : h.cbeta_url;
+  if (!h.dhamma_lineage_id) return base;
+  const paragraphs = await fetchFulltextParagraphs(h.dhamma_lineage_id);
+  if (!paragraphs) return base;
+  const hit = findSnippetOffset(fullTextOf(paragraphs), h.snippet);
+  if (!hit) return base;
+  return `${base}&off=${hit.offset}&len=${hit.len}`;
+}
+
+async function renderAiTraceResult(data) {
   const result = document.getElementById("aiTraceResult");
   let html = `<div class="ai-synthesis">${renderSynthesisMarkdown(data.synthesis)}</div>`;
 
-  html += `<details class="ai-layer-detail"><summary>查看各层检索到的原始引用（共 ${data.hit_count} 条）</summary>`;
+  html += `<details class="ai-layer-detail" open><summary>查看各层检索到的原始引用（共 ${data.hit_count} 条）</summary>`;
   const keys = [...LAYER_ORDER.map(String), "found_but_unclassified", "unmatched"];
+  const allHits = [];
   for (const key of keys) {
     const hits = data.layers[key] || [];
     if (hits.length === 0) continue;
-    html += `<div class="ai-layer-block"><h4>${AI_LAYER_LABELS[key] || key}（${hits.length}）</h4><ul class="ai-hit-list">`;
-    for (const h of hits) {
-      const link = h.dhamma_lineage_id
-        ? `reader.html?id=${encodeURIComponent(h.dhamma_lineage_id)}`
-        : h.cbeta_url;
-      const title = link
-        ? `<a href="${link}" target="_blank" rel="noopener">${escapeHtml(h.title)}</a>`
-        : escapeHtml(h.title);
-      html += `<li>${title} <span class="cbeta-id">${escapeHtml(h.cbeta_id)}</span><br>
-        <span class="snippet">${escapeHtml(h.snippet).slice(0, 120)}…</span></li>`;
-    }
+    html += `<div class="ai-layer-block" data-layer-key="${key}"><h4>${AI_LAYER_LABELS[key] || key}（${hits.length}）</h4><ul class="ai-hit-list">`;
+    hits.forEach((h, i) => {
+      const hitId = `ai-hit-${key}-${i}`;
+      allHits.push({ hitId, h });
+      html += `<li id="${hitId}"><a class="hit-link" href="#" target="_blank" rel="noopener">${escapeHtml(h.title)}</a> <span class="cbeta-id">${escapeHtml(h.cbeta_id)}</span>${h.juan_num ? `<span class="juan">卷${h.juan_num}</span>` : ""}<br>
+        <mark class="snippet">${escapeHtml(h.snippet)}</mark></li>`;
+    });
     html += `</ul></div>`;
   }
   html += `</details>`;
 
   result.innerHTML = html;
+
+  // Resolve precise jump-to-highlight links in the background - the list
+  // is fully usable (plain links) before these resolve.
+  await Promise.all(
+    allHits.map(async ({ hitId, h }) => {
+      const link = await buildHitLink(h);
+      const a = document.querySelector(`#${hitId} .hit-link`);
+      if (a && link) a.href = link;
+    })
+  );
 }
 
 document.addEventListener("DOMContentLoaded", renderAiTraceEntry);

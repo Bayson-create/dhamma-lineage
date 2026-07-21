@@ -130,4 +130,15 @@
 .ai-hit-list a { color: var(--accent); text-decoration: none; font-weight: 600; }
 .ai-hit-list a:hover { text-decoration: underline; }
 .ai-hit-list .cbeta-id { color: var(--muted); font-size: .8rem; }
-.ai-hit-list .snippet { display: block; color: var(--muted); font-size: .85rem; margin-top: .15rem; }
+.ai-hit-list .juan { color: var(--muted); font-size: .8rem; margin-left: .4rem; }
+.ai-hit-list mark.snippet {
+  display: block;
+  background: #f4e9dd;
+  color: var(--ink);
+  font-size: .85rem;
+  margin-top: .3rem;
+  padding: .4rem .6rem;
+  border-left: 3px solid var(--accent);
+  border-radius: 2px;
+  line-height: 1.55;
+}

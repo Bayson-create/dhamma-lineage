@@ -1,0 +1,91 @@
+/* Redesigned homepage - a colored band per historical layer with
+ * representative-text cards, replacing the old plain accordion list.
+ * Layer accent colors are distinct per band (unlike the rest of the site's
+ * single --accent) to make the eight-layer progression legible at a
+ * glance, per the reference design. */
+
+:root {
+  --l1: #a33b2e; --l1-bg: #fbeeec;
+  --l2: #c07a2e; --l2-bg: #fcf1e6;
+  --l3: #4a7c4e; --l3-bg: #eef4ee;
+  --l4: #2f8a7a; --l4-bg: #e9f5f2;
+  --l5: #3f6fa3; --l5-bg: #eaf1f8;
+  --l6: #7c5aa3; --l6-bg: #f2eef8;
+  --l7: #8a4d7e; --l7-bg: #f6eef4;
+  --l8: #a8783a; --l8-bg: #f9f1e6;
+}
+
+.home-layers { display: flex; flex-direction: column; gap: 1rem; margin: 1.5rem 0; }
+
+.home-band {
+  display: flex;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fff;
+}
+.home-band-label {
+  flex: 0 0 130px;
+  color: #fff;
+  padding: 1rem .8rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  font-weight: bold;
+  gap: .2rem;
+}
+.home-band-label .layer-num { font-size: .95rem; opacity: .9; }
+.home-band-label .layer-short { font-size: 1.05rem; }
+
+.home-band-body { flex: 1; padding: 1rem 1.2rem; }
+.home-band-head { display: flex; align-items: baseline; gap: .7rem; flex-wrap: wrap; margin-bottom: .6rem; }
+.home-band-title { font-size: 1.1rem; font-weight: bold; margin: 0; }
+.home-band-tagline { color: var(--muted); font-size: .88rem; margin: 0; }
+.home-band-empty { color: var(--muted); font-size: .9rem; }
+
+.home-cardgroup-label {
+  font-size: .82rem;
+  color: var(--muted);
+  margin: .6rem 0 .3rem;
+  font-weight: bold;
+}
+.home-cardgroup-label:first-child { margin-top: 0; }
+
+.home-cards { display: flex; flex-wrap: wrap; gap: .5rem; }
+.home-card-pair {
+  display: flex;
+  gap: .5rem;
+  border: 1px dashed var(--line);
+  border-radius: 8px;
+  padding: .4rem;
+}
+.home-card {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: .5rem .7rem;
+  background: var(--card-bg, #fffaf2);
+  cursor: pointer;
+  font-size: .9rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .2rem;
+  min-width: 88px;
+  text-align: center;
+  transition: transform .1s;
+}
+.home-card:hover { transform: translateY(-2px); border-color: var(--card-accent, var(--accent)); }
+.home-card .card-count { font-size: .72rem; color: var(--muted); }
+.home-card.other { opacity: .8; font-style: italic; }
+.home-card.empty { opacity: .45; cursor: default; }
+.home-card.empty:hover { transform: none; }
+
+.home-drilldown {
+  margin-top: .8rem;
+  border-top: 1px solid var(--line);
+  padding-top: .7rem;
+}
+.home-drilldown h5 { margin: 0 0 .4rem; font-size: .95rem; }
+.home-drilldown .text-list { column-width: 220px; }
+.home-drilldown-close { float: right; background: none; border: none; color: var(--muted); cursor: pointer; font-size: .85rem; }
