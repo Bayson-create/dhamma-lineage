@@ -63,3 +63,71 @@
 .trace-hits .author { color: var(--muted); font-size: .8rem; margin-left: .5rem; }
 .trace-hits .snippet { display: block; color: var(--muted); font-size: .88rem; margin-top: .2rem; }
 .trace-hits .more { color: var(--muted); font-size: .85rem; font-style: italic; }
+
+/* AI 语义综合溯源 - deliberately styled distinctly (different accent tone,
+ * clear "实验性" badge) from the exact-match trace results above it, so
+ * the two are never visually confused. */
+.ai-trace-section {
+  max-width: 800px;
+  margin: 2.5rem auto 1.5rem;
+  padding: 0 1.5rem;
+  border-top: 2px dashed var(--line);
+  padding-top: 1.5rem;
+}
+.ai-trace-header h2 { font-size: 1.15rem; margin-bottom: .3rem; }
+.experimental-badge {
+  font-size: .7rem;
+  font-weight: normal;
+  color: #6b4fa0;
+  border: 1px solid #6b4fa0;
+  border-radius: 999px;
+  padding: .1rem .5rem;
+  margin-left: .4rem;
+  vertical-align: middle;
+}
+.ai-trace-note {
+  color: var(--muted);
+  font-size: .85rem;
+  background: #f7f4fb;
+  border: 1px solid #e3daf0;
+  border-radius: 8px;
+  padding: .8rem 1rem;
+}
+.ai-trace-btn {
+  padding: .6rem 1.2rem;
+  border: none;
+  border-radius: 999px;
+  background: #6b4fa0;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+}
+.ai-trace-btn:disabled { opacity: .6; cursor: default; }
+.ai-trace-status { color: var(--muted); font-size: .9rem; }
+.ai-trace-status.error { color: #b3341c; }
+.ai-trace-status a { color: #6b4fa0; }
+
+.ai-synthesis {
+  background: #f7f4fb;
+  border: 1px solid #e3daf0;
+  border-left: 6px solid #6b4fa0;
+  border-radius: 8px;
+  padding: 1rem 1.2rem;
+  margin-top: .8rem;
+}
+.ai-synthesis h3, .ai-synthesis h4, .ai-synthesis h5 { color: #6b4fa0; margin: 1rem 0 .4rem; }
+.ai-synthesis h3:first-child, .ai-synthesis h4:first-child { margin-top: 0; }
+.ai-synthesis p { margin: .5rem 0; }
+.ai-synthesis ul { margin: .3rem 0; padding-left: 1.4rem; }
+
+.ai-layer-detail { margin-top: 1rem; font-size: .9rem; }
+.ai-layer-detail summary { cursor: pointer; color: var(--muted); }
+.ai-layer-block { margin: .8rem 0; }
+.ai-layer-block h4 { font-size: .95rem; margin-bottom: .3rem; }
+.ai-hit-list { list-style: none; margin: 0; padding: 0; }
+.ai-hit-list li { padding: .4rem 0; border-top: 1px solid var(--line); }
+.ai-hit-list li:first-child { border-top: none; }
+.ai-hit-list a { color: var(--accent); text-decoration: none; font-weight: 600; }
+.ai-hit-list a:hover { text-decoration: underline; }
+.ai-hit-list .cbeta-id { color: var(--muted); font-size: .8rem; }
+.ai-hit-list .snippet { display: block; color: var(--muted); font-size: .85rem; margin-top: .15rem; }

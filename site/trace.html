@@ -24,6 +24,19 @@
 
 <main id="traceResult"></main>
 
+<section class="ai-trace-section">
+  <div class="ai-trace-header">
+    <h2>AI 语义综合溯源 <span class="experimental-badge">实验性</span></h2>
+    <p class="ai-trace-note">
+      以上是逐字/近似字面证据链，不做语义联想。下面这部分不同：调用外部语义检索服务，
+      并请 AI 阅读各层检索结果后给出跨层综合分析——它可能找到字面完全不同、但含义相关的段落，
+      也可能对文献间的演变关系给出解读。<b>这部分是 AI 生成的判断，不是本页原有的证据链，请自行核实引用是否准确。</b>
+      需要登录才能使用，新账号有 10 元免费额度。
+    </p>
+  </div>
+  <div id="aiTraceBody"></div>
+</section>
+
 <footer>
   <p>检索基于字符子串匹配，不做语义联想；查无结果不代表"史上从无此说"，只代表当前 CBETA 语料的精确文字层面未检索到。</p>
   <details class="copyright-panel">
@@ -41,6 +54,8 @@
 <script src="doctext.js"></script>
 <script src="collapsible.js"></script>
 <script src="fulltext-search.js"></script>
+<script src="auth.js"></script>
 <script src="trace.js"></script>
+<script src="ai-trace.js"></script>
 </body>
 </html>

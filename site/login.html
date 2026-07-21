@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>登录 · 法义溯源</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="account.css">
+</head>
+<body>
+<header>
+  <h1>法义溯源 <span class="sub">Dhamma Lineage</span></h1>
+  <p class="tagline">登录后可使用 AI 语义综合溯源功能。账号与 Sutta Study Guide 共用。</p>
+</header>
+
+<main class="account-main">
+  <div class="account-card">
+    <div class="tabs">
+      <button id="tabLogin" class="tab active">登录</button>
+      <button id="tabRegister" class="tab">注册新账号</button>
+    </div>
+
+    <form id="loginForm" class="account-form">
+      <label>邮箱<input id="loginEmail" type="email" required></label>
+      <label>密码<input id="loginPassword" type="password" required minlength="8"></label>
+      <button type="submit">登录</button>
+      <p id="loginMsg" class="form-msg"></p>
+    </form>
+
+    <form id="registerForm" class="account-form" hidden>
+      <label>邮箱<input id="registerEmail" type="email" required></label>
+      <label>昵称<input id="registerName" type="text" required maxlength="100"></label>
+      <label>密码（至少8位）<input id="registerPassword" type="password" required minlength="8"></label>
+      <button type="submit">注册</button>
+      <p id="registerMsg" class="form-msg"></p>
+    </form>
+
+    <p class="quota-note">新账号默认获得 10 元额度用于 AI 语义综合溯源（按实际 token 用量计费），用完后可联系管理员充值。</p>
+  </div>
+</main>
+
+<footer>
+  <p><a href="index.html">← 返回首页</a></p>
+</footer>
+
+<script src="auth.js"></script>
+<script src="login.js"></script>
+</body>
+</html>
