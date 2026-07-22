@@ -502,9 +502,9 @@
   "canon": "B",
   "vol": "7",
   "no": "20",
-  "layer": 1,
+  "layer": 7,
   "layer_confidence": "medium",
-  "layer_note": "内容属于早期佛教经律或阿含系统，归第1层。"
+  "layer_note": "题名为现代法师（法尊）对《随念三宝经》的口述浅说，属于近现代阐释，非早期经律原典，归第7层"
  },
  {
   "id": "B07n0021",
@@ -32755,9 +32755,9 @@
   "canon": "T",
   "vol": "24",
   "no": "1461",
-  "layer": 1,
+  "layer": 3,
   "layer_confidence": "medium",
-  "layer_note": "题名和来源显示为早期经律、南传尼柯耶/小部或汉译阿含相关文本，归第1层。"
+  "layer_note": "律二十二明了论，有名论主所造之律学论书体裁，非律典本身，归第3层"
  },
  {
   "id": "T24n1462",
@@ -33093,9 +33093,9 @@
   "canon": "T",
   "vol": "24",
   "no": "1485",
-  "layer": 1,
+  "layer": 5,
   "layer_confidence": "medium",
-  "layer_note": "内容属于早期佛教经律或阿含系统，归第1层。"
+  "layer_note": "菩萨璎珞本业经，大乘菩萨阶位根本经典，非早期经律，归第5层"
  },
  {
   "id": "T24n1486",
@@ -33119,9 +33119,9 @@
   "canon": "T",
   "vol": "24",
   "no": "1487",
-  "layer": 1,
+  "layer": 5,
   "layer_confidence": "medium",
-  "layer_note": "内容属于早期佛教经律或阿含系统，归第1层。"
+  "layer_note": "菩萨内戒经，大乘菩萨戒经典，非早期经律，归第5层"
  },
  {
   "id": "T24n1488",
@@ -33171,9 +33171,9 @@
   "canon": "T",
   "vol": "24",
   "no": "1491",
-  "layer": 1,
+  "layer": 5,
   "layer_confidence": "medium",
-  "layer_note": "内容属于早期佛教经律或阿含系统，归第1层。"
+  "layer_note": "菩萨藏经，题名本身即为「菩萨藏」（与声闻藏相对），大乘经典，归第5层"
  },
  {
   "id": "T24n1492",
@@ -33197,9 +33197,9 @@
   "canon": "T",
   "vol": "24",
   "no": "1493",
-  "layer": 1,
+  "layer": 5,
   "layer_confidence": "medium",
-  "layer_note": "内容属于早期佛教经律或阿含系统，归第1层。"
+  "layer_note": "题名含「大乘」二字，大乘忏悔经典，归第5层"
  },
  {
   "id": "T24n1494",
@@ -33249,9 +33249,9 @@
   "canon": "T",
   "vol": "24",
   "no": "1497",
-  "layer": 1,
+  "layer": 5,
   "layer_confidence": "medium",
-  "layer_note": "内容属于早期佛教经律或阿含系统，归第1层。"
+  "layer_note": "题名含「大乘戒经」，大乘经典，归第5层"
  },
  {
   "id": "T24n1498",
@@ -33275,9 +33275,9 @@
   "canon": "T",
   "vol": "24",
   "no": "1499",
-  "layer": 1,
+  "layer": 5,
   "layer_confidence": "medium",
-  "layer_note": "内容属于早期佛教经律或阿含系统，归第1层。"
+  "layer_note": "菩萨戒羯磨文，弥勒菩萨说、玄奘译，大乘菩萨戒仪轨，归第5层"
  },
  {
   "id": "T24n1500",
@@ -33288,9 +33288,9 @@
   "canon": "T",
   "vol": "24",
   "no": "1500",
-  "layer": 1,
+  "layer": 5,
   "layer_confidence": "medium",
-  "layer_note": "内容属于早期佛教经律或阿含系统，归第1层。"
+  "layer_note": "菩萨戒本（昙无谶译），大乘菩萨戒本，归第5层"
  },
  {
   "id": "T24n1501",
@@ -33301,9 +33301,9 @@
   "canon": "T",
   "vol": "24",
   "no": "1501",
-  "layer": 1,
+  "layer": 5,
   "layer_confidence": "medium",
-  "layer_note": "内容属于早期佛教经律或阿含系统，归第1层。"
+  "layer_note": "菩萨戒本（玄奘译），大乘菩萨戒本，归第5层"
  },
  {
   "id": "T24n1502",
@@ -33314,9 +33314,9 @@
   "canon": "T",
   "vol": "24",
   "no": "1502",
-  "layer": 1,
+  "layer": 5,
   "layer_confidence": "medium",
-  "layer_note": "内容属于早期佛教经律或阿含系统，归第1层。"
+  "layer_note": "菩萨受斋经，大乘菩萨戒相关经典，归第5层"
  },
  {
   "id": "T24n1503",
@@ -33340,9 +33340,9 @@
   "canon": "T",
   "vol": "24",
   "no": "1504",
-  "layer": 1,
+  "layer": 5,
   "layer_confidence": "medium",
-  "layer_note": "内容属于早期佛教经律或阿含系统，归第1层。"
+  "layer_note": "菩萨五法忏悔文，大乘菩萨忏悔仪轨，归第5层"
  },
  {
   "id": "T25n1505",
@@ -33366,9 +33366,9 @@
   "canon": "T",
   "vol": "25",
   "no": "1506",
-  "layer": 1,
+  "layer": 3,
   "layer_confidence": "medium",
-  "layer_note": "内容属于早期佛教经律或阿含系统，归第1层。"
+  "layer_note": "三法度论，部派论书体裁（僧伽提婆译，说一切有部相关），非经律本身，归第3层"
  },
  {
   "id": "T25n1507",
@@ -33379,9 +33379,9 @@
   "canon": "T",
   "vol": "25",
   "no": "1507",
-  "layer": 1,
+  "layer": 2,
   "layer_confidence": "medium",
-  "layer_note": "内容属于早期佛教经律或阿含系统，归第1层。"
+  "layer_note": "分别功德论，注解《增一阿含经》之注疏体裁，非经文本身，归第2层"
  },
  {
   "id": "T25n1508",
@@ -44650,9 +44650,9 @@
   "canon": "T",
   "vol": "85",
   "no": "2902",
-  "layer": 1,
+  "layer": 2,
   "layer_confidence": "medium",
-  "layer_note": "题名和来源显示为早期经律、南传尼柯耶/小部或汉译阿含相关文本，归第1层。"
+  "layer_note": "《法句经》疏，注疏体裁而非经文本身，归第2层"
  },
  {
   "id": "T85n2903",
