@@ -12,6 +12,21 @@
   },
   "_text_overrides_readme": "Per-document corrections, keyed by CBETA id (the xml filename without extension, e.g. 'T30n1564'). Checked BEFORE any canon/volume rule, so this is the mechanism for fixing one specific text without touching the broader canon/volume rule that everything else in that range still relies on. Use this for texts the canon/volume rules get wrong, or for texts from an otherwise-unmapped canon (A/C/K/L/P/S/U/GA/GB/D/ZS/...) that are worth surfacing individually rather than leaving null.",
   "text_overrides": {
+    "N67n0035": {
+      "layer": 2,
+      "confidence": "high",
+      "note": "清淨道論第1至第7卷，与 V4 清净道论归入第2层注疏/复注。"
+    },
+    "N68n0035": {
+      "layer": 2,
+      "confidence": "high",
+      "note": "清淨道論第8至第13卷，与 V4 清净道论归入第2层注疏/复注。"
+    },
+    "N69n0035": {
+      "layer": 2,
+      "confidence": "high",
+      "note": "清淨道論第14至第23卷，与 V4 清净道论归入第2层注疏/复注。"
+    },
     "A091n1057": {
       "layer": null,
       "confidence": "high",

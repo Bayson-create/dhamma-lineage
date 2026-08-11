@@ -116,15 +116,18 @@ async function runFullTextSearch(q) {
     if (mySeq !== searchSeq) return;
     if (err.code === "NO_INFORMATIVE_TERMS") {
       box.innerHTML = `<p class="fulltext-status">"${escapeHtml(q)}"里没有可用于检索的常见词组，换个说法试试。</p>`;
+      if (window.V4LineageSearch) window.V4LineageSearch.renderInto(q, box);
       return;
     }
-    box.innerHTML = `<p class="fulltext-status">正文检索出错：${escapeHtml(String(err))}</p>`;
+    box.innerHTML = `<p class="fulltext-status">CBETA 正文暂时不可用：${escapeHtml(String(err))}</p>`;
+    if (window.V4LineageSearch) window.V4LineageSearch.renderInto(q, box);
     return;
   }
   if (mySeq !== searchSeq) return; // a newer keystroke superseded this search
 
   if (results.length === 0) {
-    box.innerHTML = `<p class="fulltext-status">正文中未检索到与"${escapeHtml(q)}"相关的内容。</p>`;
+    box.innerHTML = `<p class="fulltext-status">CBETA 正文中未检索到与"${escapeHtml(q)}"相关的内容。</p>`;
+    if (window.V4LineageSearch) window.V4LineageSearch.renderInto(q, box);
     return;
   }
 
@@ -159,6 +162,7 @@ async function runFullTextSearch(q) {
     html += `<div class="fulltext-group"><h3>${label}（${items.length}）</h3><ul class="fulltext-list">${collapsibleItems(docLis, 5, "篇")}</ul></div>`;
   }
   box.innerHTML = html;
+  if (window.V4LineageSearch) window.V4LineageSearch.renderInto(q, box);
 }
 
 function escapeHtml(s) {

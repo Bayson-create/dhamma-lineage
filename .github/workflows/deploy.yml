@@ -7,6 +7,7 @@ on:
       - "site/**"
       - "scripts/**"
       - "data/layer_mapping.json"
+      - "data/v4_layer_mapping.json"
       - ".github/workflows/deploy.yml"
   workflow_dispatch: {}
 
@@ -37,6 +38,12 @@ jobs:
 
       - name: Build full-text search index
         run: python3 scripts/build_search_index.py --df-ceiling 0.35 --buckets 256
+
+      - name: Build light V4 lineage catalog
+        run: python3 scripts/build_v4_lineage_index.py \
+          --catalog-url https://suttastudyguidestor.blob.core.windows.net/tipitaka-public/tipitaka/v1/catalog/works.json \
+          --mapping data/v4_layer_mapping.json \
+          --output site/data/v4-lineage-index.json
 
       - name: Assemble site data
         run: |

@@ -119,6 +119,27 @@ footer a { color: var(--accent); }
   font-size: .88rem;
   text-decoration: none;
 }
+
+/* V4 source cards share the warm, restrained visual language of the lineage
+   page while clearly separating immutable three-language evidence from the
+   local CBETA corpus. */
+.v4-lineage-results { margin: 1rem auto; max-width: 960px; }
+.v4-lineage-heading { color: var(--accent); font-size: 1.05rem; font-weight: 700; margin-bottom: .6rem; }
+.v4-lineage-heading span, .v4-lineage-heading small { color: var(--muted); font-size: .82rem; font-weight: 400; margin-left: .5rem; }
+.v4-lineage-group { background: #fff; border: 1px solid var(--line); border-left: 5px solid #b1833d; border-radius: 12px; padding: .7rem 1rem; margin: .65rem 0; box-shadow: 0 4px 14px rgba(75, 46, 20, .06); }
+.v4-lineage-group h3 { margin: 0 0 .35rem; color: var(--ink); font-size: .98rem; }
+.v4-lineage-group h3 small { color: var(--muted); font-size: .8rem; font-weight: 400; }
+.v4-lineage-group ul { list-style: none; padding: 0; margin: 0; }
+.v4-lineage-group li { border-top: 1px solid var(--line); padding: .5rem 0; }
+.v4-lineage-group li:first-child { border-top: 0; }
+.v4-lineage-group a { color: var(--accent); text-decoration: none; }
+.v4-lineage-group a:hover { text-decoration: underline; }
+.v4-lineage-group li > span { display: block; color: var(--muted); font-size: .8rem; }
+.v4-lineage-group p { margin: .2rem 0 0; color: var(--ink); font-size: .9rem; }
+.v4-lineage-group mark { background: #f5e2a5; color: inherit; padding: .05rem .15rem; }
+.v4-lineage-next { border: 1px solid var(--line); background: #fffaf2; border-radius: 999px; color: var(--accent); padding: .45rem .9rem; cursor: pointer; }
+.v4-lineage-loading, .v4-lineage-error { color: var(--muted); padding: .7rem 0; }
+@media (max-width: 600px) { .v4-lineage-results { margin: .8rem 0; } .v4-lineage-group { border-radius: 9px; padding: .6rem .75rem; } }
 .match-positions a:hover { color: var(--accent); text-decoration: underline; }
 .match-positions a mark, .match-positions a b.hl { color: var(--accent); font-weight: 600; }
 

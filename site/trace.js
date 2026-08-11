@@ -115,6 +115,7 @@ async function runTrace(query) {
   }
   html += `</ol>`;
   box.innerHTML = html;
+  if (window.V4LineageSearch) window.V4LineageSearch.renderInto(q, box);
 }
 
 document.getElementById("traceBtn").addEventListener("click", () => {

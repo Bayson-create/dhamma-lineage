@@ -1,0 +1,18 @@
+{
+  "version": "v1",
+  "source": "https://suttastudyguidestor.blob.core.windows.net/tipitaka-public/tipitaka/v1/catalog/works.json",
+  "reader_base": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/",
+  "root_rules": {
+    "三藏经文 Tipiṭaka Mūla": 1,
+    "义注 Aṭṭhakathā": 2,
+    "复注 Ṭīkā": 2
+  },
+  "work_overrides": {
+    "e0101n_mul": 2,
+    "e0102n_mul": 2,
+    "e0103n_att": 4,
+    "e0104n_att": 4,
+    "e0105n_nrf": 4
+  },
+  "excluded_root": "藏外典籍 Añña"
+}
