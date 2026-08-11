@@ -1,9 +1,19 @@
 let INDEX = [];
+let INDEX_BY_ID_MAP = null;
+let LAYER_CARDS = null;
+
+const LAYER_TAGLINES = {
+  1: "佛陀亲说，最原始的教法记录",
+  2: "对早期经典的注释与复注，阐释经义",
+  8: "依止前人教法，弘扬佛法，利益众生",
+};
 
 async function loadIndex() {
-  const res = await fetch("data/index.json");
-  INDEX = await res.json();
-  render(INDEX);
+  const [indexRes, cardsRes] = await Promise.all([fetch("data/index.json"), fetch("data/layer_cards.json")]);
+  INDEX = await indexRes.json();
+  INDEX_BY_ID_MAP = new Map(INDEX.map((r) => [r.id, r]));
+  LAYER_CARDS = await cardsRes.json();
+  renderHome();
 }
 
 function groupByLayer(records) {
@@ -15,15 +25,173 @@ function groupByLayer(records) {
   return groups;
 }
 
-function render(records) {
+/* ---- Default homepage view: colored per-layer bands with curated
+ * representative-text cards (see scripts/build_layer_cards.py). ---- */
+
+function renderCard(card, accentVar) {
+  const empty = card.count === 0;
+  const cls = ["home-card", card.id === "other" ? "other" : "", empty ? "empty" : ""].filter(Boolean).join(" ");
+  const el = document.createElement("div");
+  el.className = cls;
+  el.style.setProperty("--card-accent", `var(${accentVar})`);
+  el.innerHTML = `<span>${card.label}</span><span class="card-count">${card.count} 篇</span>`;
+  if (!empty) el.addEventListener("click", () => toggleDrilldown(el, card));
+  return el;
+}
+
+function toggleDrilldown(cardEl, card) {
+  const body = cardEl.closest(".home-band-body");
+  const existing = body.querySelector(".home-drilldown");
+  const already = existing && existing.dataset.cardId === card.id;
+  if (existing) existing.remove();
+  if (already) return;
+
+  const panel = document.createElement("div");
+  panel.className = "home-drilldown";
+  panel.dataset.cardId = card.id;
+  const items = card.ids
+    .map((id) => INDEX_BY_ID_MAP.get(id))
+    .filter(Boolean)
+    .sort((a, b) => (a.title || "").localeCompare(b.title || "", "zh-Hans-CN"));
+  const listHtml = items
+    .map((r) => `<li><a href="reader.html?id=${encodeURIComponent(r.id)}">${r.title || r.id}</a></li>`)
+    .join("");
+  panel.innerHTML = `<button class="home-drilldown-close">收起 ✕</button><h5>${card.label}（${items.length} 篇）</h5><ul class="text-list">${listHtml}</ul>`;
+  panel.querySelector(".home-drilldown-close").addEventListener("click", () => panel.remove());
+  body.appendChild(panel);
+}
+
+// 清淨道論 draws on layer-1/2 material more than anything else in this
+// layer (closer to a "3.5th layer" bridge text), so it leads; the rest of
+// what would otherwise be the plain script.py.mako order follows.
+const LAYER4_ORDER = ["visuddhimagga", "vimuttimagga", "abhidhammattha", "mahavibhasa", "kosa", "nyayanusara", "other"];
+
+// 中論 and 大智度論 are both traditionally tied to Nagarjuna's circle, so
+// they're grouped in one bordered pair rather than shown as two separate
+// standalone cards.
+const PAIRED_CARD_IDS = new Set(["madhyamaka_base", "mahaprajnaparamita_sastra"]);
+
+function renderLayerCards(layer, accentVar) {
+  let cards = LAYER_CARDS[String(layer)];
+  if (!cards) return null;
+  if (layer === 4) {
+    const byId = Object.fromEntries(cards.map((c) => [c.id, c]));
+    cards = LAYER4_ORDER.map((id) => byId[id]).filter(Boolean);
+  }
+
+  const wrap = document.createElement("div");
+  const groups = new Map();
+  for (const c of cards) {
+    const key = c.group || "__default__";
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(c);
+  }
+
+  for (const [groupLabel, groupCards] of groups) {
+    if (groupLabel !== "__default__") {
+      const label = document.createElement("div");
+      label.className = "home-cardgroup-label";
+      label.textContent = groupLabel;
+      wrap.appendChild(label);
+    }
+    const row = document.createElement("div");
+    row.className = "home-cards";
+    let i = 0;
+    while (i < groupCards.length) {
+      const c = groupCards[i];
+      if (PAIRED_CARD_IDS.has(c.id) && i + 1 < groupCards.length && PAIRED_CARD_IDS.has(groupCards[i + 1].id)) {
+        const pair = document.createElement("div");
+        pair.className = "home-card-pair";
+        pair.appendChild(renderCard(c, accentVar));
+        pair.appendChild(renderCard(groupCards[i + 1], accentVar));
+        row.appendChild(pair);
+        i += 2;
+      } else {
+        row.appendChild(renderCard(c, accentVar));
+        i += 1;
+      }
+    }
+    wrap.appendChild(row);
+  }
+  return wrap;
+}
+
+function renderHome() {
   const main = document.getElementById("layers");
   main.innerHTML = "";
+  main.className = "home-layers";
+  const groups = groupByLayer(INDEX);
+
+  for (const layer of LAYER_ORDER) {
+    const items = groups[layer];
+    const accentVar = `--l${layer}`;
+    const bgVar = `--l${layer}-bg`;
+
+    const band = document.createElement("div");
+    band.className = "home-band";
+
+    const label = document.createElement("div");
+    label.className = "home-band-label";
+    label.style.background = `var(${accentVar})`;
+    const [num, short] = (LAYER_NAMES[layer] || "").split(" · ");
+    label.innerHTML = `<span class="layer-num">${num}</span><span class="layer-short">${short || ""}</span>`;
+    band.appendChild(label);
+
+    const body = document.createElement("div");
+    body.className = "home-band-body";
+    body.style.background = `var(${bgVar})`;
+
+    const head = document.createElement("div");
+    head.className = "home-band-head";
+    head.innerHTML = `<span class="card-count">${items.length} 篇</span>`;
+    if (LAYER_TAGLINES[layer]) {
+      const tag = document.createElement("p");
+      tag.className = "home-band-tagline";
+      tag.textContent = LAYER_TAGLINES[layer];
+      head.appendChild(tag);
+    }
+    body.appendChild(head);
+
+    if (items.length === 0) {
+      const empty = document.createElement("p");
+      empty.className = "home-band-empty";
+      empty.textContent = "（空白 — 当前语料中未检索到归属此层的文本）";
+      body.appendChild(empty);
+    } else {
+      const cardsEl = renderLayerCards(layer, accentVar);
+      if (cardsEl) {
+        body.appendChild(cardsEl);
+      } else {
+        // Layers 1, 2, 8 have no curated sub-categories in the reference
+        // design - just a single entry point into the full list.
+        const row = document.createElement("div");
+        row.className = "home-cards";
+        row.appendChild(
+          renderCard({ id: "all", label: "浏览全部", count: items.length, ids: items.map((r) => r.id) }, accentVar)
+        );
+        body.appendChild(row);
+      }
+    }
+
+    band.appendChild(body);
+    main.appendChild(band);
+  }
+}
+
+/* ---- Search-filtered view: falls back to a plain accordion list (the
+ * card layout is curated for the full corpus, not meaningful to filter
+ * down to arbitrary title/author matches). ---- */
+
+function renderFiltered(records) {
+  const main = document.getElementById("layers");
+  main.innerHTML = "";
+  main.className = "";
   const groups = groupByLayer(records);
 
   for (const layer of LAYER_ORDER) {
     const items = groups[layer];
     const block = document.createElement("div");
-    block.className = "layer-block";
+    block.className = "layer-block open";
 
     const header = document.createElement("div");
     header.className = "layer-header";
@@ -34,7 +202,7 @@ function render(records) {
     body.className = "layer-body";
 
     if (items.length === 0) {
-      body.innerHTML = `<p class="empty">（空白 — 当前语料中未检索到归属此层的文本）</p>`;
+      body.innerHTML = `<p class="empty">（无匹配）</p>`;
     } else {
       const ul = document.createElement("ul");
       ul.className = "text-list";
@@ -62,7 +230,7 @@ document.getElementById("searchInput").addEventListener("input", (e) => {
   const fulltextBox = document.getElementById("fulltextResults");
 
   if (!q) {
-    render(INDEX);
+    renderHome();
     fulltextBox.hidden = true;
     fulltextBox.innerHTML = "";
     return;
@@ -75,10 +243,7 @@ document.getElementById("searchInput").addEventListener("input", (e) => {
   const filtered = INDEX.filter(
     (r) => (r.title || "").includes(qTrad) || (r.author || "").includes(qTrad)
   );
-  render(filtered);
-  document.querySelectorAll(".layer-block").forEach((b) => {
-    if (b.querySelector(".text-list")) b.classList.add("open");
-  });
+  renderFiltered(filtered);
 
   if (q.length >= 2) runFullTextSearch(q);
   else {
