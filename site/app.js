@@ -91,7 +91,7 @@ function toggleDrilldown(cardEl, card) {
 // 清淨道論 draws on layer-1/2 material more than anything else in this
 // layer (closer to a "3.5th layer" bridge text), so it leads; the rest of
 // what would otherwise be the plain script.py.mako order follows.
-const LAYER4_ORDER = ["visuddhimagga", "vimuttimagga", "abhidhammattha", "mahavibhasa", "kosa", "nyayanusara", "other"];
+const LAYER4_ORDER = ["vimuttimagga", "abhidhammattha", "mahavibhasa", "kosa", "nyayanusara", "other"];
 
 // 中論 and 大智度論 are both traditionally tied to Nagarjuna's circle, so
 // they're grouped in one bordered pair rather than shown as two separate

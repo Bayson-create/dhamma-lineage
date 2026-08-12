@@ -26,7 +26,6 @@ LAYER_CARD_DEFS = {
         ("sarvastivada7", "说一切有部七论", ["集異門", "法蘊", "識身", "界身", "品類", "發智", "施設", "阿毗曇", "阿毘曇"], None),
     ],
     4: [
-        ("visuddhimagga", "清淨道論", ["清淨道"], None),
         ("vimuttimagga", "解脫道論", ["解脫道"], None),
         ("abhidhammattha", "攝阿毗達磨義論", ["攝阿毘達磨義", "阿毗達摩攝義", "阿毘達摩攝義"], None),
         ("mahavibhasa", "大毗婆沙論", ["大毘婆沙", "鞞婆沙", "阿毘曇毘婆沙"], None),
