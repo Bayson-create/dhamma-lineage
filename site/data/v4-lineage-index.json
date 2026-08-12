@@ -1,0 +1,1960 @@
+{
+  "version": "v1",
+  "source": "https://suttastudyguidestor.blob.core.windows.net/tipitaka-public/tipitaka/v1/catalog/works.json",
+  "counts": {
+    "1": 61,
+    "2": 90,
+    "4": 3
+  },
+  "works": [
+    {
+      "work_id": "vin01m_mul",
+      "title": "波罗夷 Pārājikapāḷi",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "律藏 Vinayapiṭaka"
+      ],
+      "row_count": 2408,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/vin01m_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "vin02m1_mul",
+      "title": "波逸提 Pācittiyapāḷi",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "律藏 Vinayapiṭaka"
+      ],
+      "row_count": 3672,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/vin02m1_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "vin02m2_mul",
+      "title": "大品（律藏） Mahāvaggapāḷi(Vinaya)",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "律藏 Vinayapiṭaka"
+      ],
+      "row_count": 2376,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/vin02m2_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "vin02m3_mul",
+      "title": "小品 Cūḷavaggapāḷi",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "律藏 Vinayapiṭaka"
+      ],
+      "row_count": 2469,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/vin02m3_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "vin02m4_mul",
+      "title": "附随 Parivārapāḷi",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "律藏 Vinayapiṭaka"
+      ],
+      "row_count": 2722,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/vin02m4_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0101m_mul",
+      "title": "戒蕴品 Sīlakkhandhavaggapāḷi",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "经藏 Suttapiṭaka",
+        "长部 Dīghanikāya"
+      ],
+      "row_count": 1061,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0101m_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0102m_mul",
+      "title": "大品（长部） Mahāvaggapāḷi(Dīgha)",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "经藏 Suttapiṭaka",
+        "长部 Dīghanikāya"
+      ],
+      "row_count": 1261,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0102m_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0103m_mul",
+      "title": "波梨品 Pāthikavaggapāḷi",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "经藏 Suttapiṭaka",
+        "长部 Dīghanikāya"
+      ],
+      "row_count": 1475,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0103m_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0201m_mul",
+      "title": "根本五十经 Mūlapaṇṇāsapāḷi",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "经藏 Suttapiṭaka",
+        "中部 Majjhimanikāya"
+      ],
+      "row_count": 1730,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0201m_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0202m_mul",
+      "title": "中五十经 Majjhimapaṇṇāsapāḷi",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "经藏 Suttapiṭaka",
+        "中部 Majjhimanikāya"
+      ],
+      "row_count": 1456,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0202m_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0203m_mul",
+      "title": "后五十经 Uparipaṇṇāsapāḷi",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "经藏 Suttapiṭaka",
+        "中部 Majjhimanikāya"
+      ],
+      "row_count": 1323,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0203m_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0301m_mul",
+      "title": "有偈品 Sagāthāvaggapāḷi",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "经藏 Suttapiṭaka",
+        "相应部 Saṃyuttanikāya"
+      ],
+      "row_count": 2062,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0301m_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0302m_mul",
+      "title": "因缘品 Nidānavaggapāḷi",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "经藏 Suttapiṭaka",
+        "相应部 Saṃyuttanikāya"
+      ],
+      "row_count": 1340,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0302m_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0303m_mul",
+      "title": "蕴品 Khandhavaggapāḷi",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "经藏 Suttapiṭaka",
+        "相应部 Saṃyuttanikāya"
+      ],
+      "row_count": 1380,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0303m_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0304m_mul",
+      "title": "六处品 Saḷāyatanavaggapāḷi",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "经藏 Suttapiṭaka",
+        "相应部 Saṃyuttanikāya"
+      ],
+      "row_count": 1832,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0304m_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0305m_mul",
+      "title": "大品（相应部） Mahāvaggapāḷi(Saṃyutta)",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "经藏 Suttapiṭaka",
+        "相应部 Saṃyuttanikāya"
+      ],
+      "row_count": 2688,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0305m_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0401m_mul",
+      "title": "一集 Ekakanipātapāḷi",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "经藏 Suttapiṭaka",
+        "增支部 Aṅguttaranikāya"
+      ],
+      "row_count": 401,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0401m_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0402m1_mul",
+      "title": "二集 Dukanipātapāḷi",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "经藏 Suttapiṭaka",
+        "增支部 Aṅguttaranikāya"
+      ],
+      "row_count": 314,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0402m1_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0402m2_mul",
+      "title": "三集 Tikanipātapāḷi",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "经藏 Suttapiṭaka",
+        "增支部 Aṅguttaranikāya"
+      ],
+      "row_count": 1167,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0402m2_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0402m3_mul",
+      "title": "四集 Catukkanipātapāḷi",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "经藏 Suttapiṭaka",
+        "增支部 Aṅguttaranikāya"
+      ],
+      "row_count": 1645,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0402m3_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0403m1_mul",
+      "title": "五集 Pañcakanipātapāḷi",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "经藏 Suttapiṭaka",
+        "增支部 Aṅguttaranikāya"
+      ],
+      "row_count": 1451,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0403m1_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0403m2_mul",
+      "title": "六集 Chakkanipātapāḷi",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "经藏 Suttapiṭaka",
+        "增支部 Aṅguttaranikāya"
+      ],
+      "row_count": 771,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0403m2_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0403m3_mul",
+      "title": "七集 Sattakanipātapāḷi",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "经藏 Suttapiṭaka",
+        "增支部 Aṅguttaranikāya"
+      ],
+      "row_count": 672,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0403m3_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0404m1_mul",
+      "title": "八集 Aṭṭhakanipātapāḷi",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "经藏 Suttapiṭaka",
+        "增支部 Aṅguttaranikāya"
+      ],
+      "row_count": 862,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0404m1_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0404m2_mul",
+      "title": "九集 Navakanipātapāḷi",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "经藏 Suttapiṭaka",
+        "增支部 Aṅguttaranikāya"
+      ],
+      "row_count": 492,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0404m2_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0404m3_mul",
+      "title": "十集 Dasakanipātapāḷi",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "经藏 Suttapiṭaka",
+        "增支部 Aṅguttaranikāya"
+      ],
+      "row_count": 1538,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0404m3_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0404m4_mul",
+      "title": "十一集 Ekādasakanipātapāḷi",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "经藏 Suttapiṭaka",
+        "增支部 Aṅguttaranikāya"
+      ],
+      "row_count": 238,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0404m4_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0501m_mul",
+      "title": "小诵 Khuddakapāṭhapāḷi",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "经藏 Suttapiṭaka",
+        "小部 Khuddakanikāya"
+      ],
+      "row_count": 185,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0501m_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0502m_mul",
+      "title": "法句 Dhammapadapāḷi",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "经藏 Suttapiṭaka",
+        "小部 Khuddakanikāya"
+      ],
+      "row_count": 919,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0502m_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0503m_mul",
+      "title": "自说 Udānapāḷi",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "经藏 Suttapiṭaka",
+        "小部 Khuddakanikāya"
+      ],
+      "row_count": 735,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0503m_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0504m_mul",
+      "title": "如是语 Itivuttakapāḷi",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "经藏 Suttapiṭaka",
+        "小部 Khuddakanikāya"
+      ],
+      "row_count": 857,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0504m_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0505m_mul",
+      "title": "经集 Suttanipātapāḷi",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "经藏 Suttapiṭaka",
+        "小部 Khuddakanikāya"
+      ],
+      "row_count": 2639,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0505m_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0506m_mul",
+      "title": "天宫事 Vimānavatthupāḷi",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "经藏 Suttapiṭaka",
+        "小部 Khuddakanikāya"
+      ],
+      "row_count": 2317,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0506m_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0507m_mul",
+      "title": "恶鬼事 Petavatthupāḷi",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "经藏 Suttapiṭaka",
+        "小部 Khuddakanikāya"
+      ],
+      "row_count": 1760,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0507m_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0508m_mul",
+      "title": "长老偈 Theragāthāpāḷi",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "经藏 Suttapiṭaka",
+        "小部 Khuddakanikāya"
+      ],
+      "row_count": 3280,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0508m_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0509m_mul",
+      "title": "长老尼偈 Therīgāthāpāḷi",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "经藏 Suttapiṭaka",
+        "小部 Khuddakanikāya"
+      ],
+      "row_count": 1236,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0509m_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0510m1_mul",
+      "title": "长老传-1 Apadānapāḷi-1",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "经藏 Suttapiṭaka",
+        "小部 Khuddakanikāya"
+      ],
+      "row_count": 10480,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0510m1_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0510m2_mul",
+      "title": "长老传-2 Apadānapāḷi-2",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "经藏 Suttapiṭaka",
+        "小部 Khuddakanikāya"
+      ],
+      "row_count": 7671,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0510m2_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0511m_mul",
+      "title": "诸佛史 Buddhavaṃsapāḷi",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "经藏 Suttapiṭaka",
+        "小部 Khuddakanikāya"
+      ],
+      "row_count": 2207,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0511m_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0512m_mul",
+      "title": "所行藏 Cariyāpiṭakapāḷi",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "经藏 Suttapiṭaka",
+        "小部 Khuddakanikāya"
+      ],
+      "row_count": 819,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0512m_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0513m_mul",
+      "title": "本生-1 Jātakapāḷi-1",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "经藏 Suttapiṭaka",
+        "小部 Khuddakanikāya"
+      ],
+      "row_count": 7267,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0513m_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0514m_mul",
+      "title": "本生-2 Jātakapāḷi-2",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "经藏 Suttapiṭaka",
+        "小部 Khuddakanikāya"
+      ],
+      "row_count": 7542,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0514m_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0515m_mul",
+      "title": "大义释 Mahāniddesapāḷi",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "经藏 Suttapiṭaka",
+        "小部 Khuddakanikāya"
+      ],
+      "row_count": 2300,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0515m_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0516m_mul",
+      "title": "小义释 Cūḷaniddesapāḷi",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "经藏 Suttapiṭaka",
+        "小部 Khuddakanikāya"
+      ],
+      "row_count": 1957,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0516m_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0517m_mul",
+      "title": "无碍解道 Paṭisambhidāmaggapāḷi",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "经藏 Suttapiṭaka",
+        "小部 Khuddakanikāya"
+      ],
+      "row_count": 1981,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0517m_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0518m_nrf",
+      "title": "弥兰王问 Milindapañhapāḷi",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "经藏 Suttapiṭaka",
+        "小部 Khuddakanikāya"
+      ],
+      "row_count": 2264,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0518m_nrf",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0519m_mul",
+      "title": "导论 Nettippakaraṇapāḷi",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "经藏 Suttapiṭaka",
+        "小部 Khuddakanikāya"
+      ],
+      "row_count": 1214,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0519m_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0520m_nrf",
+      "title": "藏释 Peṭakopadesapāḷi",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "经藏 Suttapiṭaka",
+        "小部 Khuddakanikāya"
+      ],
+      "row_count": 1012,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0520m_nrf",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "abh01m_mul",
+      "title": "法集论 Dhammasaṅgaṇīpāḷi",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "论藏 Abhidhammapiṭaka"
+      ],
+      "row_count": 2437,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/abh01m_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "abh02m_mul",
+      "title": "分别论 Vibhaṅgapāḷi",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "论藏 Abhidhammapiṭaka"
+      ],
+      "row_count": 3422,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/abh02m_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "abh03m1_mul",
+      "title": "界论 Dhātukathāpāḷi",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "论藏 Abhidhammapiṭaka"
+      ],
+      "row_count": 642,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/abh03m1_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "abh03m2_mul",
+      "title": "人施设论 Puggalapaññattipāḷi",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "论藏 Abhidhammapiṭaka"
+      ],
+      "row_count": 562,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/abh03m2_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "abh03m3_mul",
+      "title": "论事 Kathāvatthupāḷi",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "论藏 Abhidhammapiṭaka"
+      ],
+      "row_count": 3313,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/abh03m3_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "abh03m4_mul",
+      "title": "双论-1 Yamakapāḷi-1",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "论藏 Abhidhammapiṭaka"
+      ],
+      "row_count": 4773,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/abh03m4_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "abh03m5_mul",
+      "title": "双论-2 Yamakapāḷi-2",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "论藏 Abhidhammapiṭaka"
+      ],
+      "row_count": 3860,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/abh03m5_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "abh03m6_mul",
+      "title": "双论-3 Yamakapāḷi-3",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "论藏 Abhidhammapiṭaka"
+      ],
+      "row_count": 5587,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/abh03m6_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "abh03m7_mul",
+      "title": "发趣论-1 Paṭṭhānapāḷi-1",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "论藏 Abhidhammapiṭaka"
+      ],
+      "row_count": 4290,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/abh03m7_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "abh03m8_mul",
+      "title": "发趣论-2 Paṭṭhānapāḷi-2",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "论藏 Abhidhammapiṭaka"
+      ],
+      "row_count": 4242,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/abh03m8_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "abh03m9_mul",
+      "title": "发趣论-3 Paṭṭhānapāḷi-3",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "论藏 Abhidhammapiṭaka"
+      ],
+      "row_count": 6003,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/abh03m9_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "abh03m10_mul",
+      "title": "发趣论-4 Paṭṭhānapāḷi-4",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "论藏 Abhidhammapiṭaka"
+      ],
+      "row_count": 8047,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/abh03m10_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "abh03m11_mul",
+      "title": "发趣论-5 Paṭṭhānapāḷi-5",
+      "path": [
+        "三藏经文 Tipiṭaka Mūla",
+        "论藏 Abhidhammapiṭaka"
+      ],
+      "row_count": 5169,
+      "layer": 1,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/abh03m11_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "vin01a_att",
+      "title": "波罗夷义注 Pārājikakaṇḍa-Aṭṭhakathā",
+      "path": [
+        "义注 Aṭṭhakathā",
+        "律藏义注 Vinayapiṭaka-Aṭṭhakathā(Samantapāsādikā)"
+      ],
+      "row_count": 2691,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/vin01a_att",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "vin02a1_att",
+      "title": "波逸提义注 Pācittiya-Aṭṭhakathā",
+      "path": [
+        "义注 Aṭṭhakathā",
+        "律藏义注 Vinayapiṭaka-Aṭṭhakathā(Samantapāsādikā)"
+      ],
+      "row_count": 1433,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/vin02a1_att",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "vin02a2_att",
+      "title": "大品义注（律藏） Mahāvagga-Aṭṭhakathā(Vinaya)",
+      "path": [
+        "义注 Aṭṭhakathā",
+        "律藏义注 Vinayapiṭaka-Aṭṭhakathā(Samantapāsādikā)"
+      ],
+      "row_count": 900,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/vin02a2_att",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "vin02a3_att",
+      "title": "小品义注 Cūḷavagga-Aṭṭhakathā",
+      "path": [
+        "义注 Aṭṭhakathā",
+        "律藏义注 Vinayapiṭaka-Aṭṭhakathā(Samantapāsādikā)"
+      ],
+      "row_count": 659,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/vin02a3_att",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "vin02a4_att",
+      "title": "附随义注 Parivāra-Aṭṭhakathā",
+      "path": [
+        "义注 Aṭṭhakathā",
+        "律藏义注 Vinayapiṭaka-Aṭṭhakathā(Samantapāsādikā)"
+      ],
+      "row_count": 622,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/vin02a4_att",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0101a_att",
+      "title": "戒蕴品义注 Sīlakkhandhavagga-Aṭṭhakathā",
+      "path": [
+        "义注 Aṭṭhakathā",
+        "经藏义注 Suttapiṭaka-Aṭṭhakathā",
+        "长部义注 Dīghanikāya-Aṭṭhakathā(Sumaṅgalavilāsinī)"
+      ],
+      "row_count": 1356,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0101a_att",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0102a_att",
+      "title": "大品义注（长部） Mahāvagga-Aṭṭhakathā(Dīgha)",
+      "path": [
+        "义注 Aṭṭhakathā",
+        "经藏义注 Suttapiṭaka-Aṭṭhakathā",
+        "长部义注 Dīghanikāya-Aṭṭhakathā(Sumaṅgalavilāsinī)"
+      ],
+      "row_count": 1611,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0102a_att",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0103a_att",
+      "title": "波梨品义注 Pāthikavagga-Aṭṭhakathā",
+      "path": [
+        "义注 Aṭṭhakathā",
+        "经藏义注 Suttapiṭaka-Aṭṭhakathā",
+        "长部义注 Dīghanikāya-Aṭṭhakathā(Sumaṅgalavilāsinī)"
+      ],
+      "row_count": 1109,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0103a_att",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0201a_att",
+      "title": "根本五十经义注 Mūlapaṇṇāsa-Aṭṭhakathā",
+      "path": [
+        "义注 Aṭṭhakathā",
+        "经藏义注 Suttapiṭaka-Aṭṭhakathā",
+        "中部义注 Majjhimanikāya-Aṭṭhakathā(Papañcasūdanī)"
+      ],
+      "row_count": 2656,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0201a_att",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0202a_att",
+      "title": "中五十经义注 Majjhimapaṇṇāsa-Aṭṭhakathā",
+      "path": [
+        "义注 Aṭṭhakathā",
+        "经藏义注 Suttapiṭaka-Aṭṭhakathā",
+        "中部义注 Majjhimanikāya-Aṭṭhakathā(Papañcasūdanī)"
+      ],
+      "row_count": 1223,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0202a_att",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0203a_att",
+      "title": "后五十经义注 Uparipaṇṇāsa-Aṭṭhakathā",
+      "path": [
+        "义注 Aṭṭhakathā",
+        "经藏义注 Suttapiṭaka-Aṭṭhakathā",
+        "中部义注 Majjhimanikāya-Aṭṭhakathā(Papañcasūdanī)"
+      ],
+      "row_count": 1057,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0203a_att",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0301a_att",
+      "title": "有偈品义注 Sagāthāvagga-Aṭṭhakathā",
+      "path": [
+        "义注 Aṭṭhakathā",
+        "经藏义注 Suttapiṭaka-Aṭṭhakathā",
+        "相应部义注 Saṃyuttanikāya-Aṭṭhakathā(Sāratthappakāsinī)"
+      ],
+      "row_count": 1371,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0301a_att",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0302a_att",
+      "title": "因缘品义注 Nidānavagga-Aṭṭhakathā",
+      "path": [
+        "义注 Aṭṭhakathā",
+        "经藏义注 Suttapiṭaka-Aṭṭhakathā",
+        "相应部义注 Saṃyuttanikāya-Aṭṭhakathā(Sāratthappakāsinī)"
+      ],
+      "row_count": 943,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0302a_att",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0303a_att",
+      "title": "蕴品义注 Khandhavagga-Aṭṭhakathā",
+      "path": [
+        "义注 Aṭṭhakathā",
+        "经藏义注 Suttapiṭaka-Aṭṭhakathā",
+        "相应部义注 Saṃyuttanikāya-Aṭṭhakathā(Sāratthappakāsinī)"
+      ],
+      "row_count": 466,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0303a_att",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0304a_att",
+      "title": "六处品义注 Saḷāyatanavagga-Aṭṭhakathā",
+      "path": [
+        "义注 Aṭṭhakathā",
+        "经藏义注 Suttapiṭaka-Aṭṭhakathā",
+        "相应部义注 Saṃyuttanikāya-Aṭṭhakathā(Sāratthappakāsinī)"
+      ],
+      "row_count": 756,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0304a_att",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0305a_att",
+      "title": "大品义注（相应部） Mahāvagga-Aṭṭhakathā(Saṃyutta)",
+      "path": [
+        "义注 Aṭṭhakathā",
+        "经藏义注 Suttapiṭaka-Aṭṭhakathā",
+        "相应部义注 Saṃyuttanikāya-Aṭṭhakathā(Sāratthappakāsinī)"
+      ],
+      "row_count": 983,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0305a_att",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0401a_att",
+      "title": "一集义注 Ekakanipāta-Aṭṭhakathā",
+      "path": [
+        "义注 Aṭṭhakathā",
+        "经藏义注 Suttapiṭaka-Aṭṭhakathā",
+        "增支部义注 Aṅguttaranikāya-Aṭṭhakathā(Manorathapūraṇī)"
+      ],
+      "row_count": 1441,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0401a_att",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0402a_att",
+      "title": "二、三、四集义注 Dukanipāta-Aṭṭhakathā",
+      "path": [
+        "义注 Aṭṭhakathā",
+        "经藏义注 Suttapiṭaka-Aṭṭhakathā",
+        "增支部义注 Aṅguttaranikāya-Aṭṭhakathā(Manorathapūraṇī)"
+      ],
+      "row_count": 1674,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0402a_att",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0403a_att",
+      "title": "五、六、七集义注 Tikanipāta-Aṭṭhakathā",
+      "path": [
+        "义注 Aṭṭhakathā",
+        "经藏义注 Suttapiṭaka-Aṭṭhakathā",
+        "增支部义注 Aṅguttaranikāya-Aṭṭhakathā(Manorathapūraṇī)"
+      ],
+      "row_count": 984,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0403a_att",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0404a_att",
+      "title": "八、九、十、十一集义注 Catukkanipāta-Aṭṭhakathā",
+      "path": [
+        "义注 Aṭṭhakathā",
+        "经藏义注 Suttapiṭaka-Aṭṭhakathā",
+        "增支部义注 Aṅguttaranikāya-Aṭṭhakathā(Manorathapūraṇī)"
+      ],
+      "row_count": 777,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0404a_att",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0501a_att",
+      "title": "小诵义注 Khuddakapāṭha-Aṭṭhakathā(Paramatthajotikā-1)",
+      "path": [
+        "义注 Aṭṭhakathā",
+        "经藏义注 Suttapiṭaka-Aṭṭhakathā",
+        "小部义注 Khuddakanikāya-Aṭṭhakathā"
+      ],
+      "row_count": 1084,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0501a_att",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0502a_att",
+      "title": "法句义注 Dhammapada-Aṭṭhakathā",
+      "path": [
+        "义注 Aṭṭhakathā",
+        "经藏义注 Suttapiṭaka-Aṭṭhakathā",
+        "小部义注 Khuddakanikāya-Aṭṭhakathā"
+      ],
+      "row_count": 4192,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0502a_att",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0503a_att",
+      "title": "自说义注 Udāna-Aṭṭhakathā(Paramatthadīpanī-1)",
+      "path": [
+        "义注 Aṭṭhakathā",
+        "经藏义注 Suttapiṭaka-Aṭṭhakathā",
+        "小部义注 Khuddakanikāya-Aṭṭhakathā"
+      ],
+      "row_count": 1489,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0503a_att",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0504a_att",
+      "title": "如是语义注 Itivuttaka-Aṭṭhakathā(Paramatthadīpanī-2)",
+      "path": [
+        "义注 Aṭṭhakathā",
+        "经藏义注 Suttapiṭaka-Aṭṭhakathā",
+        "小部义注 Khuddakanikāya-Aṭṭhakathā"
+      ],
+      "row_count": 1536,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0504a_att",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0505a_att",
+      "title": "经集义注 Suttanipāta-Aṭṭhakathā(Paramatthajotikā-2)",
+      "path": [
+        "义注 Aṭṭhakathā",
+        "经藏义注 Suttapiṭaka-Aṭṭhakathā",
+        "小部义注 Khuddakanikāya-Aṭṭhakathā"
+      ],
+      "row_count": 2436,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0505a_att",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0506a_att",
+      "title": "天宫事义注 Vimānavatthu-Aṭṭhakathā(Paramatthadīpanī-3)",
+      "path": [
+        "义注 Aṭṭhakathā",
+        "经藏义注 Suttapiṭaka-Aṭṭhakathā",
+        "小部义注 Khuddakanikāya-Aṭṭhakathā"
+      ],
+      "row_count": 3048,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0506a_att",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0507a_att",
+      "title": "恶鬼事义注 Petavatthu-Aṭṭhakathā(Paramatthadīpanī-4)",
+      "path": [
+        "义注 Aṭṭhakathā",
+        "经藏义注 Suttapiṭaka-Aṭṭhakathā",
+        "小部义注 Khuddakanikāya-Aṭṭhakathā"
+      ],
+      "row_count": 2424,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0507a_att",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0508a1_att",
+      "title": "长老偈义注-1 Theragāthā-Aṭṭhakathā-1(Paramatthadīpanī-5)",
+      "path": [
+        "义注 Aṭṭhakathā",
+        "经藏义注 Suttapiṭaka-Aṭṭhakathā",
+        "小部义注 Khuddakanikāya-Aṭṭhakathā"
+      ],
+      "row_count": 3510,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0508a1_att",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0508a2_att",
+      "title": "长老偈义注-2 Theragāthā-Aṭṭhakathā-2(Paramatthadīpanī-5)",
+      "path": [
+        "义注 Aṭṭhakathā",
+        "经藏义注 Suttapiṭaka-Aṭṭhakathā",
+        "小部义注 Khuddakanikāya-Aṭṭhakathā"
+      ],
+      "row_count": 4550,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0508a2_att",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0509a_att",
+      "title": "长老尼偈义注 Therīgāthā-Aṭṭhakathā(Paramatthadīpanī-6)",
+      "path": [
+        "义注 Aṭṭhakathā",
+        "经藏义注 Suttapiṭaka-Aṭṭhakathā",
+        "小部义注 Khuddakanikāya-Aṭṭhakathā"
+      ],
+      "row_count": 2994,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0509a_att",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0510a_att",
+      "title": "长老传义注 Apadāna-Aṭṭhakathā(Visuddhajanavilāsinī)",
+      "path": [
+        "义注 Aṭṭhakathā",
+        "经藏义注 Suttapiṭaka-Aṭṭhakathā",
+        "小部义注 Khuddakanikāya-Aṭṭhakathā"
+      ],
+      "row_count": 3220,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0510a_att",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0511a_att",
+      "title": "诸佛史义注 Buddhavaṃsa-Aṭṭhakathā(Madhuratthappakāsinī)",
+      "path": [
+        "义注 Aṭṭhakathā",
+        "经藏义注 Suttapiṭaka-Aṭṭhakathā",
+        "小部义注 Khuddakanikāya-Aṭṭhakathā"
+      ],
+      "row_count": 2989,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0511a_att",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0512a_att",
+      "title": "所行藏义注 Cariyāpiṭaka-Aṭṭhakathā(Paramatthadīpanī-7)",
+      "path": [
+        "义注 Aṭṭhakathā",
+        "经藏义注 Suttapiṭaka-Aṭṭhakathā",
+        "小部义注 Khuddakanikāya-Aṭṭhakathā"
+      ],
+      "row_count": 1694,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0512a_att",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0513a1_att",
+      "title": "本生义注-1 Jātaka-Aṭṭhakathā-1",
+      "path": [
+        "义注 Aṭṭhakathā",
+        "经藏义注 Suttapiṭaka-Aṭṭhakathā",
+        "小部义注 Khuddakanikāya-Aṭṭhakathā"
+      ],
+      "row_count": 2547,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0513a1_att",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0513a2_att",
+      "title": "本生义注-2 Jātaka-Aṭṭhakathā-2",
+      "path": [
+        "义注 Aṭṭhakathā",
+        "经藏义注 Suttapiṭaka-Aṭṭhakathā",
+        "小部义注 Khuddakanikāya-Aṭṭhakathā"
+      ],
+      "row_count": 2523,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0513a2_att",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0513a3_att",
+      "title": "本生义注-3 Jātaka-Aṭṭhakathā-3",
+      "path": [
+        "义注 Aṭṭhakathā",
+        "经藏义注 Suttapiṭaka-Aṭṭhakathā",
+        "小部义注 Khuddakanikāya-Aṭṭhakathā"
+      ],
+      "row_count": 3926,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0513a3_att",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0513a4_att",
+      "title": "本生义注-4 Jātaka-Aṭṭhakathā-4",
+      "path": [
+        "义注 Aṭṭhakathā",
+        "经藏义注 Suttapiṭaka-Aṭṭhakathā",
+        "小部义注 Khuddakanikāya-Aṭṭhakathā"
+      ],
+      "row_count": 5115,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0513a4_att",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0514a1_att",
+      "title": "本生义注-5 Jātaka-Aṭṭhakathā-5",
+      "path": [
+        "义注 Aṭṭhakathā",
+        "经藏义注 Suttapiṭaka-Aṭṭhakathā",
+        "小部义注 Khuddakanikāya-Aṭṭhakathā"
+      ],
+      "row_count": 3759,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0514a1_att",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0514a2_att",
+      "title": "本生义注-6 Jātaka-Aṭṭhakathā-6",
+      "path": [
+        "义注 Aṭṭhakathā",
+        "经藏义注 Suttapiṭaka-Aṭṭhakathā",
+        "小部义注 Khuddakanikāya-Aṭṭhakathā"
+      ],
+      "row_count": 2656,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0514a2_att",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0514a3_att",
+      "title": "本生义注-7 Jātaka-Aṭṭhakathā-7",
+      "path": [
+        "义注 Aṭṭhakathā",
+        "经藏义注 Suttapiṭaka-Aṭṭhakathā",
+        "小部义注 Khuddakanikāya-Aṭṭhakathā"
+      ],
+      "row_count": 4620,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0514a3_att",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0515a_att",
+      "title": "大义释义注 Mahāniddesa-Aṭṭhakathā(Saddhammappajotikā-1)",
+      "path": [
+        "义注 Aṭṭhakathā",
+        "经藏义注 Suttapiṭaka-Aṭṭhakathā",
+        "小部义注 Khuddakanikāya-Aṭṭhakathā"
+      ],
+      "row_count": 1699,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0515a_att",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0516a_att",
+      "title": "小义释义注 Cūḷaniddesa-Aṭṭhakathā(Saddhammappajotikā-2)",
+      "path": [
+        "义注 Aṭṭhakathā",
+        "经藏义注 Suttapiṭaka-Aṭṭhakathā",
+        "小部义注 Khuddakanikāya-Aṭṭhakathā"
+      ],
+      "row_count": 703,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0516a_att",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0517a_att",
+      "title": "无碍解道义注 Paṭisambhidāmagga-Aṭṭhakathā(Saddhammappakāsinī)",
+      "path": [
+        "义注 Aṭṭhakathā",
+        "经藏义注 Suttapiṭaka-Aṭṭhakathā",
+        "小部义注 Khuddakanikāya-Aṭṭhakathā"
+      ],
+      "row_count": 2300,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0517a_att",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0519a_att",
+      "title": "导论义注 Nettippakaraṇa-Aṭṭhakathā",
+      "path": [
+        "义注 Aṭṭhakathā",
+        "经藏义注 Suttapiṭaka-Aṭṭhakathā",
+        "小部义注 Khuddakanikāya-Aṭṭhakathā"
+      ],
+      "row_count": 1040,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0519a_att",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "abh01a_att",
+      "title": "法集论义注 Dhammasaṅgaṇi-Aṭṭhakathā",
+      "path": [
+        "义注 Aṭṭhakathā",
+        "论藏义注 Abhidhammapiṭaka-Aṭṭhakathā"
+      ],
+      "row_count": 2063,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/abh01a_att",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "abh02a_att",
+      "title": "分别论义注迷惑冰消 Sammohavinodanī-Aṭṭhakathā",
+      "path": [
+        "义注 Aṭṭhakathā",
+        "论藏义注 Abhidhammapiṭaka-Aṭṭhakathā"
+      ],
+      "row_count": 2141,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/abh02a_att",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "abh03a_att",
+      "title": "五部论义注 Pañcapakaraṇa-Aṭṭhakathā",
+      "path": [
+        "义注 Aṭṭhakathā",
+        "论藏义注 Abhidhammapiṭaka-Aṭṭhakathā"
+      ],
+      "row_count": 2422,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/abh03a_att",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "vin01t1_tik",
+      "title": "心义灯-1 Sāratthadīpanī-Ṭīkā-1",
+      "path": [
+        "复注 Ṭīkā",
+        "律藏复注 Vinayapiṭaka-Ṭīkā"
+      ],
+      "row_count": 1392,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/vin01t1_tik",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "vin01t2_tik",
+      "title": "心义灯-2 Sāratthadīpanī-Ṭīkā-2",
+      "path": [
+        "复注 Ṭīkā",
+        "律藏复注 Vinayapiṭaka-Ṭīkā"
+      ],
+      "row_count": 1548,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/vin01t2_tik",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "vin02t_tik",
+      "title": "心义灯-3 Sāratthadīpanī-Ṭīkā-3",
+      "path": [
+        "复注 Ṭīkā",
+        "律藏复注 Vinayapiṭaka-Ṭīkā"
+      ],
+      "row_count": 2237,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/vin02t_tik",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "vin04t_nrf",
+      "title": "疑惑度脱 Dvemātikāpāḷi",
+      "path": [
+        "复注 Ṭīkā",
+        "律藏复注 Vinayapiṭaka-Ṭīkā"
+      ],
+      "row_count": 2667,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/vin04t_nrf",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "vin05t_nrf",
+      "title": "戒律摄要 Vinayasaṅgaha-Aṭṭhakathā",
+      "path": [
+        "复注 Ṭīkā",
+        "律藏复注 Vinayapiṭaka-Ṭīkā"
+      ],
+      "row_count": 1603,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/vin05t_nrf",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "vin06t_nrf",
+      "title": "金刚觉复注 Vajirabuddhi-Ṭīkā",
+      "path": [
+        "复注 Ṭīkā",
+        "律藏复注 Vinayapiṭaka-Ṭīkā"
+      ],
+      "row_count": 2389,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/vin06t_nrf",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "vin07t_nrf",
+      "title": "疑障消除复注 Vimativinodanī-Ṭīkā",
+      "path": [
+        "复注 Ṭīkā",
+        "律藏复注 Vinayapiṭaka-Ṭīkā"
+      ],
+      "row_count": 3108,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/vin07t_nrf",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "vin08t_nrf",
+      "title": "戒律庄严复注 Vinayālaṅkāra-Ṭīkā",
+      "path": [
+        "复注 Ṭīkā",
+        "律藏复注 Vinayapiṭaka-Ṭīkā"
+      ],
+      "row_count": 2136,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/vin08t_nrf",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "vin09t_nrf",
+      "title": "疑惑度脱古注 Kaṅkhāvitaraṇīpurāṇa-Ṭīkā",
+      "path": [
+        "复注 Ṭīkā",
+        "律藏复注 Vinayapiṭaka-Ṭīkā"
+      ],
+      "row_count": 2356,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/vin09t_nrf",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "vin10t_nrf",
+      "title": "戒律抉择-至上决择 Vinayavinicchaya-Uttaravinicchaya",
+      "path": [
+        "复注 Ṭīkā",
+        "律藏复注 Vinayapiṭaka-Ṭīkā"
+      ],
+      "row_count": 8864,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/vin10t_nrf",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "vin11t_nrf",
+      "title": "戒律抉择复注 Vinayavinicchaya-Ṭīkā",
+      "path": [
+        "复注 Ṭīkā",
+        "律藏复注 Vinayapiṭaka-Ṭīkā"
+      ],
+      "row_count": 4924,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/vin11t_nrf",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "vin12t_nrf",
+      "title": "波逸提解说 Pācityādiyojanāpāḷi",
+      "path": [
+        "复注 Ṭīkā",
+        "律藏复注 Vinayapiṭaka-Ṭīkā"
+      ],
+      "row_count": 2974,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/vin12t_nrf",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "vin13t_nrf",
+      "title": "小戒学-根本戒学 Khuddasikkhā-Mūlasikkhā",
+      "path": [
+        "复注 Ṭīkā",
+        "律藏复注 Vinayapiṭaka-Ṭīkā"
+      ],
+      "row_count": 2848,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/vin13t_nrf",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0101t_tik",
+      "title": "戒蕴品复注 Sīlakkhandhavagga-Ṭīkā",
+      "path": [
+        "复注 Ṭīkā",
+        "经藏复注 Suttapiṭaka-Ṭīkā",
+        "长部复注 Dīghanikāya-Ṭīkā"
+      ],
+      "row_count": 1317,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0101t_tik",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0102t_tik",
+      "title": "大品复注（长部） Mahāvagga-Ṭīkā(Dīgha)",
+      "path": [
+        "复注 Ṭīkā",
+        "经藏复注 Suttapiṭaka-Ṭīkā",
+        "长部复注 Dīghanikāya-Ṭīkā"
+      ],
+      "row_count": 1461,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0102t_tik",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0103t_tik",
+      "title": "波梨品复注 Pāthikavagga-Ṭīkā",
+      "path": [
+        "复注 Ṭīkā",
+        "经藏复注 Suttapiṭaka-Ṭīkā",
+        "长部复注 Dīghanikāya-Ṭīkā"
+      ],
+      "row_count": 1119,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0103t_tik",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0104t_nrf",
+      "title": "戒蕴品新复注-1 Sīlakkhandhavagga-Abhinavaṭīkā-1",
+      "path": [
+        "复注 Ṭīkā",
+        "经藏复注 Suttapiṭaka-Ṭīkā",
+        "长部复注 Dīghanikāya-Ṭīkā"
+      ],
+      "row_count": 1328,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0104t_nrf",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0105t_nrf",
+      "title": "戒蕴品新复注-2 Sīlakkhandhavagga-Abhinavaṭīkā-2",
+      "path": [
+        "复注 Ṭīkā",
+        "经藏复注 Suttapiṭaka-Ṭīkā",
+        "长部复注 Dīghanikāya-Ṭīkā"
+      ],
+      "row_count": 1238,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0105t_nrf",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0201t_tik",
+      "title": "根本五十经复注 Mūlapaṇṇāsa-Ṭīkā",
+      "path": [
+        "复注 Ṭīkā",
+        "经藏复注 Suttapiṭaka-Ṭīkā",
+        "中部复注 Majjhimanikāya-Ṭīkā"
+      ],
+      "row_count": 2306,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0201t_tik",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0202t_tik",
+      "title": "中五十经复注 Majjhimapaṇṇāsa-Ṭīkā",
+      "path": [
+        "复注 Ṭīkā",
+        "经藏复注 Suttapiṭaka-Ṭīkā",
+        "中部复注 Majjhimanikāya-Ṭīkā"
+      ],
+      "row_count": 891,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0202t_tik",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0203t_tik",
+      "title": "后五十经复注 Uparipaṇṇāsa-Ṭīkā",
+      "path": [
+        "复注 Ṭīkā",
+        "经藏复注 Suttapiṭaka-Ṭīkā",
+        "中部复注 Majjhimanikāya-Ṭīkā"
+      ],
+      "row_count": 854,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0203t_tik",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0301t_tik",
+      "title": "有偈品复注 Sagāthāvagga-Ṭīkā",
+      "path": [
+        "复注 Ṭīkā",
+        "经藏复注 Suttapiṭaka-Ṭīkā",
+        "相应部复注 Saṃyuttanikāya-Ṭīkā"
+      ],
+      "row_count": 1658,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0301t_tik",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0302t_tik",
+      "title": "因缘品复注 Nidānavagga-Ṭīkā",
+      "path": [
+        "复注 Ṭīkā",
+        "经藏复注 Suttapiṭaka-Ṭīkā",
+        "相应部复注 Saṃyuttanikāya-Ṭīkā"
+      ],
+      "row_count": 1020,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0302t_tik",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0303t_tik",
+      "title": "蕴品复注 Khandhavagga-Ṭīkā",
+      "path": [
+        "复注 Ṭīkā",
+        "经藏复注 Suttapiṭaka-Ṭīkā",
+        "相应部复注 Saṃyuttanikāya-Ṭīkā"
+      ],
+      "row_count": 520,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0303t_tik",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0304t_tik",
+      "title": "六处品复注 Saḷāyatanavagga-Ṭīkā",
+      "path": [
+        "复注 Ṭīkā",
+        "经藏复注 Suttapiṭaka-Ṭīkā",
+        "相应部复注 Saṃyuttanikāya-Ṭīkā"
+      ],
+      "row_count": 728,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0304t_tik",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0305t_tik",
+      "title": "大品复注（相应部） Mahāvagga-Ṭīkā(Saṃyutta)",
+      "path": [
+        "复注 Ṭīkā",
+        "经藏复注 Suttapiṭaka-Ṭīkā",
+        "相应部复注 Saṃyuttanikāya-Ṭīkā"
+      ],
+      "row_count": 850,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0305t_tik",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0401t_tik",
+      "title": "一集复注 Ekakanipāta-Ṭīkā",
+      "path": [
+        "复注 Ṭīkā",
+        "经藏复注 Suttapiṭaka-Ṭīkā",
+        "增支部复注 Aṅguttaranikāya-Ṭīkā"
+      ],
+      "row_count": 1035,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0401t_tik",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0402t_tik",
+      "title": "二三四集复注 Duka-Tika-Catukkanipāta-Ṭīkā",
+      "path": [
+        "复注 Ṭīkā",
+        "经藏复注 Suttapiṭaka-Ṭīkā",
+        "增支部复注 Aṅguttaranikāya-Ṭīkā"
+      ],
+      "row_count": 1867,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0402t_tik",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0403t_tik",
+      "title": "五六七集复注 Pañcaka-Chakka-Sattakanipāta-Ṭīkā",
+      "path": [
+        "复注 Ṭīkā",
+        "经藏复注 Suttapiṭaka-Ṭīkā",
+        "增支部复注 Aṅguttaranikāya-Ṭīkā"
+      ],
+      "row_count": 1003,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0403t_tik",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0404t_tik",
+      "title": "八集等复注 Aṭṭhakādinipāta-Ṭīkā",
+      "path": [
+        "复注 Ṭīkā",
+        "经藏复注 Suttapiṭaka-Ṭīkā",
+        "增支部复注 Aṅguttaranikāya-Ṭīkā"
+      ],
+      "row_count": 795,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0404t_tik",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0519t_tik",
+      "title": "导论复注 Nettippakaraṇa-Ṭīkā",
+      "path": [
+        "复注 Ṭīkā",
+        "经藏复注 Suttapiṭaka-Ṭīkā",
+        "小部复注 Khuddakanikāya-Ṭīkā"
+      ],
+      "row_count": 755,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0519t_tik",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "s0501t_nrf",
+      "title": "导论明解 Nettivibhāvinī",
+      "path": [
+        "复注 Ṭīkā",
+        "经藏复注 Suttapiṭaka-Ṭīkā",
+        "小部复注 Khuddakanikāya-Ṭīkā"
+      ],
+      "row_count": 1558,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/s0501t_nrf",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "abh01t_tik",
+      "title": "法集论根本复注 Dhammasaṅgaṇī-Mūlaṭīkā",
+      "path": [
+        "复注 Ṭīkā",
+        "论藏复注 Abhidhammapiṭaka-Ṭīkā"
+      ],
+      "row_count": 711,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/abh01t_tik",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "abh02t_tik",
+      "title": "分别论根本复注 Vibhaṅga-Mūlaṭīkā",
+      "path": [
+        "复注 Ṭīkā",
+        "论藏复注 Abhidhammapiṭaka-Ṭīkā"
+      ],
+      "row_count": 2214,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/abh02t_tik",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "abh03t_tik",
+      "title": "五论根本复注 Pañcapakaraṇa-Mūlaṭīkā",
+      "path": [
+        "复注 Ṭīkā",
+        "论藏复注 Abhidhammapiṭaka-Ṭīkā"
+      ],
+      "row_count": 1457,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/abh03t_tik",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "abh04t_nrf",
+      "title": "法集论次复注 Dhammasaṅgaṇī-Anuṭīkā",
+      "path": [
+        "复注 Ṭīkā",
+        "论藏复注 Abhidhammapiṭaka-Ṭīkā"
+      ],
+      "row_count": 723,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/abh04t_nrf",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "abh05t_nrf",
+      "title": "五论次复注 Pañcapakaraṇa-Anuṭīkā",
+      "path": [
+        "复注 Ṭīkā",
+        "论藏复注 Abhidhammapiṭaka-Ṭīkā"
+      ],
+      "row_count": 1503,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/abh05t_nrf",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "abh06t_nrf",
+      "title": "阿毗达摩入门-名色分别 Abhidhammāvatāro-Nāmarūpaparicchedo",
+      "path": [
+        "复注 Ṭīkā",
+        "论藏复注 Abhidhammapiṭaka-Ṭīkā"
+      ],
+      "row_count": 10208,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/abh06t_nrf",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "abh07t_nrf",
+      "title": "摄阿毗达磨义论 Abhidhammatthasaṅgaho",
+      "path": [
+        "复注 Ṭīkā",
+        "论藏复注 Abhidhammapiṭaka-Ṭīkā"
+      ],
+      "row_count": 1673,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/abh07t_nrf",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "abh08t_nrf",
+      "title": "阿毗达摩入门古复注 Abhidhammāvatāra-Purāṇaṭīkā",
+      "path": [
+        "复注 Ṭīkā",
+        "论藏复注 Abhidhammapiṭaka-Ṭīkā"
+      ],
+      "row_count": 2331,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/abh08t_nrf",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "abh09t_nrf",
+      "title": "阿毗达摩论母 Abhidhammamātikāpāḷi",
+      "path": [
+        "复注 Ṭīkā",
+        "论藏复注 Abhidhammapiṭaka-Ṭīkā"
+      ],
+      "row_count": 2668,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/abh09t_nrf",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "e0101n_mul",
+      "title": "清净道论-1 Visuddhimagga-1",
+      "path": [
+        "藏外典籍 Añña",
+        "清净道论 Visuddhimagga"
+      ],
+      "row_count": 1864,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/e0101n_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "e0102n_mul",
+      "title": "清净道论-2 Visuddhimagga-2",
+      "path": [
+        "藏外典籍 Añña",
+        "清净道论 Visuddhimagga"
+      ],
+      "row_count": 1911,
+      "layer": 2,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/e0102n_mul",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "e0103n_att",
+      "title": "清净道论大复注-1 Visuddhimagga-Mahāṭīkā-1",
+      "path": [
+        "藏外典籍 Añña",
+        "清净道论 Visuddhimagga"
+      ],
+      "row_count": 1545,
+      "layer": 4,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/e0103n_att",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "e0104n_att",
+      "title": "清净道论大复注-2 Visuddhimagga-Mahāṭīkā-2",
+      "path": [
+        "藏外典籍 Añña",
+        "清净道论 Visuddhimagga"
+      ],
+      "row_count": 1821,
+      "layer": 4,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/e0104n_att",
+      "source": "tipitaka_v4"
+    },
+    {
+      "work_id": "e0105n_nrf",
+      "title": "清净道论-因缘论 Visuddhimagga-Nidānakathā",
+      "path": [
+        "藏外典籍 Añña",
+        "清净道论 Visuddhimagga"
+      ],
+      "row_count": 590,
+      "layer": 4,
+      "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/e0105n_nrf",
+      "source": "tipitaka_v4"
+    }
+  ]
+}

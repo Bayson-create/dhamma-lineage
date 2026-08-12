@@ -567,9 +567,9 @@
   "canon": "B",
   "vol": "7",
   "no": "25",
-  "layer": 4,
+  "layer": 2,
   "layer_confidence": "high",
-  "layer_note": "题名属于南传或部派系统化论书，归第4层部派体系论。"
+  "layer_note": "《清淨道論》第1至第7卷，与 V4《清净道论》归入第2层注疏/复注。"
  },
  {
   "id": "B07na005",
@@ -12358,9 +12358,9 @@
   "canon": "N",
   "vol": "63",
   "no": "31",
-  "layer": 4,
+  "layer": 2,
   "layer_confidence": "medium",
-  "layer_note": "题名属于南传或部派系统化论书，归第4层部派体系论。"
+  "layer_note": "《清淨道論》第8至第13卷，与 V4《清净道论》归入第2层注疏/复注。"
  },
  {
   "id": "N64n0031",
@@ -12371,9 +12371,9 @@
   "canon": "N",
   "vol": "64",
   "no": "31",
-  "layer": 4,
+  "layer": 2,
   "layer_confidence": "medium",
-  "layer_note": "题名属于南传或部派系统化论书，归第4层部派体系论。"
+  "layer_note": "《清淨道論》第14至第23卷，与 V4《清净道论》归入第2层注疏/复注。"
  },
  {
   "id": "N65n0032",
@@ -12423,9 +12423,9 @@
   "canon": "N",
   "vol": "67",
   "no": "35",
-  "layer": 4,
+  "layer": 2,
   "layer_confidence": "high",
-  "layer_note": "题名属于南传或部派系统化论书，归第4层部派体系论。"
+  "layer_note": "《清淨道論》第1至第7卷，与 V4《清净道论》归入第2层注疏/复注。"
  },
  {
   "id": "N68n0035",
@@ -12436,9 +12436,9 @@
   "canon": "N",
   "vol": "68",
   "no": "35",
-  "layer": 4,
+  "layer": 2,
   "layer_confidence": "high",
-  "layer_note": "题名属于南传或部派系统化论书，归第4层部派体系论。"
+  "layer_note": "《清淨道論》第8至第13卷，与 V4《清净道论》归入第2层注疏/复注。"
  },
  {
   "id": "N69n0035",
@@ -12449,9 +12449,9 @@
   "canon": "N",
   "vol": "69",
   "no": "35",
-  "layer": 4,
+  "layer": 2,
   "layer_confidence": "high",
-  "layer_note": "题名属于南传或部派系统化论书，归第4层部派体系论。"
+  "layer_note": "《清淨道論》第14至第23卷，与 V4《清净道论》归入第2层注疏/复注。"
  },
  {
   "id": "N70n0036",

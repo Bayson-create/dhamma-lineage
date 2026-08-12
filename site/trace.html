@@ -4,6 +4,16 @@
 <meta charset="utf-8">
 <title>法义溯源 · Dhamma Trace</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  (() => {
+    const params = new URLSearchParams(location.search);
+    const target = new URL("index.html", location.href);
+    target.searchParams.set("mode", "keyword");
+    const query = params.get("q");
+    if (query) target.searchParams.set("q", query);
+    location.replace(target.href);
+  })();
+</script>
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="trace.css">
 </head>

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-Hant">
+<html lang="zh-CN">
 <head>
 <meta charset="utf-8">
 <title>法义溯源 · 八层藏经目录</title>
@@ -12,9 +12,17 @@
   <h1>法义溯源 <span class="sub">Dhamma Lineage</span></h1>
   <p class="tagline">沿思想史八层结构浏览汉文大藏经，按关键词检索证据，而非裁定义理。</p>
   <div class="searchbar">
-    <input id="searchInput" type="text" placeholder="按经名/作者/正文关键词检索…">
+    <div class="search-row">
+      <input id="searchInput" type="text" placeholder="按经名、作者、正文关键词或观点检索…">
+      <button id="searchBtn" type="button">搜索</button>
+    </div>
+    <div class="search-modes" role="group" aria-label="搜索模式">
+      <button type="button" class="search-mode active" data-search-mode="normal">普通搜索</button>
+      <button type="button" class="search-mode" data-search-mode="keyword">关键词溯源</button>
+      <button type="button" class="search-mode" data-search-mode="ai">AI 语义综合</button>
+    </div>
   </div>
-  <p class="nav-link"><a href="trace.html">→ 法义溯源：追溯一个观点的出处与演变</a></p>
+  <p class="search-note">普通搜索与关键词溯源无需登录；AI 语义综合沿用主站账号、额度与来源核验规则。</p>
 </header>
 
 <section id="fulltextResults" class="fulltext-results" hidden></section>

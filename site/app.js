@@ -1,6 +1,9 @@
 let INDEX = [];
 let INDEX_BY_ID_MAP = null;
 let LAYER_CARDS = null;
+let V4_INDEX = [];
+let SEARCH_MODE = new URLSearchParams(location.search).get("mode") || "normal";
+if (!["normal", "keyword", "ai"].includes(SEARCH_MODE)) SEARCH_MODE = "normal";
 
 const LAYER_TAGLINES = {
   1: "佛陀亲说，最原始的教法记录",
@@ -9,11 +12,28 @@ const LAYER_TAGLINES = {
 };
 
 async function loadIndex() {
-  const [indexRes, cardsRes] = await Promise.all([fetch("data/index.json"), fetch("data/layer_cards.json")]);
+  const [indexRes, cardsRes, v4Res] = await Promise.all([
+    fetch("data/index.json"),
+    fetch("data/layer_cards.json"),
+    fetch("data/v4-lineage-index.json"),
+  ]);
   INDEX = await indexRes.json();
-  INDEX_BY_ID_MAP = new Map(INDEX.map((r) => [r.id, r]));
+  const v4Payload = v4Res.ok ? await v4Res.json() : { works: [] };
+  V4_INDEX = (v4Payload.works || []).map((work) => ({
+    ...work,
+    id: work.work_id,
+    layer: Number(work.layer),
+    source: "tipitaka_v4",
+    layer_confidence: "high",
+    layer_note: "V4 不可变三语正文；层级来自 tipitaka lineage v1 映射。",
+  }));
+  INDEX_BY_ID_MAP = new Map([...INDEX, ...V4_INDEX].map((r) => [r.id, r]));
   LAYER_CARDS = await cardsRes.json();
   renderHome();
+}
+
+function allRecords() {
+  return [...INDEX, ...V4_INDEX];
 }
 
 function groupByLayer(records) {
@@ -54,7 +74,14 @@ function toggleDrilldown(cardEl, card) {
     .filter(Boolean)
     .sort((a, b) => (a.title || "").localeCompare(b.title || "", "zh-Hans-CN"));
   const listHtml = items
-    .map((r) => `<li><a href="reader.html?id=${encodeURIComponent(r.id)}">${r.title || r.id}</a></li>`)
+    .map((r) => {
+      const isV4 = r.source === "tipitaka_v4";
+      const href = isV4
+        ? (r.reader_url || `https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/${encodeURIComponent(r.id)}`)
+        : `reader.html?id=${encodeURIComponent(r.id)}`;
+      const source = isV4 ? '<span class="source-pill">V4 三语本</span>' : "";
+      return `<li><a href="${escapeHtml(href)}"${isV4 ? ' target="_blank" rel="noopener"' : ""}>${escapeHtml(r.title || r.id)}</a>${source}</li>`;
+    })
     .join("");
   panel.innerHTML = `<button class="home-drilldown-close">收起 ✕</button><h5>${card.label}（${items.length} 篇）</h5><ul class="text-list">${listHtml}</ul>`;
   panel.querySelector(".home-drilldown-close").addEventListener("click", () => panel.remove());
@@ -74,9 +101,12 @@ const PAIRED_CARD_IDS = new Set(["madhyamaka_base", "mahaprajnaparamita_sastra"]
 function renderLayerCards(layer, accentVar) {
   let cards = LAYER_CARDS[String(layer)];
   if (!cards) return null;
+  cards = cards.slice();
   if (layer === 4) {
     const byId = Object.fromEntries(cards.map((c) => [c.id, c]));
     cards = LAYER4_ORDER.map((id) => byId[id]).filter(Boolean);
+    const v4Items = V4_INDEX.filter((r) => r.layer === 4);
+    if (v4Items.length) cards.push({ id: "v4", label: "V4 三语本", count: v4Items.length, ids: v4Items.map((r) => r.id) });
   }
 
   const wrap = document.createElement("div");
@@ -120,7 +150,7 @@ function renderHome() {
   const main = document.getElementById("layers");
   main.innerHTML = "";
   main.className = "home-layers";
-  const groups = groupByLayer(INDEX);
+  const groups = groupByLayer(allRecords());
 
   for (const layer of LAYER_ORDER) {
     const items = groups[layer];
@@ -162,13 +192,15 @@ function renderHome() {
       if (cardsEl) {
         body.appendChild(cardsEl);
       } else {
-        // Layers 1, 2, 8 have no curated sub-categories in the reference
-        // design - just a single entry point into the full list.
+        // Keep the broad CBETA entry point, but make the immutable V4 lane
+        // explicit in the first two layers so it is discoverable from the
+        // directory itself, not only from search results.
         const row = document.createElement("div");
         row.className = "home-cards";
-        row.appendChild(
-          renderCard({ id: "all", label: "浏览全部", count: items.length, ids: items.map((r) => r.id) }, accentVar)
-        );
+        const v4Items = (layer === 1 || layer === 2) ? V4_INDEX.filter((r) => r.layer === layer) : [];
+        const localItems = v4Items.length ? items.filter((r) => r.source !== "tipitaka_v4") : items;
+        row.appendChild(renderCard({ id: "all", label: v4Items.length ? "CBETA 本地文本" : "浏览全部", count: localItems.length, ids: localItems.map((r) => r.id) }, accentVar));
+        if (v4Items.length) row.appendChild(renderCard({ id: `v4-${layer}`, label: "V4 三语本", count: v4Items.length, ids: v4Items.map((r) => r.id) }, accentVar));
         body.appendChild(row);
       }
     }
@@ -211,7 +243,12 @@ function renderFiltered(records) {
         .forEach((r) => {
           const li = document.createElement("li");
           const lowConf = r.layer_confidence === "low";
-          li.innerHTML = `<a class="${lowConf ? "confidence-low" : ""}" href="reader.html?id=${encodeURIComponent(r.id)}" title="${r.layer_note || ""}">${r.title || r.id}</a>`;
+          const isV4 = r.source === "tipitaka_v4";
+          const href = isV4
+            ? (r.reader_url || `https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/${encodeURIComponent(r.id)}`)
+            : `reader.html?id=${encodeURIComponent(r.id)}`;
+          const source = isV4 ? '<span class="source-pill">V4 三语本</span>' : "";
+          li.innerHTML = `<a class="${lowConf ? "confidence-low" : ""}" href="${escapeHtml(href)}"${isV4 ? ' target="_blank" rel="noopener"' : ""} title="${escapeHtml(r.layer_note || "")}">${escapeHtml(r.title || r.id)}</a>${source}`;
           ul.appendChild(li);
         });
       body.appendChild(ul);
@@ -225,14 +262,40 @@ function renderFiltered(records) {
 
 let searchSeq = 0;
 
-document.getElementById("searchInput").addEventListener("input", (e) => {
-  const q = e.target.value.trim();
-  const fulltextBox = document.getElementById("fulltextResults");
+function setSearchMode(mode, { updateUrl = true } = {}) {
+  SEARCH_MODE = ["normal", "keyword", "ai"].includes(mode) ? mode : "normal";
+  document.querySelectorAll("[data-search-mode]").forEach((button) => {
+    const active = button.dataset.searchMode === SEARCH_MODE;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-pressed", String(active));
+  });
+  if (updateUrl) {
+    const params = new URLSearchParams(location.search);
+    params.set("mode", SEARCH_MODE);
+    const q = document.getElementById("searchInput")?.value.trim();
+    if (q) params.set("q", q); else params.delete("q");
+    history.replaceState(null, "", `${location.pathname}?${params.toString()}`);
+  }
+}
 
+function clearSearchResults() {
+  renderHome();
+  const fulltextBox = document.getElementById("fulltextResults");
+  fulltextBox.hidden = true;
+  fulltextBox.innerHTML = "";
+}
+
+async function runSelectedSearch() {
+  const input = document.getElementById("searchInput");
+  const q = input.value.trim();
+  setSearchMode(SEARCH_MODE);
   if (!q) {
-    renderHome();
-    fulltextBox.hidden = true;
-    fulltextBox.innerHTML = "";
+    clearSearchResults();
+    return;
+  }
+
+  if (SEARCH_MODE === "ai") {
+    await runAiSearch(q);
     return;
   }
 
@@ -245,12 +308,131 @@ document.getElementById("searchInput").addEventListener("input", (e) => {
   );
   renderFiltered(filtered);
 
-  if (q.length >= 2) runFullTextSearch(q);
+  if (q.length >= 2) await runFullTextSearch(q);
   else {
     fulltextBox.hidden = true;
     fulltextBox.innerHTML = "";
   }
+}
+
+document.getElementById("searchBtn").addEventListener("click", runSelectedSearch);
+document.getElementById("searchInput").addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    runSelectedSearch();
+  }
 });
+document.querySelectorAll("[data-search-mode]").forEach((button) => {
+  button.addEventListener("click", () => {
+    setSearchMode(button.dataset.searchMode);
+    if (document.getElementById("searchInput").value.trim()) runSelectedSearch();
+  });
+});
+
+function renderLineageAiMarkdown(text) {
+  const lines = escapeHtml(text || "").split("\n");
+  let html = "", inList = false;
+  for (const line of lines) {
+    if (/^####\s+/.test(line)) { html += `<h5>${line.replace(/^####\s+/, "")}</h5>`; continue; }
+    if (/^###\s+/.test(line)) { html += `<h4>${line.replace(/^###\s+/, "")}</h4>`; continue; }
+    if (/^##\s+/.test(line)) { html += `<h3>${line.replace(/^##\s+/, "")}</h3>`; continue; }
+    if (/^[*-]\s+/.test(line)) {
+      if (!inList) { html += "<ul>"; inList = true; }
+      html += `<li>${line.replace(/^[*-]\s+/, "")}</li>`;
+      continue;
+    }
+    if (inList) { html += "</ul>"; inList = false; }
+    if (line.trim()) html += `<p>${line}</p>`;
+  }
+  if (inList) html += "</ul>";
+  return html.replace(/\*\*(.+?)\*\*/g, "<b>$1</b>");
+}
+
+const aiFulltextCache = new Map();
+async function aiFetchFulltext(id) {
+  if (aiFulltextCache.has(id)) return aiFulltextCache.get(id);
+  const promise = fetch(`data/fulltext/${encodeURIComponent(id)}.txt`)
+    .then((response) => response.ok ? response.text() : null)
+    .then((raw) => raw ? parseFulltext(raw) : null)
+    .catch(() => null);
+  aiFulltextCache.set(id, promise);
+  return promise;
+}
+
+function aiFindOffset(fullText, snippet) {
+  const clean = String(snippet || "").replace(/\s+/g, "");
+  for (const candidate of [String(snippet || ""), clean, clean.slice(10, 40)]) {
+    if (!candidate) continue;
+    const offset = fullText.indexOf(candidate);
+    if (offset !== -1) return { offset, len: candidate.length };
+  }
+  return null;
+}
+
+async function aiHitHref(hit) {
+  if (hit.reader_url) return hit.reader_url;
+  const id = hit.dhamma_lineage_id;
+  if (!id) return hit.cbeta_url || "#";
+  const base = `reader.html?id=${encodeURIComponent(id)}`;
+  const paragraphs = await aiFetchFulltext(id);
+  if (!paragraphs) return base;
+  const match = aiFindOffset(fullTextOf(paragraphs), hit.snippet);
+  return match ? `${base}&off=${match.offset}&len=${match.len}` : base;
+}
+
+const AI_LAYER_LABELS = Object.assign({}, LAYER_NAMES, {
+  found_but_unclassified: "已收录但未分层",
+  unmatched: "未匹配到分层索引",
+});
+
+async function renderAiSearch(data, query) {
+  const box = document.getElementById("fulltextResults");
+  const keys = [...LAYER_ORDER.map(String), "found_but_unclassified", "unmatched"];
+  const hits = [];
+  let html = `<section class="lineage-ai-results"><h2 class="fulltext-heading">AI 语义综合：${escapeHtml(query)}</h2><div class="ai-synthesis">${renderLineageAiMarkdown(data.synthesis || "")}</div>`;
+  html += `<details class="ai-layer-detail" open><summary>查看分层检索证据（共 ${Number(data.hit_count || 0)} 条）</summary>`;
+  for (const key of keys) {
+    const layerHits = data.layers?.[key] || [];
+    if (!layerHits.length) continue;
+    html += `<div class="ai-layer-block"><h4>${escapeHtml(AI_LAYER_LABELS[key] || key)}（${layerHits.length}）</h4><ul class="ai-hit-list">`;
+    layerHits.forEach((hit, index) => {
+      const hitId = `lineage-ai-hit-${key}-${index}`;
+      const isV4 = hit.source_type === "tipitaka_v4" || !!hit.reader_url;
+      const sourceLabel = isV4 ? "V4 三语本" : "CBETA";
+      hits.push({ hitId, hit });
+      html += `<li id="${hitId}"><a class="hit-link" href="#" target="_blank" rel="noopener">${escapeHtml(hit.title || hit.cbeta_id || "来源")}</a> <span class="source-pill">${sourceLabel}</span>${hit.paranum ? `<span class="juan">${escapeHtml(hit.paranum)}</span>` : ""}<p><mark class="snippet">${escapeHtml(hit.snippet || "")}</mark></p></li>`;
+    });
+    html += "</ul></div>";
+  }
+  html += "</details></section>";
+  box.innerHTML = html;
+  await Promise.all(hits.map(async ({ hitId, hit }) => {
+    const link = await aiHitHref(hit);
+    const anchor = document.querySelector(`#${hitId} .hit-link`);
+    if (anchor && link && link !== "#") anchor.href = link;
+  }));
+}
+
+async function runAiSearch(q) {
+  const mySeq = ++searchSeq;
+  const box = document.getElementById("fulltextResults");
+  box.hidden = false;
+  box.innerHTML = `<p class="fulltext-status">正在检索各层证据并生成综合回答“${escapeHtml(q)}”…</p>`;
+  if (!isLoggedIn()) {
+    box.innerHTML += `<p class="fulltext-status">AI 语义综合需要<a href="login.html">登录</a>；普通搜索与关键词溯源无需登录。</p>`;
+    return;
+  }
+  try {
+    const data = await apiFetch(`/api/dhamma/trace?q=${encodeURIComponent(q)}`);
+    if (mySeq !== searchSeq) return;
+    await renderAiSearch(data, q);
+  } catch (error) {
+    if (mySeq !== searchSeq) return;
+    if (error.status === 402) box.innerHTML = `<p class="fulltext-status">${escapeHtml(error.message)} <a href="account.html">前往账号页面</a></p>`;
+    else if (error.status === 401) box.innerHTML = `<p class="fulltext-status">登录已过期，请<a href="login.html">重新登录</a>。</p>`;
+    else box.innerHTML = `<p class="fulltext-status">AI 语义综合暂时不可用：${escapeHtml(error.message)}</p>`;
+  }
+}
 
 // Short queries (single terms, technical vocabulary like "四念處") use
 // exact substring search. Longer input - a full sentence, a question, a
@@ -290,7 +472,7 @@ async function runFullTextSearch(q) {
   }
   if (mySeq !== searchSeq) return; // a newer keystroke superseded this search
 
-  if (results.length === 0) {
+  if (results.length === 0 && SEARCH_MODE !== "keyword") {
     box.innerHTML = `<p class="fulltext-status">CBETA 正文中未检索到与"${escapeHtml(q)}"相关的内容。</p>`;
     if (window.V4LineageSearch) window.V4LineageSearch.renderInto(q, box);
     return;
@@ -310,6 +492,32 @@ async function runFullTextSearch(q) {
 
   const modeLabel = mode === "fuzzy" ? "模糊匹配（按关键词覆盖度排序）" : "精确匹配";
   const totalMatches = results.reduce((s, r) => s + r.matches.length, 0);
+  if (SEARCH_MODE === "keyword") {
+    let keywordHtml = `<div class="keyword-trace-summary"><strong>关键词命中</strong>：按字面精确/模糊匹配逐层展示；空白层级只表示当前 CBETA 词面未命中，不等于该层没有相关思想。</div>`;
+    for (const layer of [...LAYER_ORDER, 0]) {
+      const items = groups[layer];
+      const label = layer === 0 ? "未归入八层 · 参考资料" : LAYER_NAMES[layer];
+      const isHit = items.length > 0;
+      keywordHtml += `<div class="layer-block ${isHit ? "open" : ""}"><div class="layer-header"><h2>${label}</h2><span class="layer-count">${isHit ? `${items.length} 篇命中` : "空白"}</span></div><div class="layer-body">`;
+      if (!isHit) {
+        keywordHtml += `<p class="empty">此层当前没有足够接近的字面命中。</p>`;
+      } else {
+        const docLis = items.map(({ rec, item }) => {
+          const rel = mode === "fuzzy" ? `<span class="relevance">匹配度 ${Math.round(item.relevance * 100)}%</span>` : "";
+          const positionLis = item.matches.map((m) => {
+            const href = `reader.html?id=${encodeURIComponent(rec.id)}&off=${m.offset}&len=${m.term.length}`;
+            return `<li><a href="${href}">${m.juan ? `卷${escapeHtml(m.juan)} · ` : ""}${highlightTerm(m.snippet, m.term)}</a></li>`;
+          });
+          return `<li><div class="hit-doc"><a href="reader.html?id=${encodeURIComponent(rec.id)}">${escapeHtml(rec.title || rec.id)}</a><span class="source-pill">CBETA</span>${rel}<span class="hit-count">${item.matches.length} 处${item.truncated ? "+" : ""}</span></div><ol class="match-positions">${collapsibleItems(positionLis, 5, "处")}</ol></li>`;
+        });
+        keywordHtml += `<ul class="fulltext-list">${collapsibleItems(docLis, 5, "篇")}</ul>`;
+      }
+      keywordHtml += "</div></div>";
+    }
+    box.innerHTML = keywordHtml;
+    if (window.V4LineageSearch) window.V4LineageSearch.renderInto(q, box);
+    return;
+  }
   let html = `<h2 class="fulltext-heading">正文检索结果："${escapeHtml(q)}"（${results.length} 篇命中，共 ${totalMatches} 处匹配位置，${modeLabel}，按层分组，全部列出）</h2>`;
   for (const layer of [...LAYER_ORDER, 0]) {
     const items = groups[layer];
@@ -331,7 +539,7 @@ async function runFullTextSearch(q) {
 }
 
 function escapeHtml(s) {
-  return s.replace(/[&<>"']/g, (c) => ({
+  return String(s ?? "").replace(/[&<>"']/g, (c) => ({
     "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
   }[c]));
 }
@@ -348,4 +556,12 @@ function highlightTerm(snippet, term) {
   );
 }
 
-loadIndex();
+loadIndex().then(() => {
+  setSearchMode(SEARCH_MODE, { updateUrl: false });
+  const params = new URLSearchParams(location.search);
+  const q = params.get("q") || "";
+  if (q) {
+    document.getElementById("searchInput").value = q;
+    runSelectedSearch();
+  }
+});

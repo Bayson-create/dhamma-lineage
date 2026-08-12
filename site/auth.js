@@ -59,16 +59,18 @@ async function apiFetch(path, options = {}) {
   return res.json();
 }
 
-/** Injects a 登录/个人 link into any page that includes a <header>. Call
- * after DOMContentLoaded. */
+/** Injects a compact account icon into any page that includes a <header>.
+ * The label remains available to screen readers and on hover, while the
+ * visual treatment matches the warm, restrained search controls. */
 function renderAuthNav() {
   const header = document.querySelector("header");
   if (!header) return;
   const nav = document.createElement("p");
+  const icon = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="8" r="3.2"></circle><path d="M5.5 20c.7-3.5 2.9-5.3 6.5-5.3s5.8 1.8 6.5 5.3"></path></svg>';
   nav.className = "nav-link auth-nav";
   nav.innerHTML = isLoggedIn()
-    ? `<a href="account.html">→ 我的账号</a>`
-    : `<a href="login.html">→ 登录 / 注册</a>`;
+    ? `<a class="account-icon" href="account.html" aria-label="我的账号" title="我的账号">${icon}</a>`
+    : `<a class="account-icon" href="login.html" aria-label="登录 / 注册" title="登录 / 注册">${icon}</a>`;
   header.appendChild(nav);
 }
 

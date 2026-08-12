@@ -49,8 +49,10 @@
    "id": "other",
    "label": "其他经典",
    "group": null,
-   "count": 1,
+   "count": 3,
    "ids": [
+    "T24n1461",
+    "T25n1506",
     "T28n1556"
    ]
   }
@@ -60,12 +62,8 @@
    "id": "visuddhimagga",
    "label": "清淨道論",
    "group": null,
-   "count": 3,
-   "ids": [
-    "N67n0035",
-    "N68n0035",
-    "N69n0035"
-   ]
+   "count": 0,
+   "ids": []
   },
   {
    "id": "vimuttimagga",
@@ -80,9 +78,8 @@
    "id": "abhidhammattha",
    "label": "攝阿毗達磨義論",
    "group": null,
-   "count": 2,
+   "count": 1,
    "ids": [
-    "B07n0025",
     "N70n0037"
    ]
   },
@@ -101,9 +98,8 @@
    "id": "kosa",
    "label": "俱舍論",
    "group": null,
-   "count": 15,
+   "count": 14,
    "ids": [
-    "B06n0009",
     "T29n1558",
     "T29n1559",
     "T29n1560",
@@ -135,10 +131,8 @@
    "id": "other",
    "label": "其他经典",
    "group": null,
-   "count": 16,
+   "count": 14,
    "ids": [
-    "N63n0031",
-    "N64n0031",
     "T28n1549",
     "T28n1550",
     "T28n1551",
@@ -304,11 +298,21 @@
    "id": "other",
    "label": "其他经典",
    "group": null,
-   "count": 7,
+   "count": 17,
    "ids": [
     "T16n0668",
     "T16n0669",
     "T16n0675",
+    "T24n1485",
+    "T24n1487",
+    "T24n1491",
+    "T24n1493",
+    "T24n1497",
+    "T24n1499",
+    "T24n1500",
+    "T24n1501",
+    "T24n1502",
+    "T24n1504",
     "T26n1521",
     "T30n1581",
     "T30n1582",
@@ -1436,8 +1440,9 @@
    "id": "other",
    "label": "其他经典",
    "group": null,
-   "count": 2385,
+   "count": 2386,
    "ids": [
+    "B07n0020",
     "B07n0021",
     "B07n0022",
     "B07n0023",

@@ -154,3 +154,67 @@ footer a { color: var(--accent); }
   cursor: pointer;
 }
 .clx-toggle:hover { background: #fffaf2; }
+
+/* Homepage controls use the same restrained warm-card language as the
+   Study Guide's dhamma page.  Keep the account affordance out of the search
+   flow while making it visible and keyboard discoverable. */
+header { position: relative; background: rgba(255, 252, 247, .72); }
+.searchbar { max-width: 960px; margin: .8rem auto 0; }
+.search-row { display: flex; gap: .55rem; align-items: stretch; }
+.search-row input {
+  flex: 1 1 auto;
+  min-width: 0;
+  width: auto;
+  padding: .7rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+  font-size: 1rem;
+}
+.search-row input:focus { outline: 2px solid rgba(138, 75, 44, .25); outline-offset: 1px; border-color: var(--accent); }
+.search-row button, .search-mode {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fffaf2;
+  color: var(--ink);
+  padding: .55rem 1rem;
+  font: inherit;
+  cursor: pointer;
+}
+.search-row button:hover, .search-mode:hover { border-color: var(--accent); color: var(--accent); }
+.search-row button:focus-visible, .search-mode:focus-visible, .account-icon:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.search-modes { display: flex; flex-wrap: wrap; gap: .45rem; margin-top: .65rem; }
+.search-mode { border-radius: 999px; padding: .35rem .8rem; font-size: .9rem; background: transparent; }
+.search-mode.active { border-color: var(--accent); background: #f4e9dd; color: var(--accent); font-weight: 600; }
+.search-note { max-width: 960px; margin: .55rem auto 0; color: var(--muted); font-size: .85rem; }
+.auth-nav { position: absolute; top: 1.8rem; right: max(1rem, calc((100% - 1120px) / 2)); margin: 0; }
+.account-icon { display: inline-flex; width: 2.35rem; height: 2.35rem; align-items: center; justify-content: center; border: 1px solid var(--line); border-radius: 50%; background: #fffaf2; color: var(--accent); text-decoration: none; line-height: 1; }
+.account-icon svg { width: 1.25rem; height: 1.25rem; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.account-icon:hover { border-color: var(--accent); background: #f4e9dd; }
+.source-pill { display: inline-block; margin-left: .45rem; padding: .08rem .45rem; border: 1px solid #d7b77a; border-radius: 999px; color: #8a641b; background: #fff8e7; font-size: .72rem; line-height: 1.4; }
+.lineage-ai-results { max-width: 960px; margin: 0 auto; }
+.ai-synthesis { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: .8rem 1rem; margin: .5rem 0 .8rem; }
+.ai-synthesis p, .ai-synthesis h3, .ai-synthesis h4, .ai-synthesis h5 { margin: .35rem 0; }
+.ai-layer-detail { background: #fffaf2; border: 1px solid var(--line); border-radius: 10px; padding: .6rem .9rem; }
+.ai-layer-detail > summary { color: var(--accent); cursor: pointer; }
+.ai-layer-block { margin-top: .7rem; padding-top: .5rem; border-top: 1px solid var(--line); }
+.ai-layer-block h4 { margin: 0 0 .3rem; color: var(--accent); }
+.ai-hit-list { list-style: none; padding: 0; margin: 0; }
+.ai-hit-list li { padding: .45rem 0; border-top: 1px solid var(--line); }
+.ai-hit-list li:first-child { border-top: 0; }
+.ai-hit-list .hit-link { color: var(--accent); font-weight: 600; text-decoration: none; }
+.ai-hit-list .hit-link:hover { text-decoration: underline; }
+.ai-hit-list .snippet { display: block; margin-top: .2rem; color: var(--ink); background: #fff4bd; white-space: pre-wrap; font-weight: normal; }
+.ai-hit-list .juan { margin-left: .45rem; color: var(--muted); font-size: .8rem; }
+
+@media (max-width: 600px) {
+  header { padding-inline: 1rem; }
+  h1 { padding-right: 2.3rem; }
+  .auth-nav { top: 1.25rem; right: 1rem; }
+  .search-row { flex-wrap: wrap; }
+  .search-row input { flex-basis: 100%; }
+  .search-row button { flex: 0 0 auto; }
+  .search-note { line-height: 1.5; }
+}
