@@ -22,7 +22,7 @@
   const href = (item, query) => item.reader_url || `https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/${encodeURIComponent(item.work_id)}?row=${encodeURIComponent(item.row_id)}&hl=${encodeURIComponent(query)}&hl_lang=zh&hl_anchor=${encodeURIComponent(item.anchor || item.snippet || '')}`;
   const retryButton = query => `<button type="button" class="v4-lineage-retry" data-v4-retry="${escapeHtml(query)}">重试 V4 检索</button>`;
   function section(data, query) {
-    const groups = new Map([[1, []], [2, []], [4, []]]);
+    const groups = new Map([[1, []], [2, []], [3, []], [4, []]]);
     (data.results || []).forEach(item => { if (groups.has(Number(item.lineage_layer))) groups.get(Number(item.lineage_layer)).push(item); });
     let html = `<section class="v4-lineage-results"><div class="v4-lineage-heading">V4 三语本 <span>${Number(data.total || 0).toLocaleString()} 处命中</span><small>正文 · 精确行定位</small></div>`;
     for (const [layer, items] of groups) {
@@ -35,36 +35,38 @@
     if (data.next_cursor) html += `<button class="v4-lineage-next" data-v4-cursor="${escapeHtml(data.next_cursor)}">加载下一页</button>`;
     return html + '</section>';
   }
+  async function search(query, cursor = null) {
+    const params = new URLSearchParams({ q: query, lang: 'zh', limit: '40', types: 'corpus', layer: '1|2|3|4' });
+    if (cursor) params.set('cursor', cursor);
+    const response = await fetch(`${API}/api/tipitaka/v1/search?${params}`);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const data = await response.json();
+    if (data.error) throw new Error(data.error);
+    return data;
+  }
   async function renderInto(query, box) {
     box.innerHTML = '<div class="v4-lineage-loading">V4 三语本检索中…</div>';
-    const params = new URLSearchParams({ q: query, lang: 'zh', limit: '40', types: 'corpus', layer: '1|2|4' });
     try {
-      const response = await fetch(`${API}/api/tipitaka/v1/search?${params}`);
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      const data = await response.json();
-      if (data.error) throw new Error(data.error);
+      const data = await search(query);
       box.innerHTML = section(data, query);
-      bindNext(box.querySelector('.v4-lineage-results'), query, params);
+      bindNext(box.querySelector('.v4-lineage-results'), query);
     } catch (error) {
       box.innerHTML = `<div class="v4-lineage-error">V4 三语本暂时不可用：${escapeHtml(error.message)} ${retryButton(query)}</div>`;
       const retry = box.querySelector('[data-v4-retry]');
       retry?.addEventListener('click', () => renderInto(query, box));
     }
   }
-  function bindNext(source, query, baseParams) {
+  function bindNext(source, query) {
     const next = source?.querySelector('.v4-lineage-next');
     if (!next) return;
     const container = source.parentElement;
     next.addEventListener('click', async () => {
       next.disabled = true; next.textContent = '加载中…';
-      const pageParams = new URLSearchParams(baseParams); pageParams.set('cursor', next.dataset.v4Cursor);
       try {
-        const response = await fetch(`${API}/api/tipitaka/v1/search?${pageParams}`);
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        const page = await response.json(); source.outerHTML = section(page, query);
-        bindNext(container.querySelector('.v4-lineage-results'), query, baseParams);
+        const page = await search(query, next.dataset.v4Cursor); source.outerHTML = section(page, query);
+        bindNext(container.querySelector('.v4-lineage-results'), query);
       } catch (error) { next.disabled = false; next.textContent = `加载失败：${error.message}`; }
     });
   }
-  window.V4LineageSearch = { renderInto };
+  window.V4LineageSearch = { search, renderInto };
 })();

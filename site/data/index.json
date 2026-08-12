@@ -392,12 +392,12 @@
   "canon": "B",
   "vol": "6",
   "no": "7",
-  "layer": 3,
+  "layer": null,
   "layer_confidence": "high",
-  "layer_note": "发趣论属南传阿毗达磨七论，归第3层。",
-  "lineage_tradition": null,
-  "lineage_text_type": null,
-  "lineage_evidence": null
+  "layer_note": "保留原始 CBETA 文本，但不纳入八层法义目录、分层检索或 AI 证据，避免与 V4 上座部阿毗达磨重复计入。",
+  "lineage_tradition": "上座部／南传",
+  "lineage_text_type": "阿毗达磨根本论书译本",
+  "lineage_evidence": "CBETA 该条目为南传阿毗达磨《发趣论》译本；本项目以 V4 巴利三语本作为第3层的上座部阿毗达磨来源。"
  },
  {
   "id": "B06n0008",
@@ -696,12 +696,12 @@
   "canon": "B",
   "vol": "7",
   "no": "25",
-  "layer": 4,
+  "layer": null,
   "layer_confidence": "high",
-  "layer_note": "阿毗达摩摄义论属南传阿毗达磨体系纲要，归第4层。",
-  "lineage_tradition": null,
-  "lineage_text_type": null,
-  "lineage_evidence": null
+  "layer_note": "保留原始 CBETA 文本，不纳入八层法义目录、分层检索或 AI 证据，避免与 V4 重复。",
+  "lineage_tradition": "上座部／南传",
+  "lineage_text_type": "阿毗达磨纲要／体系论译本",
+  "lineage_evidence": "CBETA《阿毗达摩摄义论》为南传阿毗达磨纲要的汉译本；第4层 V4 收录相应巴利三语作品。"
  },
  {
   "id": "B07na005",
@@ -14936,12 +14936,12 @@
   "canon": "N",
   "vol": "48",
   "no": "24",
-  "layer": 3,
+  "layer": null,
   "layer_confidence": "high",
-  "layer_note": "南传阿毗达磨七论：法集、分别、界、人施設、双、发趣、论事。",
-  "lineage_tradition": null,
-  "lineage_text_type": null,
-  "lineage_evidence": null
+  "layer_note": "保留原始 CBETA 文本，不纳入八层法义目录、分层检索或 AI 证据。",
+  "lineage_tradition": "上座部／南传",
+  "lineage_text_type": "阿毗达磨根本论书译本",
+  "lineage_evidence": "CBETA 南传大藏经中的《法集论》译本；第3层上座部阿毗达磨统一使用 V4 三语本。"
  },
  {
   "id": "N49n0025",
@@ -14952,12 +14952,12 @@
   "canon": "N",
   "vol": "49",
   "no": "25",
-  "layer": 3,
+  "layer": null,
   "layer_confidence": "high",
-  "layer_note": "南传阿毗达磨七论：法集、分别、界、人施設、双、发趣、论事。",
-  "lineage_tradition": null,
-  "lineage_text_type": null,
-  "lineage_evidence": null
+  "layer_note": "保留原始文本，不纳入层级检索；对应 V4 作品作为第3层来源。",
+  "lineage_tradition": "上座部／南传",
+  "lineage_text_type": "阿毗达磨根本论书译本",
+  "lineage_evidence": "南传《分别论》译本。"
  },
  {
   "id": "N50n0025",
@@ -14968,12 +14968,12 @@
   "canon": "N",
   "vol": "50",
   "no": "25",
-  "layer": 3,
+  "layer": null,
   "layer_confidence": "high",
-  "layer_note": "南传阿毗达磨七论：法集、分别、界、人施設、双、发趣、论事。",
-  "lineage_tradition": null,
-  "lineage_text_type": null,
-  "lineage_evidence": null
+  "layer_note": "保留原始文本，不纳入层级检索；对应 V4 作品作为第3层来源。",
+  "lineage_tradition": "上座部／南传",
+  "lineage_text_type": "阿毗达磨根本论书译本",
+  "lineage_evidence": "南传《分别论》译本续卷。"
  },
  {
   "id": "N50n0026",
@@ -14984,12 +14984,12 @@
   "canon": "N",
   "vol": "50",
   "no": "26",
-  "layer": 3,
+  "layer": null,
   "layer_confidence": "high",
-  "layer_note": "南传阿毗达磨七论：法集、分别、界、人施設、双、发趣、论事。",
-  "lineage_tradition": null,
-  "lineage_text_type": null,
-  "lineage_evidence": null
+  "layer_note": "保留原始文本，不纳入层级检索；对应 V4 作品作为第3层来源。",
+  "lineage_tradition": "上座部／南传",
+  "lineage_text_type": "阿毗达磨根本论书译本",
+  "lineage_evidence": "南传《界论》译本。"
  },
  {
   "id": "N50n0027",
@@ -15000,12 +15000,12 @@
   "canon": "N",
   "vol": "50",
   "no": "27",
-  "layer": 3,
+  "layer": null,
   "layer_confidence": "high",
-  "layer_note": "南传阿毗达磨七论：法集、分别、界、人施設、双、发趣、论事。",
-  "lineage_tradition": null,
-  "lineage_text_type": null,
-  "lineage_evidence": null
+  "layer_note": "保留原始文本，不纳入层级检索；对应 V4 作品作为第3层来源。",
+  "lineage_tradition": "上座部／南传",
+  "lineage_text_type": "阿毗达磨根本论书译本",
+  "lineage_evidence": "南传《人施設论》译本。"
  },
  {
   "id": "N51n0028",
@@ -15016,12 +15016,12 @@
   "canon": "N",
   "vol": "51",
   "no": "28",
-  "layer": 3,
+  "layer": null,
   "layer_confidence": "high",
-  "layer_note": "南传阿毗达磨七论：法集、分别、界、人施設、双、发趣、论事。",
-  "lineage_tradition": null,
-  "lineage_text_type": null,
-  "lineage_evidence": null
+  "layer_note": "保留原始文本，不纳入层级检索；对应 V4 作品作为第3层来源。",
+  "lineage_tradition": "上座部／南传",
+  "lineage_text_type": "阿毗达磨根本论书译本",
+  "lineage_evidence": "南传《双论》译本。"
  },
  {
   "id": "N52n0028",
@@ -15032,12 +15032,12 @@
   "canon": "N",
   "vol": "52",
   "no": "28",
-  "layer": 3,
+  "layer": null,
   "layer_confidence": "high",
-  "layer_note": "南传阿毗达磨七论：法集、分别、界、人施設、双、发趣、论事。",
-  "lineage_tradition": null,
-  "lineage_text_type": null,
-  "lineage_evidence": null
+  "layer_note": "保留原始文本，不纳入层级检索；对应 V4 作品作为第3层来源。",
+  "lineage_tradition": "上座部／南传",
+  "lineage_text_type": "阿毗达磨根本论书译本",
+  "lineage_evidence": "南传《双论》译本续卷。"
  },
  {
   "id": "N53n0028",
@@ -15048,12 +15048,12 @@
   "canon": "N",
   "vol": "53",
   "no": "28",
-  "layer": 3,
+  "layer": null,
   "layer_confidence": "high",
-  "layer_note": "南传阿毗达磨七论：法集、分别、界、人施設、双、发趣、论事。",
-  "lineage_tradition": null,
-  "lineage_text_type": null,
-  "lineage_evidence": null
+  "layer_note": "保留原始文本，不纳入层级检索；对应 V4 作品作为第3层来源。",
+  "lineage_tradition": "上座部／南传",
+  "lineage_text_type": "阿毗达磨根本论书译本",
+  "lineage_evidence": "南传《双论》译本续卷。"
  },
  {
   "id": "N54n0029",
@@ -15064,12 +15064,12 @@
   "canon": "N",
   "vol": "54",
   "no": "29",
-  "layer": 3,
+  "layer": null,
   "layer_confidence": "high",
-  "layer_note": "南传阿毗达磨七论：法集、分别、界、人施設、双、发趣、论事。",
-  "lineage_tradition": null,
-  "lineage_text_type": null,
-  "lineage_evidence": null
+  "layer_note": "保留原始文本，不纳入层级检索；对应 V4 作品作为第3层来源。",
+  "lineage_tradition": "上座部／南传",
+  "lineage_text_type": "阿毗达磨根本论书译本",
+  "lineage_evidence": "南传《发趣论》译本。"
  },
  {
   "id": "N55n0029",
@@ -15080,12 +15080,12 @@
   "canon": "N",
   "vol": "55",
   "no": "29",
-  "layer": 3,
+  "layer": null,
   "layer_confidence": "high",
-  "layer_note": "南传阿毗达磨七论：法集、分别、界、人施設、双、发趣、论事。",
-  "lineage_tradition": null,
-  "lineage_text_type": null,
-  "lineage_evidence": null
+  "layer_note": "保留原始文本，不纳入层级检索；对应 V4 作品作为第3层来源。",
+  "lineage_tradition": "上座部／南传",
+  "lineage_text_type": "阿毗达磨根本论书译本",
+  "lineage_evidence": "南传《发趣论》译本续卷。"
  },
  {
   "id": "N56n0029",
@@ -15096,12 +15096,12 @@
   "canon": "N",
   "vol": "56",
   "no": "29",
-  "layer": 3,
+  "layer": null,
   "layer_confidence": "high",
-  "layer_note": "南传阿毗达磨七论：法集、分别、界、人施設、双、发趣、论事。",
-  "lineage_tradition": null,
-  "lineage_text_type": null,
-  "lineage_evidence": null
+  "layer_note": "保留原始文本，不纳入层级检索；对应 V4 作品作为第3层来源。",
+  "lineage_tradition": "上座部／南传",
+  "lineage_text_type": "阿毗达磨根本论书译本",
+  "lineage_evidence": "南传《发趣论》译本续卷。"
  },
  {
   "id": "N57n0029",
@@ -15112,12 +15112,12 @@
   "canon": "N",
   "vol": "57",
   "no": "29",
-  "layer": 3,
+  "layer": null,
   "layer_confidence": "high",
-  "layer_note": "南传阿毗达磨七论：法集、分别、界、人施設、双、发趣、论事。",
-  "lineage_tradition": null,
-  "lineage_text_type": null,
-  "lineage_evidence": null
+  "layer_note": "保留原始文本，不纳入层级检索；对应 V4 作品作为第3层来源。",
+  "lineage_tradition": "上座部／南传",
+  "lineage_text_type": "阿毗达磨根本论书译本",
+  "lineage_evidence": "南传《发趣论》译本续卷。"
  },
  {
   "id": "N58n0029",
@@ -15128,12 +15128,12 @@
   "canon": "N",
   "vol": "58",
   "no": "29",
-  "layer": 3,
+  "layer": null,
   "layer_confidence": "high",
-  "layer_note": "南传阿毗达磨七论：法集、分别、界、人施設、双、发趣、论事。",
-  "lineage_tradition": null,
-  "lineage_text_type": null,
-  "lineage_evidence": null
+  "layer_note": "保留原始文本，不纳入层级检索；对应 V4 作品作为第3层来源。",
+  "lineage_tradition": "上座部／南传",
+  "lineage_text_type": "阿毗达磨根本论书译本",
+  "lineage_evidence": "南传《发趣论》译本续卷。"
  },
  {
   "id": "N59n0029",
@@ -15144,12 +15144,12 @@
   "canon": "N",
   "vol": "59",
   "no": "29",
-  "layer": 3,
+  "layer": null,
   "layer_confidence": "high",
-  "layer_note": "南传阿毗达磨七论：法集、分别、界、人施設、双、发趣、论事。",
-  "lineage_tradition": null,
-  "lineage_text_type": null,
-  "lineage_evidence": null
+  "layer_note": "保留原始文本，不纳入层级检索；对应 V4 作品作为第3层来源。",
+  "lineage_tradition": "上座部／南传",
+  "lineage_text_type": "阿毗达磨根本论书译本",
+  "lineage_evidence": "南传《发趣论》译本续卷。"
  },
  {
   "id": "N60n0029",
@@ -15160,12 +15160,12 @@
   "canon": "N",
   "vol": "60",
   "no": "29",
-  "layer": 3,
+  "layer": null,
   "layer_confidence": "high",
-  "layer_note": "南传阿毗达磨七论：法集、分别、界、人施設、双、发趣、论事。",
-  "lineage_tradition": null,
-  "lineage_text_type": null,
-  "lineage_evidence": null
+  "layer_note": "保留原始文本，不纳入层级检索；对应 V4 作品作为第3层来源。",
+  "lineage_tradition": "上座部／南传",
+  "lineage_text_type": "阿毗达磨根本论书译本",
+  "lineage_evidence": "南传《发趣论》译本续卷。"
  },
  {
   "id": "N61n0030",
@@ -15176,12 +15176,12 @@
   "canon": "N",
   "vol": "61",
   "no": "30",
-  "layer": 3,
+  "layer": null,
   "layer_confidence": "high",
-  "layer_note": "南传阿毗达磨七论：法集、分别、界、人施設、双、发趣、论事。",
-  "lineage_tradition": null,
-  "lineage_text_type": null,
-  "lineage_evidence": null
+  "layer_note": "保留原始文本，不纳入层级检索；对应 V4 作品作为第3层来源。",
+  "lineage_tradition": "上座部／南传",
+  "lineage_text_type": "阿毗达磨根本论书译本",
+  "lineage_evidence": "南传《论事》译本。"
  },
  {
   "id": "N62n0030",
@@ -15192,12 +15192,12 @@
   "canon": "N",
   "vol": "62",
   "no": "30",
-  "layer": 3,
+  "layer": null,
   "layer_confidence": "high",
-  "layer_note": "南传阿毗达磨七论：法集、分别、界、人施設、双、发趣、论事。",
-  "lineage_tradition": null,
-  "lineage_text_type": null,
-  "lineage_evidence": null
+  "layer_note": "保留原始文本，不纳入层级检索；对应 V4 作品作为第3层来源。",
+  "lineage_tradition": "上座部／南传",
+  "lineage_text_type": "阿毗达磨根本论书译本",
+  "lineage_evidence": "南传《论事》译本续卷。"
  },
  {
   "id": "N63n0031",
@@ -15352,12 +15352,12 @@
   "canon": "N",
   "vol": "70",
   "no": "37",
-  "layer": 4,
+  "layer": null,
   "layer_confidence": "high",
-  "layer_note": "摄阿毘达磨义论，属南传阿毗达磨纲要/体系论，归第4层。",
-  "lineage_tradition": null,
-  "lineage_text_type": null,
-  "lineage_evidence": null
+  "layer_note": "保留原始 CBETA 文本，不纳入八层法义目录、分层检索或 AI 证据，避免与 V4 重复。",
+  "lineage_tradition": "上座部／南传",
+  "lineage_text_type": "阿毗达磨纲要／体系论译本",
+  "lineage_evidence": "CBETA《摄阿毘达磨义论》为南传阿毗达磨纲要的汉译本；第4层 V4 收录相应巴利三语作品。"
  },
  {
   "id": "N70n0038",

@@ -8,7 +8,7 @@ from pathlib import Path
 from urllib.request import urlopen
 
 
-EXPECTED = {1: 61, 2: 90, 4: 3}
+EXPECTED = {1: 48, 2: 78, 3: 21, 4: 7}
 
 
 def main() -> None:
@@ -45,7 +45,7 @@ def main() -> None:
     if {int(key): value for key, value in counts.items()} != EXPECTED:
         raise SystemExit(f"unexpected V4 layer counts: {counts}, expected {EXPECTED}")
     payload = {
-        "version": mapping.get("version", "v1"),
+        "version": mapping.get("version", "v2"),
         "source": args.catalog_url,
         "counts": counts,
         "works": selected,

@@ -1,9 +1,10 @@
 {
+  "version": "v2",
   "_readme": "Versioned mapping of CBETA texts to the 8 lineage layers. Layers 1-2 intentionally exclude the translated Pali/Thai Theravada corpus: layer 1 keeps non-Pali sutra/vinaya parallels, while layer 2 keeps non-Theravada commentaries and sub-commentaries with an explicit tradition/type/evidence label. Layer null remains available as reference material and is never deleted.",
   "layers": {
     "1": "早期经律与平行经文 (Non-Pali early parallels)",
     "2": "部派注疏与复注 (Non-Theravada commentaries/sub-commentaries)",
-    "3": "部派阿毘达磨 (Sectarian Abhidharma, the seven books)",
+    "3": "部派阿毘达磨 (Sectarian Abhidharma, roots and commentaries)",
     "4": "部派体系论 (Systematic sectarian treatises: Vibhasa, Kosa, Visuddhimagga...)",
     "5": "核心大乘经典与基础体系论 (Core Mahayana sutra clusters + foundational treatises)",
     "6": "成熟体系论 (Mature systematic treatises: Samuccaya, Mahayanasamgraha, Vijnaptimatrata, Bodhicaryavatara)",
@@ -12,6 +13,54 @@
   },
   "_text_overrides_readme": "Per-document corrections, keyed by CBETA id (the xml filename without extension, e.g. 'T30n1564'). Checked BEFORE any canon/volume rule, so this is the mechanism for fixing one specific text without touching the broader canon/volume rule that everything else in that range still relies on. Use this for texts the canon/volume rules get wrong, or for texts from an otherwise-unmapped canon (A/C/K/L/P/S/U/GA/GB/D/ZS/...) that are worth surfacing individually rather than leaving null.",
   "text_overrides": {
+    "B06n0007": {
+      "layer": null,
+      "confidence": "high",
+      "tradition": "上座部／南传",
+      "text_type": "阿毗达磨根本论书译本",
+      "evidence": "CBETA 该条目为南传阿毗达磨《发趣论》译本；本项目以 V4 巴利三语本作为第3层的上座部阿毗达磨来源。",
+      "note": "保留原始 CBETA 文本，但不纳入八层法义目录、分层检索或 AI 证据，避免与 V4 上座部阿毗达磨重复计入。"
+    },
+    "N48n0024": {
+      "layer": null,
+      "confidence": "high",
+      "tradition": "上座部／南传",
+      "text_type": "阿毗达磨根本论书译本",
+      "evidence": "CBETA 南传大藏经中的《法集论》译本；第3层上座部阿毗达磨统一使用 V4 三语本。",
+      "note": "保留原始 CBETA 文本，不纳入八层法义目录、分层检索或 AI 证据。"
+    },
+    "N49n0025": {"layer": null, "confidence": "high", "tradition": "上座部／南传", "text_type": "阿毗达磨根本论书译本", "evidence": "南传《分别论》译本。", "note": "保留原始文本，不纳入层级检索；对应 V4 作品作为第3层来源。"},
+    "N50n0025": {"layer": null, "confidence": "high", "tradition": "上座部／南传", "text_type": "阿毗达磨根本论书译本", "evidence": "南传《分别论》译本续卷。", "note": "保留原始文本，不纳入层级检索；对应 V4 作品作为第3层来源。"},
+    "N50n0026": {"layer": null, "confidence": "high", "tradition": "上座部／南传", "text_type": "阿毗达磨根本论书译本", "evidence": "南传《界论》译本。", "note": "保留原始文本，不纳入层级检索；对应 V4 作品作为第3层来源。"},
+    "N50n0027": {"layer": null, "confidence": "high", "tradition": "上座部／南传", "text_type": "阿毗达磨根本论书译本", "evidence": "南传《人施設论》译本。", "note": "保留原始文本，不纳入层级检索；对应 V4 作品作为第3层来源。"},
+    "N51n0028": {"layer": null, "confidence": "high", "tradition": "上座部／南传", "text_type": "阿毗达磨根本论书译本", "evidence": "南传《双论》译本。", "note": "保留原始文本，不纳入层级检索；对应 V4 作品作为第3层来源。"},
+    "N52n0028": {"layer": null, "confidence": "high", "tradition": "上座部／南传", "text_type": "阿毗达磨根本论书译本", "evidence": "南传《双论》译本续卷。", "note": "保留原始文本，不纳入层级检索；对应 V4 作品作为第3层来源。"},
+    "N53n0028": {"layer": null, "confidence": "high", "tradition": "上座部／南传", "text_type": "阿毗达磨根本论书译本", "evidence": "南传《双论》译本续卷。", "note": "保留原始文本，不纳入层级检索；对应 V4 作品作为第3层来源。"},
+    "N54n0029": {"layer": null, "confidence": "high", "tradition": "上座部／南传", "text_type": "阿毗达磨根本论书译本", "evidence": "南传《发趣论》译本。", "note": "保留原始文本，不纳入层级检索；对应 V4 作品作为第3层来源。"},
+    "N55n0029": {"layer": null, "confidence": "high", "tradition": "上座部／南传", "text_type": "阿毗达磨根本论书译本", "evidence": "南传《发趣论》译本续卷。", "note": "保留原始文本，不纳入层级检索；对应 V4 作品作为第3层来源。"},
+    "N56n0029": {"layer": null, "confidence": "high", "tradition": "上座部／南传", "text_type": "阿毗达磨根本论书译本", "evidence": "南传《发趣论》译本续卷。", "note": "保留原始文本，不纳入层级检索；对应 V4 作品作为第3层来源。"},
+    "N57n0029": {"layer": null, "confidence": "high", "tradition": "上座部／南传", "text_type": "阿毗达磨根本论书译本", "evidence": "南传《发趣论》译本续卷。", "note": "保留原始文本，不纳入层级检索；对应 V4 作品作为第3层来源。"},
+    "N58n0029": {"layer": null, "confidence": "high", "tradition": "上座部／南传", "text_type": "阿毗达磨根本论书译本", "evidence": "南传《发趣论》译本续卷。", "note": "保留原始文本，不纳入层级检索；对应 V4 作品作为第3层来源。"},
+    "N59n0029": {"layer": null, "confidence": "high", "tradition": "上座部／南传", "text_type": "阿毗达磨根本论书译本", "evidence": "南传《发趣论》译本续卷。", "note": "保留原始文本，不纳入层级检索；对应 V4 作品作为第3层来源。"},
+    "N60n0029": {"layer": null, "confidence": "high", "tradition": "上座部／南传", "text_type": "阿毗达磨根本论书译本", "evidence": "南传《发趣论》译本续卷。", "note": "保留原始文本，不纳入层级检索；对应 V4 作品作为第3层来源。"},
+    "N61n0030": {"layer": null, "confidence": "high", "tradition": "上座部／南传", "text_type": "阿毗达磨根本论书译本", "evidence": "南传《论事》译本。", "note": "保留原始文本，不纳入层级检索；对应 V4 作品作为第3层来源。"},
+    "N62n0030": {"layer": null, "confidence": "high", "tradition": "上座部／南传", "text_type": "阿毗达磨根本论书译本", "evidence": "南传《论事》译本续卷。", "note": "保留原始文本，不纳入层级检索；对应 V4 作品作为第3层来源。"},
+    "B07n0025": {
+      "layer": null,
+      "confidence": "high",
+      "tradition": "上座部／南传",
+      "text_type": "阿毗达磨纲要／体系论译本",
+      "evidence": "CBETA《阿毗达摩摄义论》为南传阿毗达磨纲要的汉译本；第4层 V4 收录相应巴利三语作品。",
+      "note": "保留原始 CBETA 文本，不纳入八层法义目录、分层检索或 AI 证据，避免与 V4 重复。"
+    },
+    "N70n0037": {
+      "layer": null,
+      "confidence": "high",
+      "tradition": "上座部／南传",
+      "text_type": "阿毗达磨纲要／体系论译本",
+      "evidence": "CBETA《摄阿毘达磨义论》为南传阿毗达磨纲要的汉译本；第4层 V4 收录相应巴利三语作品。",
+      "note": "保留原始 CBETA 文本，不纳入八层法义目录、分层检索或 AI 证据，避免与 V4 重复。"
+    },
     "N67n0035": {
       "layer": null,
       "confidence": "high",
@@ -36,11 +85,6 @@
       "layer": null,
       "confidence": "high",
       "note": "《一切善见律注序》属于巴利上座部律注传统；按分层规则不作为第2层 CBETA 本地文本。"
-    },
-    "N70n0037": {
-      "layer": 4,
-      "confidence": "high",
-      "note": "摄阿毘达磨义论，属南传阿毗达磨纲要/体系论，归第4层。"
     },
     "N70n0038": {
       "layer": null,
@@ -551,20 +595,10 @@
       "confidence": "high",
       "note": "南传巴利经部汉译／转译资料；不作为第1层非巴利平行经文。"
     },
-    "B06n0007": {
-      "layer": 3,
-      "confidence": "high",
-      "note": "发趣论属南传阿毗达磨七论，归第3层。"
-    },
     "B06n0008": {
       "layer": null,
       "confidence": "high",
       "note": "大发趣论注属于南传上座部阿毗达磨注疏；不作为第2层非上座部注疏。"
-    },
-    "B07n0025": {
-      "layer": 4,
-      "confidence": "high",
-      "note": "阿毗达摩摄义论属南传阿毗达磨体系纲要，归第4层。"
     },
     "B09n0030": {
       "layer": 7,

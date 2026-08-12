@@ -1,5 +1,5 @@
 {
-  "version": "v1",
+  "version": "v2",
   "source": "https://suttastudyguidestor.blob.core.windows.net/tipitaka-public/tipitaka/v1/catalog/works.json",
   "reader_base": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/",
   "root_rules": {
@@ -12,7 +12,32 @@
     "e0102n_mul": 2,
     "e0103n_att": 4,
     "e0104n_att": 4,
-    "e0105n_nrf": 4
+    "e0105n_nrf": 4,
+    "abh01m_mul": 3,
+    "abh02m_mul": 3,
+    "abh03m1_mul": 3,
+    "abh03m2_mul": 3,
+    "abh03m3_mul": 3,
+    "abh03m4_mul": 3,
+    "abh03m5_mul": 3,
+    "abh03m6_mul": 3,
+    "abh03m7_mul": 3,
+    "abh03m8_mul": 3,
+    "abh03m9_mul": 3,
+    "abh03m10_mul": 3,
+    "abh03m11_mul": 3,
+    "abh01a_att": 3,
+    "abh02a_att": 3,
+    "abh03a_att": 3,
+    "abh01t_tik": 3,
+    "abh02t_tik": 3,
+    "abh03t_tik": 3,
+    "abh04t_nrf": 3,
+    "abh05t_nrf": 3,
+    "abh06t_nrf": 4,
+    "abh07t_nrf": 4,
+    "abh08t_nrf": 4,
+    "abh09t_nrf": 4
   },
   "excluded_root": "藏外典籍 Añña"
 }

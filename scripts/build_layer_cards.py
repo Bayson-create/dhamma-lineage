@@ -22,12 +22,12 @@ OUT_PATH = SITE_DIR / "data" / "layer_cards.json"
 # layers 5 and 7, which the reference design splits into two rows.
 LAYER_CARD_DEFS = {
     3: [
-        ("theravada7", "上座部七论", ["法集", "分別論", "界論", "人施設", "雙論", "發趣論", "論事"], None),
-        ("sarvastivada7", "说一切有部七论", ["集異門", "法蘊", "識身", "界身", "品類", "發智", "施設", "阿毗曇", "阿毘曇"], None),
+        ("sarvastivada", "说一切有部阿毗达磨", ["集異門", "法蘊", "識身", "界身", "品類", "發智", "施設", "三法度", "薩婆多", "眾事分", "八犍度", "阿毘達磨"], None),
+        ("other_sectarian", "其他部派阿毗达磨", ["舍利弗", "五法行"], None),
+        ("unresolved", "部派归属未定", ["佛阿毘曇經"], None),
     ],
     4: [
         ("vimuttimagga", "解脫道論", ["解脫道"], None),
-        ("abhidhammattha", "攝阿毗達磨義論", ["攝阿毘達磨義", "阿毗達摩攝義", "阿毘達摩攝義"], None),
         ("mahavibhasa", "大毗婆沙論", ["大毘婆沙", "鞞婆沙", "阿毘曇毘婆沙"], None),
         ("kosa", "俱舍論", ["俱舍"], None),
         ("nyayanusara", "順正理論", ["順正理", "顯宗"], None),

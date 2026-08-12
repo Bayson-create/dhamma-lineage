@@ -1,10 +1,11 @@
 {
-  "version": "v1",
+  "version": "v2",
   "source": "https://suttastudyguidestor.blob.core.windows.net/tipitaka-public/tipitaka/v1/catalog/works.json",
   "counts": {
-    "1": 61,
-    "2": 90,
-    "4": 3
+    "1": 48,
+    "2": 78,
+    "3": 21,
+    "4": 7
   },
   "works": [
     {
@@ -634,7 +635,7 @@
         "论藏 Abhidhammapiṭaka"
       ],
       "row_count": 2437,
-      "layer": 1,
+      "layer": 3,
       "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/abh01m_mul",
       "source": "tipitaka_v4"
     },
@@ -646,7 +647,7 @@
         "论藏 Abhidhammapiṭaka"
       ],
       "row_count": 3422,
-      "layer": 1,
+      "layer": 3,
       "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/abh02m_mul",
       "source": "tipitaka_v4"
     },
@@ -658,7 +659,7 @@
         "论藏 Abhidhammapiṭaka"
       ],
       "row_count": 642,
-      "layer": 1,
+      "layer": 3,
       "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/abh03m1_mul",
       "source": "tipitaka_v4"
     },
@@ -670,7 +671,7 @@
         "论藏 Abhidhammapiṭaka"
       ],
       "row_count": 562,
-      "layer": 1,
+      "layer": 3,
       "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/abh03m2_mul",
       "source": "tipitaka_v4"
     },
@@ -682,7 +683,7 @@
         "论藏 Abhidhammapiṭaka"
       ],
       "row_count": 3313,
-      "layer": 1,
+      "layer": 3,
       "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/abh03m3_mul",
       "source": "tipitaka_v4"
     },
@@ -694,7 +695,7 @@
         "论藏 Abhidhammapiṭaka"
       ],
       "row_count": 4773,
-      "layer": 1,
+      "layer": 3,
       "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/abh03m4_mul",
       "source": "tipitaka_v4"
     },
@@ -706,7 +707,7 @@
         "论藏 Abhidhammapiṭaka"
       ],
       "row_count": 3860,
-      "layer": 1,
+      "layer": 3,
       "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/abh03m5_mul",
       "source": "tipitaka_v4"
     },
@@ -718,7 +719,7 @@
         "论藏 Abhidhammapiṭaka"
       ],
       "row_count": 5587,
-      "layer": 1,
+      "layer": 3,
       "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/abh03m6_mul",
       "source": "tipitaka_v4"
     },
@@ -730,7 +731,7 @@
         "论藏 Abhidhammapiṭaka"
       ],
       "row_count": 4290,
-      "layer": 1,
+      "layer": 3,
       "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/abh03m7_mul",
       "source": "tipitaka_v4"
     },
@@ -742,7 +743,7 @@
         "论藏 Abhidhammapiṭaka"
       ],
       "row_count": 4242,
-      "layer": 1,
+      "layer": 3,
       "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/abh03m8_mul",
       "source": "tipitaka_v4"
     },
@@ -754,7 +755,7 @@
         "论藏 Abhidhammapiṭaka"
       ],
       "row_count": 6003,
-      "layer": 1,
+      "layer": 3,
       "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/abh03m9_mul",
       "source": "tipitaka_v4"
     },
@@ -766,7 +767,7 @@
         "论藏 Abhidhammapiṭaka"
       ],
       "row_count": 8047,
-      "layer": 1,
+      "layer": 3,
       "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/abh03m10_mul",
       "source": "tipitaka_v4"
     },
@@ -778,7 +779,7 @@
         "论藏 Abhidhammapiṭaka"
       ],
       "row_count": 5169,
-      "layer": 1,
+      "layer": 3,
       "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/abh03m11_mul",
       "source": "tipitaka_v4"
     },
@@ -1357,7 +1358,7 @@
         "论藏义注 Abhidhammapiṭaka-Aṭṭhakathā"
       ],
       "row_count": 2063,
-      "layer": 2,
+      "layer": 3,
       "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/abh01a_att",
       "source": "tipitaka_v4"
     },
@@ -1369,7 +1370,7 @@
         "论藏义注 Abhidhammapiṭaka-Aṭṭhakathā"
       ],
       "row_count": 2141,
-      "layer": 2,
+      "layer": 3,
       "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/abh02a_att",
       "source": "tipitaka_v4"
     },
@@ -1381,7 +1382,7 @@
         "论藏义注 Abhidhammapiṭaka-Aṭṭhakathā"
       ],
       "row_count": 2422,
-      "layer": 2,
+      "layer": 3,
       "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/abh03a_att",
       "source": "tipitaka_v4"
     },
@@ -1796,7 +1797,7 @@
         "论藏复注 Abhidhammapiṭaka-Ṭīkā"
       ],
       "row_count": 711,
-      "layer": 2,
+      "layer": 3,
       "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/abh01t_tik",
       "source": "tipitaka_v4"
     },
@@ -1808,7 +1809,7 @@
         "论藏复注 Abhidhammapiṭaka-Ṭīkā"
       ],
       "row_count": 2214,
-      "layer": 2,
+      "layer": 3,
       "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/abh02t_tik",
       "source": "tipitaka_v4"
     },
@@ -1820,7 +1821,7 @@
         "论藏复注 Abhidhammapiṭaka-Ṭīkā"
       ],
       "row_count": 1457,
-      "layer": 2,
+      "layer": 3,
       "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/abh03t_tik",
       "source": "tipitaka_v4"
     },
@@ -1832,7 +1833,7 @@
         "论藏复注 Abhidhammapiṭaka-Ṭīkā"
       ],
       "row_count": 723,
-      "layer": 2,
+      "layer": 3,
       "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/abh04t_nrf",
       "source": "tipitaka_v4"
     },
@@ -1844,7 +1845,7 @@
         "论藏复注 Abhidhammapiṭaka-Ṭīkā"
       ],
       "row_count": 1503,
-      "layer": 2,
+      "layer": 3,
       "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/abh05t_nrf",
       "source": "tipitaka_v4"
     },
@@ -1856,7 +1857,7 @@
         "论藏复注 Abhidhammapiṭaka-Ṭīkā"
       ],
       "row_count": 10208,
-      "layer": 2,
+      "layer": 4,
       "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/abh06t_nrf",
       "source": "tipitaka_v4"
     },
@@ -1868,7 +1869,7 @@
         "论藏复注 Abhidhammapiṭaka-Ṭīkā"
       ],
       "row_count": 1673,
-      "layer": 2,
+      "layer": 4,
       "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/abh07t_nrf",
       "source": "tipitaka_v4"
     },
@@ -1880,7 +1881,7 @@
         "论藏复注 Abhidhammapiṭaka-Ṭīkā"
       ],
       "row_count": 2331,
-      "layer": 2,
+      "layer": 4,
       "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/abh08t_nrf",
       "source": "tipitaka_v4"
     },
@@ -1892,7 +1893,7 @@
         "论藏复注 Abhidhammapiṭaka-Ṭīkā"
       ],
       "row_count": 2668,
-      "layer": 2,
+      "layer": 4,
       "reader_url": "https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/abh09t_nrf",
       "source": "tipitaka_v4"
     },

@@ -1,38 +1,12 @@
 {
  "3": [
   {
-   "id": "theravada7",
-   "label": "上座部七论",
+   "id": "sarvastivada",
+   "label": "说一切有部阿毗达磨",
    "group": null,
-   "count": 18,
+   "count": 11,
    "ids": [
-    "B06n0007",
-    "N48n0024",
-    "N49n0025",
-    "N50n0025",
-    "N50n0026",
-    "N50n0027",
-    "N51n0028",
-    "N52n0028",
-    "N53n0028",
-    "N54n0029",
-    "N55n0029",
-    "N56n0029",
-    "N57n0029",
-    "N58n0029",
-    "N59n0029",
-    "N60n0029",
-    "N61n0030",
-    "N62n0030"
-   ]
-  },
-  {
-   "id": "sarvastivada7",
-   "label": "说一切有部七论",
-   "group": null,
-   "count": 12,
-   "ids": [
-    "T24n1482",
+    "T25n1506",
     "T26n1536",
     "T26n1537",
     "T26n1538",
@@ -42,19 +16,34 @@
     "T26n1542",
     "T26n1543",
     "T26n1544",
+    "T28n1556"
+   ]
+  },
+  {
+   "id": "other_sectarian",
+   "label": "其他部派阿毗达磨",
+   "group": null,
+   "count": 2,
+   "ids": [
     "T28n1548",
     "T28n1557"
+   ]
+  },
+  {
+   "id": "unresolved",
+   "label": "部派归属未定",
+   "group": null,
+   "count": 1,
+   "ids": [
+    "T24n1482"
    ]
   },
   {
    "id": "other",
    "label": "其他经典",
    "group": null,
-   "count": 2,
-   "ids": [
-    "T25n1506",
-    "T28n1556"
-   ]
+   "count": 0,
+   "ids": []
   }
  ],
  "4": [
@@ -65,16 +54,6 @@
    "count": 1,
    "ids": [
     "T32n1648"
-   ]
-  },
-  {
-   "id": "abhidhammattha",
-   "label": "攝阿毗達磨義論",
-   "group": null,
-   "count": 2,
-   "ids": [
-    "B07n0025",
-    "N70n0037"
    ]
   },
   {
