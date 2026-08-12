@@ -50,6 +50,7 @@ jobs:
         run: |
           mkdir -p site/data
           cp data/index.json site/data/index.json
+          python3 scripts/build_layer_cards.py
           rm -rf site/data/fulltext site/data/search_index
           cp -r data/fulltext site/data/fulltext
           cp -r data/search_index site/data/search_index

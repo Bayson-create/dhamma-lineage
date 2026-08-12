@@ -92,6 +92,9 @@ def assign_layer(doc_id, meta, mapping):
             "layer": override["layer"],
             "confidence": override.get("confidence", "high"),
             "note": override.get("note", "manual override"),
+            "tradition": override.get("tradition"),
+            "text_type": override.get("text_type"),
+            "evidence": override.get("evidence"),
         }
 
     canon = meta.get("canon")
@@ -228,7 +231,11 @@ def main():
             skipped += 1
             continue
         layer_info = assign_layer(xml_path.stem, meta, mapping)
-        note = layer_reason(meta, layer_info["layer"], layer_info["note"])
+        # A reviewed per-text note is the authoritative explanation.  The
+        # heuristic layer_reason is only for broad canon/volume rules, so a
+        # reviewed non-Theravada tradition label is never overwritten by a
+        # generic "Pali commentary" description.
+        note = layer_info.get("note") or layer_reason(meta, layer_info["layer"], "")
         rel = xml_path.relative_to(corpus_root)
         records.append(
             {
@@ -243,6 +250,9 @@ def main():
                 "layer": layer_info["layer"],
                 "layer_confidence": layer_info["confidence"],
                 "layer_note": note,
+                "lineage_tradition": layer_info.get("tradition"),
+                "lineage_text_type": layer_info.get("text_type"),
+                "lineage_evidence": layer_info.get("evidence"),
             }
         )
         if i % 1000 == 0:

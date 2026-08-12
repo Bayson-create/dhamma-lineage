@@ -4,6 +4,7 @@ let LAYER_CARDS = null;
 let V4_INDEX = [];
 let SEARCH_MODE = new URLSearchParams(location.search).get("mode") || "normal";
 if (!["normal", "keyword", "ai"].includes(SEARCH_MODE)) SEARCH_MODE = "normal";
+const displaySimplified = (value) => typeof toSimplified === "function" ? toSimplified(String(value ?? "")) : String(value ?? "");
 
 const LAYER_TAGLINES = {
   1: "佛陀亲说，最原始的教法记录",
@@ -54,8 +55,18 @@ function renderCard(card, accentVar) {
   const el = document.createElement("div");
   el.className = cls;
   el.style.setProperty("--card-accent", `var(${accentVar})`);
-  el.innerHTML = `<span>${card.label}</span><span class="card-count">${card.count} 篇</span>`;
+  el.innerHTML = `<span>${escapeHtml(displaySimplified(card.label))}</span><span class="card-count">${card.count} 篇</span>`;
   if (!empty) el.addEventListener("click", () => toggleDrilldown(el, card));
+  return el;
+}
+
+function renderExternalCard(label, href) {
+  const el = document.createElement("a");
+  el.className = "home-card home-card-external";
+  el.href = href;
+  el.target = "_blank";
+  el.rel = "noopener";
+  el.innerHTML = `<span>${escapeHtml(displaySimplified(label))}</span><span class="card-count">外部站点</span>`;
   return el;
 }
 
@@ -80,7 +91,9 @@ function toggleDrilldown(cardEl, card) {
         ? (r.reader_url || `https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/${encodeURIComponent(r.id)}`)
         : `reader.html?id=${encodeURIComponent(r.id)}`;
       const source = isV4 ? '<span class="source-pill">V4 三语本</span>' : "";
-      return `<li><a href="${escapeHtml(href)}"${isV4 ? ' target="_blank" rel="noopener"' : ""}>${escapeHtml(r.title || r.id)}</a>${source}</li>`;
+      const tradition = r.lineage_tradition ? `<span class="lineage-tag">${escapeHtml(displaySimplified(r.lineage_tradition))}</span>` : "";
+      const textType = r.lineage_text_type ? `<span class="lineage-tag">${escapeHtml(displaySimplified(r.lineage_text_type))}</span>` : "";
+      return `<li><a href="${escapeHtml(href)}"${isV4 ? ' target="_blank" rel="noopener"' : ""} title="${escapeHtml(displaySimplified(r.lineage_evidence || r.layer_note || ""))}">${escapeHtml(displaySimplified(r.title || r.id))}</a>${source}${tradition}${textType}</li>`;
     })
     .join("");
   panel.innerHTML = `<button class="home-drilldown-close">收起 ✕</button><h5>${card.label}（${items.length} 篇）</h5><ul class="text-list">${listHtml}</ul>`;
@@ -164,7 +177,7 @@ function renderHome() {
     label.className = "home-band-label";
     label.style.background = `var(${accentVar})`;
     const [num, short] = (LAYER_NAMES[layer] || "").split(" · ");
-    label.innerHTML = `<span class="layer-num">${num}</span><span class="layer-short">${short || ""}</span>`;
+    label.innerHTML = `<span class="layer-num">${escapeHtml(displaySimplified(num))}</span><span class="layer-short">${escapeHtml(displaySimplified(short || ""))}</span>`;
     band.appendChild(label);
 
     const body = document.createElement("div");
@@ -177,7 +190,7 @@ function renderHome() {
     if (LAYER_TAGLINES[layer]) {
       const tag = document.createElement("p");
       tag.className = "home-band-tagline";
-      tag.textContent = LAYER_TAGLINES[layer];
+      tag.textContent = displaySimplified(LAYER_TAGLINES[layer]);
       head.appendChild(tag);
     }
     body.appendChild(head);
@@ -201,6 +214,7 @@ function renderHome() {
         const localItems = v4Items.length ? items.filter((r) => r.source !== "tipitaka_v4") : items;
         row.appendChild(renderCard({ id: "all", label: v4Items.length ? "CBETA 本地文本" : "浏览全部", count: localItems.length, ids: localItems.map((r) => r.id) }, accentVar));
         if (v4Items.length) row.appendChild(renderCard({ id: `v4-${layer}`, label: "V4 三语本", count: v4Items.length, ids: v4Items.map((r) => r.id) }, accentVar));
+        if (layer === 1) row.appendChild(renderExternalCard("早期佛教研究站点 ↗", "https://bayson-create.github.io/Early-Buddhist/"));
         body.appendChild(row);
       }
     }
@@ -227,7 +241,7 @@ function renderFiltered(records) {
 
     const header = document.createElement("div");
     header.className = "layer-header";
-    header.innerHTML = `<h2>${LAYER_NAMES[layer]}</h2><span class="layer-count">${items.length} 篇</span>`;
+    header.innerHTML = `<h2>${escapeHtml(displaySimplified(LAYER_NAMES[layer]))}</h2><span class="layer-count">${items.length} 篇</span>`;
     header.addEventListener("click", () => block.classList.toggle("open"));
 
     const body = document.createElement("div");
@@ -248,7 +262,9 @@ function renderFiltered(records) {
             ? (r.reader_url || `https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/${encodeURIComponent(r.id)}`)
             : `reader.html?id=${encodeURIComponent(r.id)}`;
           const source = isV4 ? '<span class="source-pill">V4 三语本</span>' : "";
-          li.innerHTML = `<a class="${lowConf ? "confidence-low" : ""}" href="${escapeHtml(href)}"${isV4 ? ' target="_blank" rel="noopener"' : ""} title="${escapeHtml(r.layer_note || "")}">${escapeHtml(r.title || r.id)}</a>${source}`;
+          const tradition = r.lineage_tradition ? `<span class="lineage-tag">${escapeHtml(displaySimplified(r.lineage_tradition))}</span>` : "";
+          const textType = r.lineage_text_type ? `<span class="lineage-tag">${escapeHtml(displaySimplified(r.lineage_text_type))}</span>` : "";
+          li.innerHTML = `<a class="${lowConf ? "confidence-low" : ""}" href="${escapeHtml(href)}"${isV4 ? ' target="_blank" rel="noopener"' : ""} title="${escapeHtml(displaySimplified(r.lineage_evidence || r.layer_note || ""))}">${escapeHtml(displaySimplified(r.title || r.id))}</a>${source}${tradition}${textType}`;
           ul.appendChild(li);
         });
       body.appendChild(ul);
@@ -330,7 +346,7 @@ document.querySelectorAll("[data-search-mode]").forEach((button) => {
 });
 
 function renderLineageAiMarkdown(text) {
-  const lines = escapeHtml(text || "").split("\n");
+  const lines = escapeHtml(displaySimplified(text || "")).split("\n");
   let html = "", inList = false;
   for (const line of lines) {
     if (/^####\s+/.test(line)) { html += `<h5>${line.replace(/^####\s+/, "")}</h5>`; continue; }
@@ -394,13 +410,13 @@ async function renderAiSearch(data, query) {
   for (const key of keys) {
     const layerHits = data.layers?.[key] || [];
     if (!layerHits.length) continue;
-    html += `<div class="ai-layer-block"><h4>${escapeHtml(AI_LAYER_LABELS[key] || key)}（${layerHits.length}）</h4><ul class="ai-hit-list">`;
+    html += `<div class="ai-layer-block"><h4>${escapeHtml(displaySimplified(AI_LAYER_LABELS[key] || key))}（${layerHits.length}）</h4><ul class="ai-hit-list">`;
     layerHits.forEach((hit, index) => {
       const hitId = `lineage-ai-hit-${key}-${index}`;
       const isV4 = hit.source_type === "tipitaka_v4" || !!hit.reader_url;
       const sourceLabel = isV4 ? "V4 三语本" : "CBETA";
       hits.push({ hitId, hit });
-      html += `<li id="${hitId}"><a class="hit-link" href="#" target="_blank" rel="noopener">${escapeHtml(hit.title || hit.cbeta_id || "来源")}</a> <span class="source-pill">${sourceLabel}</span>${hit.paranum ? `<span class="juan">${escapeHtml(hit.paranum)}</span>` : ""}<p><mark class="snippet">${escapeHtml(hit.snippet || "")}</mark></p></li>`;
+      html += `<li id="${hitId}"><a class="hit-link" href="#" target="_blank" rel="noopener">${escapeHtml(displaySimplified(hit.title || hit.cbeta_id || "来源"))}</a> <span class="source-pill">${sourceLabel}</span>${hit.paranum ? `<span class="juan">${escapeHtml(displaySimplified(hit.paranum))}</span>` : ""}<p><mark class="snippet">${escapeHtml(displaySimplified(hit.snippet || ""))}</mark></p></li>`;
     });
     html += "</ul></div>";
   }
@@ -445,7 +461,17 @@ async function runFullTextSearch(q) {
   const mySeq = ++searchSeq;
   const box = document.getElementById("fulltextResults");
   box.hidden = false;
-  box.innerHTML = `<p class="fulltext-status">正文检索"${escapeHtml(q)}"中…</p>`;
+  box.innerHTML = "";
+  const localBox = document.createElement("div");
+  localBox.className = "lineage-local-results";
+  localBox.innerHTML = `<p class="fulltext-status">正文检索"${escapeHtml(q)}"中…</p>`;
+  const v4Box = document.createElement("div");
+  v4Box.className = "lineage-v4-results";
+  box.append(localBox, v4Box);
+  // Mount V4 immediately.  Its request must not wait for the local CBETA
+  // search, because a slow local shard or a no-informative-terms error used
+  // to make the V4 section disappear with the local empty state.
+  if (window.V4LineageSearch) window.V4LineageSearch.renderInto(q, v4Box);
 
   const useFuzzy = q.length > FUZZY_THRESHOLD_LEN;
   let results;
@@ -462,19 +488,16 @@ async function runFullTextSearch(q) {
   } catch (err) {
     if (mySeq !== searchSeq) return;
     if (err.code === "NO_INFORMATIVE_TERMS") {
-      box.innerHTML = `<p class="fulltext-status">"${escapeHtml(q)}"里没有可用于检索的常见词组，换个说法试试。</p>`;
-      if (window.V4LineageSearch) window.V4LineageSearch.renderInto(q, box);
+      localBox.innerHTML = `<p class="fulltext-status">"${escapeHtml(q)}"里没有可用于检索的常见词组，换个说法试试。</p>`;
       return;
     }
-    box.innerHTML = `<p class="fulltext-status">CBETA 正文暂时不可用：${escapeHtml(String(err))}</p>`;
-    if (window.V4LineageSearch) window.V4LineageSearch.renderInto(q, box);
+    localBox.innerHTML = `<p class="fulltext-status">CBETA 正文暂时不可用：${escapeHtml(String(err))}</p>`;
     return;
   }
   if (mySeq !== searchSeq) return; // a newer keystroke superseded this search
 
   if (results.length === 0 && SEARCH_MODE !== "keyword") {
-    box.innerHTML = `<p class="fulltext-status">CBETA 正文中未检索到与"${escapeHtml(q)}"相关的内容。</p>`;
-    if (window.V4LineageSearch) window.V4LineageSearch.renderInto(q, box);
+    localBox.innerHTML = `<p class="fulltext-status">CBETA 正文中未检索到与"${escapeHtml(q)}"相关的内容。</p>`;
     return;
   }
 
@@ -514,8 +537,7 @@ async function runFullTextSearch(q) {
       }
       keywordHtml += "</div></div>";
     }
-    box.innerHTML = keywordHtml;
-    if (window.V4LineageSearch) window.V4LineageSearch.renderInto(q, box);
+    localBox.innerHTML = displaySimplified(keywordHtml);
     return;
   }
   let html = `<h2 class="fulltext-heading">正文检索结果："${escapeHtml(q)}"（${results.length} 篇命中，共 ${totalMatches} 处匹配位置，${modeLabel}，按层分组，全部列出）</h2>`;
@@ -534,8 +556,7 @@ async function runFullTextSearch(q) {
     });
     html += `<div class="fulltext-group"><h3>${label}（${items.length}）</h3><ul class="fulltext-list">${collapsibleItems(docLis, 5, "篇")}</ul></div>`;
   }
-  box.innerHTML = html;
-  if (window.V4LineageSearch) window.V4LineageSearch.renderInto(q, box);
+  localBox.innerHTML = displaySimplified(html);
 }
 
 function escapeHtml(s) {

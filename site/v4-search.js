@@ -20,6 +20,7 @@
   };
   const simplify = value => typeof toSimplified === 'function' ? toSimplified(String(value || '')) : String(value || '');
   const href = (item, query) => item.reader_url || `https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/${encodeURIComponent(item.work_id)}?row=${encodeURIComponent(item.row_id)}&hl=${encodeURIComponent(query)}&hl_lang=zh&hl_anchor=${encodeURIComponent(item.anchor || item.snippet || '')}`;
+  const retryButton = query => `<button type="button" class="v4-lineage-retry" data-v4-retry="${escapeHtml(query)}">重试 V4 检索</button>`;
   function section(data, query) {
     const groups = new Map([[1, []], [2, []], [4, []]]);
     (data.results || []).forEach(item => { if (groups.has(Number(item.lineage_layer))) groups.get(Number(item.lineage_layer)).push(item); });
@@ -27,21 +28,28 @@
     for (const [layer, items] of groups) {
       if (!items.length) continue;
       html += `<div class="v4-lineage-group"><h3>第${layer}层 · V4 三语本 <small>${items.length} 条</small></h3><ul>`;
-      html += items.map(item => `<li><a href="${escapeHtml(href(item, query))}" target="_blank" rel="noopener"><strong>${escapeHtml(simplify(item.title || item.work_id))}</strong>${item.paranum ? ` · ${escapeHtml(item.paranum)}` : ''}</a><span>${escapeHtml((item.path || []).join(' / '))}</span><p>${highlight(simplify(item.snippet || item.text || '').slice(0, 220), [...(item.matched_terms || []), query])}</p></li>`).join('');
+      html += items.map(item => `<li><a href="${escapeHtml(href(item, query))}" target="_blank" rel="noopener"><strong>${escapeHtml(simplify(item.title || item.work_id))}</strong>${item.paranum ? ` · ${escapeHtml(simplify(item.paranum))}` : ''}</a><span>${escapeHtml((item.path || []).map(simplify).join(' / '))}</span><p>${highlight(simplify(item.snippet || item.text || '').slice(0, 220), [...(item.matched_terms || []).map(simplify), simplify(query), query])}</p></li>`).join('');
       html += '</ul></div>';
     }
+    if (!data.results?.length) html += `<p class="v4-lineage-empty">V4 三语本未找到正文命中。</p>`;
     if (data.next_cursor) html += `<button class="v4-lineage-next" data-v4-cursor="${escapeHtml(data.next_cursor)}">加载下一页</button>`;
     return html + '</section>';
   }
   async function renderInto(query, box) {
-    const host = document.createElement('div'); host.className = 'v4-lineage-loading'; host.textContent = 'V4 三语本检索中…'; box.appendChild(host);
+    box.innerHTML = '<div class="v4-lineage-loading">V4 三语本检索中…</div>';
     const params = new URLSearchParams({ q: query, lang: 'zh', limit: '40', types: 'corpus', layer: '1|2|4' });
     try {
       const response = await fetch(`${API}/api/tipitaka/v1/search?${params}`);
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      const data = await response.json(); host.outerHTML = section(data, query);
+      const data = await response.json();
+      if (data.error) throw new Error(data.error);
+      box.innerHTML = section(data, query);
       bindNext(box.querySelector('.v4-lineage-results'), query, params);
-    } catch (error) { host.className = 'v4-lineage-error'; host.textContent = `V4 三语本暂时不可用：${error.message}`; }
+    } catch (error) {
+      box.innerHTML = `<div class="v4-lineage-error">V4 三语本暂时不可用：${escapeHtml(error.message)} ${retryButton(query)}</div>`;
+      const retry = box.querySelector('[data-v4-retry]');
+      retry?.addEventListener('click', () => renderInto(query, box));
+    }
   }
   function bindNext(source, query, baseParams) {
     const next = source?.querySelector('.v4-lineage-next');

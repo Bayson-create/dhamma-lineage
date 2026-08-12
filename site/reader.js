@@ -26,10 +26,10 @@ async function main() {
     return;
   }
 
-  document.getElementById("title").textContent = rec.title || rec.id;
+  document.getElementById("title").textContent = convertForDisplay(rec.title || rec.id);
   document.getElementById("meta").textContent =
-    `${rec.author || ""}　${rec.extent || ""}　CBETA: ${rec.canon}.${rec.vol}.${rec.no}`;
-  document.title = `${rec.title || rec.id} · 法义溯源`;
+    `${convertForDisplay(rec.author || "")}　${convertForDisplay(rec.extent || "")}　CBETA: ${rec.canon}.${rec.vol}.${rec.no}`;
+  document.title = `${convertForDisplay(rec.title || rec.id)} · 法义溯源`;
 
   // Render from the pre-extracted plain text (data/fulltext/<id>.txt),
   // not the raw TEI XML: the 3.4GB CBETA corpus itself is never published

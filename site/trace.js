@@ -8,9 +8,12 @@ async function ensureIndex() {
 }
 
 function escapeHtml(s) {
-  return s.replace(/[&<>"']/g, (c) => ({
+  return String(s ?? "").replace(/[&<>"']/g, (c) => ({
     "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
   }[c]));
+}
+function displaySimplified(s) {
+  return typeof toSimplified === "function" ? toSimplified(String(s ?? "")) : String(s ?? "");
 }
 
 function highlightTerm(snippet, term) {
@@ -43,7 +46,12 @@ async function runTrace(query) {
     box.innerHTML = "";
     return;
   }
-  box.innerHTML = `<p class="trace-status">正在逐层检索"${escapeHtml(q)}"…</p>`;
+  box.innerHTML = "";
+  const localBox = document.createElement("div");
+  localBox.innerHTML = `<p class="trace-status">正在逐层检索"${escapeHtml(q)}"…</p>`;
+  const v4Box = document.createElement("div");
+  box.append(localBox, v4Box);
+  if (window.V4LineageSearch) window.V4LineageSearch.renderInto(q, v4Box);
 
   await ensureIndex();
 
@@ -62,10 +70,10 @@ async function runTrace(query) {
     }
   } catch (err) {
     if (err.code === "NO_INFORMATIVE_TERMS") {
-      box.innerHTML = `<p class="trace-status">"${escapeHtml(q)}"里没有可用于检索的常见词组，换个说法试试。</p>`;
+      localBox.innerHTML = `<p class="trace-status">"${escapeHtml(q)}"里没有可用于检索的常见词组，换个说法试试。</p>`;
       return;
     }
-    box.innerHTML = `<p class="trace-status">检索出错：${escapeHtml(String(err))}</p>`;
+    localBox.innerHTML = `<p class="trace-status">检索出错：${escapeHtml(String(err))}</p>`;
     return;
   }
 
@@ -83,7 +91,7 @@ async function runTrace(query) {
   const modeNote = useFuzzy ? "（模糊匹配：按关键词共现程度排序，非逐字匹配）" : "";
   const summary =
     hitLayers.length === 0
-      ? `八层文献中均未检索到与"${escapeHtml(q)}"充分相关的文字${modeNote}。`
+      ? `八层文献中均未检索到与"${escapeHtml(displaySimplified(q))}"充分相关的文字${modeNote}。`
       : `命中层级：${hitLayers.map((l) => "第" + l + "层").join("、")}；空白层级：${
           LAYER_ORDER.filter((l) => !hitLayers.includes(l)).map((l) => "第" + l + "层").join("、") || "无"
         }${modeNote}。`;
@@ -104,18 +112,17 @@ async function runTrace(query) {
         const rel = useFuzzy ? `<span class="relevance">匹配度 ${Math.round(item.relevance * 100)}%</span>` : "";
         const positionLis = item.matches.map((m) => {
           const href = `reader.html?id=${encodeURIComponent(rec.id)}&off=${m.offset}&len=${m.term.length}`;
-          return `<li><a href="${href}">${m.juan ? `卷${escapeHtml(m.juan)} · ` : ""}${highlightTerm(m.snippet, m.term)}</a></li>`;
+          return `<li><a href="${href}">${m.juan ? `卷${escapeHtml(m.juan)} · ` : ""}${highlightTerm(displaySimplified(m.snippet), displaySimplified(m.term))}</a></li>`;
         });
         const positionsHtml = `<ol class="match-positions">${collapsibleItems(positionLis, 5, "处")}</ol>`;
-        return `<li><div class="hit-doc"><a href="reader.html?id=${encodeURIComponent(rec.id)}">${escapeHtml(rec.title || rec.id)}</a>${rel}<span class="author">${escapeHtml(rec.author || "")}</span><span class="hit-count">${item.matches.length} 处${item.truncated ? "+" : ""}</span></div>${positionsHtml}</li>`;
+        return `<li><div class="hit-doc"><a href="reader.html?id=${encodeURIComponent(rec.id)}">${escapeHtml(displaySimplified(rec.title || rec.id))}</a>${rel}<span class="author">${escapeHtml(displaySimplified(rec.author || ""))}</span><span class="hit-count">${item.matches.length} 处${item.truncated ? "+" : ""}</span></div>${positionsHtml}</li>`;
       });
       html += `<ul class="trace-hits">${collapsibleItems(docLis, 5, "篇")}</ul>`;
     }
     html += `</li>`;
   }
   html += `</ol>`;
-  box.innerHTML = html;
-  if (window.V4LineageSearch) window.V4LineageSearch.renderInto(q, box);
+  localBox.innerHTML = html;
 }
 
 document.getElementById("traceBtn").addEventListener("click", () => {

@@ -26,7 +26,7 @@ function renderAiTraceEntry() {
  * **bold**, plain paragraphs) - it isn't arbitrary untrusted HTML, but
  * escape first regardless since it echoes retrieved snippet text. */
 function renderSynthesisMarkdown(text) {
-  const lines = escapeHtml(text).split("\n");
+  const lines = escapeHtml(displaySimplified(text)).split("\n");
   let html = "";
   let inList = false;
   for (const line of lines) {
@@ -144,8 +144,8 @@ async function renderAiTraceResult(data) {
     hits.forEach((h, i) => {
       const hitId = `ai-hit-${key}-${i}`;
       allHits.push({ hitId, h });
-      html += `<li id="${hitId}"><a class="hit-link" href="#" target="_blank" rel="noopener">${escapeHtml(h.title)}</a> <span class="cbeta-id">${escapeHtml(h.cbeta_id)}</span>${h.juan_num ? `<span class="juan">卷${h.juan_num}</span>` : ""}<br>
-        <mark class="snippet">${escapeHtml(h.snippet)}</mark></li>`;
+      html += `<li id="${hitId}"><a class="hit-link" href="#" target="_blank" rel="noopener">${escapeHtml(displaySimplified(h.title))}</a> <span class="cbeta-id">${escapeHtml(h.cbeta_id)}</span>${h.juan_num ? `<span class="juan">卷${h.juan_num}</span>` : ""}<br>
+        <mark class="snippet">${escapeHtml(displaySimplified(h.snippet))}</mark></li>`;
     });
     html += `</ul></div>`;
   }

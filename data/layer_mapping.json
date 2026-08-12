@@ -1,8 +1,8 @@
 {
-  "_readme": "Draft mapping of CBETA canon codes (and, for the Taisho canon, volume ranges that correspond to the traditional bu/部 catalog divisions) to the 8 lineage layers from the diagram. This is a STARTING POINT for human review, not a finished classification -- confidence flags where a canon spans multiple layers or where coverage is partial/non-authoritative. Texts with confidence 'low' or layer null should be reviewed manually before publishing.",
+  "_readme": "Versioned mapping of CBETA texts to the 8 lineage layers. Layers 1-2 intentionally exclude the translated Pali/Thai Theravada corpus: layer 1 keeps non-Pali sutra/vinaya parallels, while layer 2 keeps non-Theravada commentaries and sub-commentaries with an explicit tradition/type/evidence label. Layer null remains available as reference material and is never deleted.",
   "layers": {
-    "1": "巴利经律、阿含 (Early Texts: Pali Vinaya/Nikaya, Agama)",
-    "2": "巴利注疏、复注 (Early commentaries/sub-commentaries)",
+    "1": "早期经律与平行经文 (Non-Pali early parallels)",
+    "2": "部派注疏与复注 (Non-Theravada commentaries/sub-commentaries)",
     "3": "部派阿毘达磨 (Sectarian Abhidharma, the seven books)",
     "4": "部派体系论 (Systematic sectarian treatises: Vibhasa, Kosa, Visuddhimagga...)",
     "5": "核心大乘经典与基础体系论 (Core Mahayana sutra clusters + foundational treatises)",
@@ -13,19 +13,19 @@
   "_text_overrides_readme": "Per-document corrections, keyed by CBETA id (the xml filename without extension, e.g. 'T30n1564'). Checked BEFORE any canon/volume rule, so this is the mechanism for fixing one specific text without touching the broader canon/volume rule that everything else in that range still relies on. Use this for texts the canon/volume rules get wrong, or for texts from an otherwise-unmapped canon (A/C/K/L/P/S/U/GA/GB/D/ZS/...) that are worth surfacing individually rather than leaving null.",
   "text_overrides": {
     "N67n0035": {
-      "layer": 2,
+      "layer": null,
       "confidence": "high",
-      "note": "清淨道論第1至第7卷，与 V4 清净道论归入第2层注疏/复注。"
+      "note": "汉译南传《清净道论》，属于巴利上座部传统；按分层规则不作为第1或第2层 CBETA 本地文本。"
     },
     "N68n0035": {
-      "layer": 2,
+      "layer": null,
       "confidence": "high",
-      "note": "清淨道論第8至第13卷，与 V4 清净道论归入第2层注疏/复注。"
+      "note": "汉译南传《清净道论》，属于巴利上座部传统；按分层规则不作为第1或第2层 CBETA 本地文本。"
     },
     "N69n0035": {
-      "layer": 2,
+      "layer": null,
       "confidence": "high",
-      "note": "清淨道論第14至第23卷，与 V4 清净道论归入第2层注疏/复注。"
+      "note": "汉译南传《清净道论》，属于巴利上座部传统；按分层规则不作为第1或第2层 CBETA 本地文本。"
     },
     "A091n1057": {
       "layer": null,
@@ -33,9 +33,9 @@
       "note": "目录、史地、校勘、研究论文或资料汇编，供参考但不构成教义谱系层级。"
     },
     "N70n0036": {
-      "layer": 2,
-      "confidence": "medium",
-      "note": "一切善见律註序，属南传律注/注疏相关材料，归第2层。"
+      "layer": null,
+      "confidence": "high",
+      "note": "《一切善见律注序》属于巴利上座部律注传统；按分层规则不作为第2层 CBETA 本地文本。"
     },
     "N70n0037": {
       "layer": 4,
@@ -48,29 +48,238 @@
       "note": "阿育王刻文，历史资料，不归入八层 lineage。"
     },
     "T24n1462": {
-      "layer": 2,
+      "layer": null,
       "confidence": "high",
-      "note": "善见律毘婆沙为巴利律注汉译，归第2层巴利注疏。"
+      "note": "《善见律毘婆沙》为巴利上座部律注的汉译；按分层规则不作为第2层 CBETA 本地文本。"
     },
     "T25n1505": {
-      "layer": 1,
+      "layer": 2,
       "confidence": "medium",
-      "note": "四阿鋡暮抄解 属阿含/早期教法释论相关，不应随 T25 默认归入大乘体系论。"
+      "tradition": "部派归属未定（非巴利上座部）",
+      "text_type": "四阿含释论／注疏汇编",
+      "evidence": "题名与现存目录将其置于阿含部，内容以四阿含义理撮要和解释为主；具体部派归属仍有学术争议。",
+      "note": "四阿鋡暮抄解属于早期阿含释论材料，非巴利上座部文本；归第2层并明确标注部派未定。"
     },
     "T25n1506": {
-      "layer": 1,
-      "confidence": "medium",
-      "note": "三法度論 属阿含/早期教法释论相关，不应随 T25 默认归入大乘体系论。"
+      "layer": 3,
+      "confidence": "high",
+      "tradition": "说一切有部相关",
+      "text_type": "部派阿毗达磨论书",
+      "evidence": "现存题名、译者与文献分类将其视为三法度论一类的部派论书，属于说一切有部相关论书传统。",
+      "note": "三法度论是说一切有部相关的部派阿毗达磨论书，归第3层，不冒充经律注疏。"
     },
     "T25n1507": {
-      "layer": 1,
+      "layer": 2,
       "confidence": "medium",
-      "note": "分別功德論 属阿含/早期教法释论相关，不应随 T25 默认归入大乘体系论。"
+      "tradition": "说一切有部相关（归属存争议）",
+      "text_type": "《增一阿含》注疏",
+      "evidence": "该书明确解释《增一阿含》部分篇章；现有文献研究将其与说一切有部传承联系起来，但不作无争议断言。",
+      "note": "分别功德论是《增一阿含》注疏体裁，属于非巴利早期部派解释传统；归属以‘说一切有部相关（存争议）’标注。"
     },
     "T25n1508": {
       "layer": 1,
       "confidence": "medium",
-      "note": "阿含口解十二因緣經 属阿含/早期教法释论相关，不应随 T25 默认归入大乘体系论。"
+      "note": "阿含口解十二因缘经属于非巴利早期经文／阿含相关材料，保留在第1层。"
+    },
+    "T23n1440": {
+      "layer": 2,
+      "confidence": "high",
+      "tradition": "说一切有部相关",
+      "text_type": "律藏注疏",
+      "evidence": "题名为《薩婆多毘尼毘婆沙》，属于对萨婆多部律藏的解释性文献，而非律本文本。",
+      "note": "萨婆多毗尼毗婆沙是非巴利部派律藏注疏，归第2层并标注说一切有部相关。"
+    },
+    "T23n1441": {
+      "layer": 2,
+      "confidence": "high",
+      "tradition": "说一切有部相关",
+      "text_type": "律学注疏／论书",
+      "evidence": "题名为《萨婆多部毗尼摩得勒伽》，属于部派律学解释与条目汇编，不是根本律文本。",
+      "note": "萨婆多部毗尼摩得勒伽是非巴利部派律学注疏，归第2层。"
+    },
+    "T24n1461": {
+      "layer": 2,
+      "confidence": "high",
+      "tradition": "部派归属未定（非巴利）",
+      "text_type": "律学论书／注疏",
+      "evidence": "《律二十二明了论》以论书形式解释律学条目，不属于早期律藏平行本。",
+      "note": "律二十二明了论是非巴利律学论书，归第2层并保留部派归属说明。"
+    },
+    "T24n1482": {
+      "layer": 3,
+      "confidence": "medium",
+      "tradition": "部派归属未定（非巴利）",
+      "text_type": "阿毗达磨／论书",
+      "evidence": "题名明确含‘阿毗昙’，内容属于论藏而非经律平行本。",
+      "note": "佛阿毗昙经出家相品属于非巴利部派论书，移出第1层，归第3层。"
+    },
+    "T24n1484": {
+      "layer": 5,
+      "confidence": "high",
+      "tradition": "大乘",
+      "text_type": "大乘戒经",
+      "evidence": "《梵网经》属于大乘经典，不是早期经律平行本。",
+      "note": "梵网经属于大乘经典，移出第1层，归第5层。"
+    },
+    "T24n1485": {
+      "layer": 5,
+      "confidence": "high",
+      "tradition": "大乘",
+      "text_type": "大乘经典",
+      "evidence": "《菩萨璎珞本业经》属于大乘菩萨戒与行愿类经典。",
+      "note": "菩萨璎珞本业经属于大乘经典，移出第1层，归第5层。"
+    },
+    "T24n1486": {
+      "layer": 7,
+      "confidence": "high",
+      "tradition": "汉传宗派／戒律传统",
+      "text_type": "戒律仪轨",
+      "evidence": "《受十善戒经》属于后期戒律实践文献，不是早期经律平行本。",
+      "note": "受十善戒经属于后期戒律实践文献，移出第1层，归第7层。"
+    },
+    "T24n1487": {
+      "layer": 7,
+      "confidence": "high",
+      "tradition": "汉传宗派／戒律传统",
+      "text_type": "菩萨戒律文献",
+      "evidence": "《佛说菩萨内戒经》属于菩萨戒传统文献，不是早期经律平行本。",
+      "note": "佛说菩萨内戒经属于后期菩萨戒律文献，移出第1层，归第7层。"
+    },
+    "T24n1488": {
+      "layer": 5,
+      "confidence": "high",
+      "tradition": "大乘",
+      "text_type": "大乘戒经",
+      "evidence": "《优婆塞戒经》属于大乘在家菩萨戒经典。",
+      "note": "优婆塞戒经属于大乘戒经典，移出第1层，归第5层。"
+    },
+    "T24n1489": {
+      "layer": 5,
+      "confidence": "high",
+      "tradition": "大乘",
+      "text_type": "大乘经典",
+      "evidence": "《清净毗尼方广经》属于大乘方广类经典。",
+      "note": "清净毗尼方广经属于大乘经典，移出第1层，归第5层。"
+    },
+    "T24n1490": {
+      "layer": 5,
+      "confidence": "high",
+      "tradition": "大乘",
+      "text_type": "大乘经典",
+      "evidence": "《寂调音所问经》属于大乘经部文献。",
+      "note": "寂调音所问经属于大乘经典，移出第1层，归第5层。"
+    },
+    "T24n1491": {
+      "layer": 5,
+      "confidence": "high",
+      "tradition": "大乘",
+      "text_type": "大乘经典",
+      "evidence": "《菩萨藏经》属于大乘菩萨藏经典。",
+      "note": "菩萨藏经属于大乘经典，移出第1层，归第5层。"
+    },
+    "T24n1492": {
+      "layer": 5,
+      "confidence": "medium",
+      "tradition": "大乘／忏悔传统",
+      "text_type": "大乘忏悔经典",
+      "evidence": "《佛说舍利弗悔过经》属于大乘忏悔类经典，不是早期经律平行本。",
+      "note": "佛说舍利弗悔过经属于大乘忏悔类经典，移出第1层，归第5层。"
+    },
+    "T24n1493": {
+      "layer": 5,
+      "confidence": "high",
+      "tradition": "大乘",
+      "text_type": "大乘忏悔经典",
+      "evidence": "《大乘三聚忏悔经》属于大乘忏悔类经典。",
+      "note": "大乘三聚忏悔经属于大乘经典，移出第1层，归第5层。"
+    },
+    "T24n1494": {
+      "layer": 5,
+      "confidence": "high",
+      "tradition": "大乘",
+      "text_type": "大乘经典",
+      "evidence": "《佛说净业障经》属于大乘忏悔与净业类经典。",
+      "note": "佛说净业障经属于大乘经典，移出第1层，归第5层。"
+    },
+    "T24n1495": {
+      "layer": 5,
+      "confidence": "medium",
+      "tradition": "大乘",
+      "text_type": "大乘经典",
+      "evidence": "《善恭敬经》在大正藏律部中属于后期大乘经，不是早期律部平行本。",
+      "note": "善恭敬经属于后期大乘经典，移出第1层，归第5层。"
+    },
+    "T24n1496": {
+      "layer": 5,
+      "confidence": "medium",
+      "tradition": "大乘",
+      "text_type": "大乘经典",
+      "evidence": "《佛说正恭敬经》属于后期大乘经，不是早期律部平行本。",
+      "note": "佛说正恭敬经属于后期大乘经典，移出第1层，归第5层。"
+    },
+    "T24n1497": {
+      "layer": 5,
+      "confidence": "high",
+      "tradition": "大乘",
+      "text_type": "大乘戒经",
+      "evidence": "《佛说大乘戒经》题名即明确其大乘戒经性质。",
+      "note": "佛说大乘戒经属于大乘经典，移出第1层，归第5层。"
+    },
+    "T24n1498": {
+      "layer": 5,
+      "confidence": "medium",
+      "tradition": "大乘",
+      "text_type": "大乘戒律经典",
+      "evidence": "《佛说八种长养功德经》属于后期戒律功德类经文，不是早期律藏平行本。",
+      "note": "佛说八种长养功德经属于后期大乘戒律经典，移出第1层，归第5层。"
+    },
+    "T24n1499": {
+      "layer": 7,
+      "confidence": "high",
+      "tradition": "汉传宗派／戒律传统",
+      "text_type": "菩萨戒律仪轨",
+      "evidence": "《菩萨戒羯磨文》是后期菩萨戒羯磨与仪轨文献。",
+      "note": "菩萨戒羯磨文属于后期戒律仪轨，移出第1层，归第7层。"
+    },
+    "T24n1500": {
+      "layer": 7,
+      "confidence": "high",
+      "tradition": "汉传宗派／戒律传统",
+      "text_type": "菩萨戒本",
+      "evidence": "《菩萨戒本》属于后期菩萨戒传承文献。",
+      "note": "菩萨戒本属于后期戒律传承文献，移出第1层，归第7层。"
+    },
+    "T24n1501": {
+      "layer": 7,
+      "confidence": "high",
+      "tradition": "汉传宗派／戒律传统",
+      "text_type": "菩萨戒本",
+      "evidence": "《菩萨戒本》属于后期菩萨戒传承文献。",
+      "note": "菩萨戒本属于后期戒律传承文献，移出第1层，归第7层。"
+    },
+    "T24n1502": {
+      "layer": 7,
+      "confidence": "high",
+      "tradition": "汉传宗派／戒律传统",
+      "text_type": "戒律文献",
+      "evidence": "《菩萨受斋经》属于后期菩萨戒律实践文献。",
+      "note": "菩萨受斋经属于后期戒律实践文献，移出第1层，归第7层。"
+    },
+    "T24n1503": {
+      "layer": 7,
+      "confidence": "high",
+      "tradition": "汉传宗派／戒律传统",
+      "text_type": "在家戒律仪轨",
+      "evidence": "《优婆塞五戒威仪经》属于后期在家戒律仪轨。",
+      "note": "优婆塞五戒威仪经属于后期戒律仪轨，移出第1层，归第7层。"
+    },
+    "T24n1504": {
+      "layer": 7,
+      "confidence": "high",
+      "tradition": "汉传宗派／戒律传统",
+      "text_type": "忏悔仪轨",
+      "evidence": "《菩萨五法忏悔文》属于后期菩萨戒忏悔仪轨。",
+      "note": "菩萨五法忏悔文属于后期戒律仪轨，移出第1层，归第7层。"
     },
     "T26n1519": {
       "layer": null,
@@ -298,49 +507,49 @@
       "note": "俱舍论注疏，归第4层部派体系论，而非泛归宗派体系。"
     },
     "B06n0003": {
-      "layer": 1,
+      "layer": null,
       "confidence": "high",
-      "note": "大藏经补编中的南传经部/早期经典译本，归第1层。"
+      "note": "南传巴利经部汉译／转译资料；不作为第1层非巴利平行经文。"
     },
     "B06n0004": {
-      "layer": 1,
+      "layer": null,
       "confidence": "high",
-      "note": "大藏经补编中的南传经部/早期经典译本，归第1层。"
+      "note": "南传巴利经部汉译／转译资料；不作为第1层非巴利平行经文。"
     },
     "B06n0005": {
-      "layer": 1,
+      "layer": null,
       "confidence": "high",
-      "note": "大藏经补编中的南传经部/早期经典译本，归第1层。"
+      "note": "南传巴利经部汉译／转译资料；不作为第1层非巴利平行经文。"
     },
     "B07n0010": {
-      "layer": 1,
+      "layer": null,
       "confidence": "high",
-      "note": "大藏经补编中的南传经部/早期经典译本，归第1层。"
+      "note": "南传巴利经部汉译／转译资料；不作为第1层非巴利平行经文。"
     },
     "B07n0015": {
-      "layer": 1,
+      "layer": null,
       "confidence": "high",
-      "note": "大藏经补编中的南传经部/早期经典译本，归第1层。"
+      "note": "南传巴利经部汉译／转译资料；不作为第1层非巴利平行经文。"
     },
     "B07n0016": {
-      "layer": 1,
+      "layer": null,
       "confidence": "high",
-      "note": "大藏经补编中的南传经部/早期经典译本，归第1层。"
+      "note": "南传巴利经部汉译／转译资料；不作为第1层非巴利平行经文。"
     },
     "B07n0017": {
-      "layer": 1,
+      "layer": null,
       "confidence": "high",
-      "note": "大藏经补编中的南传经部/早期经典译本，归第1层。"
+      "note": "南传巴利经部汉译／转译资料；不作为第1层非巴利平行经文。"
     },
     "B07n0018": {
-      "layer": 1,
+      "layer": null,
       "confidence": "high",
-      "note": "大藏经补编中的南传经部/早期经典译本，归第1层。"
+      "note": "南传巴利经部汉译／转译资料；不作为第1层非巴利平行经文。"
     },
     "B07n0019": {
-      "layer": 1,
+      "layer": null,
       "confidence": "high",
-      "note": "大藏经补编中的南传经部/早期经典译本，归第1层。"
+      "note": "南传巴利经部汉译／转译资料；不作为第1层非巴利平行经文。"
     },
     "B06n0007": {
       "layer": 3,
@@ -348,9 +557,9 @@
       "note": "发趣论属南传阿毗达磨七论，归第3层。"
     },
     "B06n0008": {
-      "layer": 2,
+      "layer": null,
       "confidence": "high",
-      "note": "大发趣论註属南传阿毗达磨注疏，归第2层。"
+      "note": "大发趣论注属于南传上座部阿毗达磨注疏；不作为第2层非上座部注疏。"
     },
     "B07n0025": {
       "layer": 4,
@@ -578,9 +787,9 @@
       "note": "复核后判为禅、天台、华严、净土、密教、律宗或宗派仪轨/语录资料，归第7层。"
     },
     "B06n0006": {
-      "layer": 1,
+      "layer": null,
       "confidence": "medium",
-      "note": "复核后判为早期经典、南传经部或本生类资料，归第1层。"
+      "note": "南传巴利经部／小部资料；不作为第1层非巴利平行经文。"
     },
     "B06n0009": {
       "layer": 4,
@@ -593,29 +802,29 @@
       "note": "复核后判为目录、编校说明、研究论文或出版附属资料，列为未归层参考。"
     },
     "B07n0011": {
-      "layer": 1,
+      "layer": null,
       "confidence": "medium",
-      "note": "复核后判为早期经典、南传经部或本生类资料，归第1层。"
+      "note": "南传巴利经部资料；不作为第1层非巴利平行经文。"
     },
     "B07n0012": {
-      "layer": 1,
+      "layer": null,
       "confidence": "medium",
-      "note": "复核后判为早期经典、南传经部或本生类资料，归第1层。"
+      "note": "南传巴利经部资料；不作为第1层非巴利平行经文。"
     },
     "B07n0013": {
-      "layer": 1,
+      "layer": null,
       "confidence": "medium",
-      "note": "复核后判为早期经典、南传经部或本生类资料，归第1层。"
+      "note": "南传巴利经部资料；不作为第1层非巴利平行经文。"
     },
     "B07n0014": {
-      "layer": 1,
+      "layer": null,
       "confidence": "medium",
-      "note": "复核后判为早期经典、南传经部或本生类资料，归第1层。"
+      "note": "南传巴利经部资料；不作为第1层非巴利平行经文。"
     },
     "B07n0020": {
-      "layer": 1,
-      "confidence": "medium",
-      "note": "复核后判为早期经典、南传经部或本生类资料，归第1层。"
+      "layer": null,
+      "confidence": "high",
+      "note": "《随念三宝经浅说》是南传巴利传统的后期浅说，不是非巴利早期经律平行本；保留原始资料但不纳入第1层。"
     },
     "B07n0021": {
       "layer": 7,
@@ -3710,12 +3919,18 @@
     "T85n2901": {
       "layer": 1,
       "confidence": "medium",
-      "note": "复核后判为早期经典、南传经部或本生类资料，归第1层。"
+      "tradition": "非巴利早期经文平行本",
+      "text_type": "法句类经文",
+      "evidence": "汉译《法句经》属于早期偈颂经文，作为非巴利语境的平行文本保留在第1层。",
+      "note": "法句经是非巴利早期经文平行本，归第1层。"
     },
     "T85n2902": {
-      "layer": 1,
+      "layer": 2,
       "confidence": "medium",
-      "note": "复核后判为早期经典、南传经部或本生类资料，归第1层。"
+      "tradition": "部派归属未定（非巴利早期注疏）",
+      "text_type": "《法句经》注疏",
+      "evidence": "题名明确为《法句经》疏，属于经文解释而非经文本身；现存材料不足以无争议地指定某一部派。",
+      "note": "法句经疏是非巴利早期注疏，部派归属未定，归第2层并保留说明。"
     },
     "T85n2903": {
       "layer": 7,
@@ -4183,9 +4398,9 @@
       "note": "复核后判为目录、编校说明、研究论文或出版附属资料，列为未归层参考。"
     },
     "ZW05n0045": {
-      "layer": 1,
+      "layer": null,
       "confidence": "medium",
-      "note": "复核后判为早期经典、南传经部或本生类资料，归第1层。"
+      "note": "南传巴利经部资料；不作为第1层非巴利平行经文。"
     },
     "ZW05n0046": {
       "layer": 7,
@@ -4193,14 +4408,14 @@
       "note": "藏外佛教文献中的晚出或流通文本，主要反映东亚宗派、疑伪经或地方佛教传统。"
     },
     "ZW05n0047": {
-      "layer": 1,
+      "layer": null,
       "confidence": "medium",
-      "note": "复核后判为早期经典、南传经部或本生类资料，归第1层。"
+      "note": "南传巴利经部资料；不作为第1层非巴利平行经文。"
     },
     "ZW05n0048": {
-      "layer": 1,
+      "layer": null,
       "confidence": "medium",
-      "note": "复核后判为早期经典、南传经部或本生类资料，归第1层。"
+      "note": "南传巴利经部资料；不作为第1层非巴利平行经文。"
     },
     "ZW05n0050": {
       "layer": null,
@@ -8656,16 +8871,16 @@
   "canons": {
     "N": {
       "confidence": "medium",
-      "note": "汉译南传大藏经（元亨寺版）按卷号细分：经律与小部经典入第1层，论藏七论入第3层，清净道论/摄义论入第4层；个别序文与史料用 text_overrides 处理。不是巴利语原典，仅汉译。",
+      "note": "汉译南传大藏经（元亨寺版）按卷号细分：巴利上座部经律与清净道论不进入第1、2层；论藏七论入第3层，弥兰王问经等体系论按第4层处理；个别文本用 text_overrides 处理。",
       "volume_ranges": [
         {
           "range": [
             1,
             47
           ],
-          "layer": 1,
+          "layer": null,
           "confidence": "high",
-          "note": "南传律藏、长部、中部、相应部、增支部、小部及义释类，归第1层巴利经律/阿含。"
+          "note": "汉译南传经律与小部资料属于巴利上座部传统；保留原始资料但不纳入第1层非巴利平行经文。"
         },
         {
           "range": [
@@ -8699,9 +8914,9 @@
             67,
             69
           ],
-          "layer": 2,
+          "layer": null,
           "confidence": "high",
-          "note": "清净道论，归第2层注疏/复注。"
+          "note": "清净道论属于巴利上座部传统；不纳入第1或第2层 CBETA 本地文本，V4 版本另行展示。"
         },
         {
           "range": [
