@@ -590,7 +590,7 @@
   {
    "id": "sanlun",
    "label": "三论",
-   "group": "唐代八宗",
+   "group": "宗派体系",
    "count": 3,
    "ids": [
     "T45n1852",
@@ -602,7 +602,7 @@
   {
    "id": "faxiang",
    "label": "法相",
-   "group": "唐代八宗",
+   "group": "宗派体系",
    "count": 1,
    "ids": [
     "X58n1013"
@@ -1302,7 +1302,7 @@
   {
    "id": "vinaya",
    "label": "律宗",
-   "group": "唐代八宗",
+   "group": "宗派体系",
    "count": 126,
    "ids": [
     "B08n0026",
@@ -1437,7 +1437,7 @@
   {
    "id": "pureland",
    "label": "净土宗",
-   "group": "唐代八宗",
+   "group": "宗派体系",
    "count": 100,
    "ids": [
     "B07n0024",
@@ -1546,7 +1546,7 @@
   {
    "id": "esoteric",
    "label": "密宗",
-   "group": "唐代八宗",
+   "group": "宗派体系",
    "count": 307,
    "ids": [
     "T08n0230",

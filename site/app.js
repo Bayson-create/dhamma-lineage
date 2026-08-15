@@ -122,6 +122,21 @@ function renderLayerCards(layer, accentVar) {
     if (v4Items.length) cards.push({ id: "v4", label: layer === 3 ? "V4 上座部阿毗达磨" : "V4 三语本", count: v4Items.length, ids: v4Items.map((r) => r.id) });
   }
 
+  // Keep the existing public modern-teacher entry separate from the
+  // permission-gated modern Theravada catalog. The public records remain in
+  // the CBETA index; only the latter depends on authorization.
+  if (layer === 8) {
+    const publicItems = INDEX.filter((r) => Number(r.layer) === 8 && r.source !== "modern_theravada");
+    if (publicItems.length && !cards.some((card) => card.id === "modern-public")) {
+      cards.unshift({ id: "modern-public", label: "现代法师", count: publicItems.length, ids: publicItems.map((r) => r.id) });
+    }
+  }
+
+  // Generated metadata may contain empty placeholders. Remove them before
+  // grouping so a zero-count academic-review card takes no space.
+  cards = cards.filter((card) => Number(card.count || 0) > 0);
+  if (!cards.length) return null;
+
   const wrap = document.createElement("div");
   const groups = new Map();
   for (const c of cards) {
@@ -130,7 +145,12 @@ function renderLayerCards(layer, accentVar) {
     groups.get(key).push(c);
   }
 
+  let lastRow = null;
+  const pendingCards = [];
   for (const [groupLabel, groupCards] of groups) {
+    const visibleCards = groupCards.filter((card) => card.id !== "pending_review" && card.label !== "待学术复核");
+    pendingCards.push(...groupCards.filter((card) => card.id === "pending_review" || card.label === "待学术复核"));
+    if (!visibleCards.length) continue;
     if (groupLabel !== "__default__") {
       const label = document.createElement("div");
       label.className = "home-cardgroup-label";
@@ -139,14 +159,15 @@ function renderLayerCards(layer, accentVar) {
     }
     const row = document.createElement("div");
     row.className = "home-cards";
+    lastRow = row;
     let i = 0;
-    while (i < groupCards.length) {
-      const c = groupCards[i];
-      if (PAIRED_CARD_IDS.has(c.id) && i + 1 < groupCards.length && PAIRED_CARD_IDS.has(groupCards[i + 1].id)) {
+    while (i < visibleCards.length) {
+      const c = visibleCards[i];
+      if (PAIRED_CARD_IDS.has(c.id) && i + 1 < visibleCards.length && PAIRED_CARD_IDS.has(visibleCards[i + 1].id)) {
         const pair = document.createElement("div");
         pair.className = "home-card-pair";
         pair.appendChild(renderCard(c, accentVar));
-        pair.appendChild(renderCard(groupCards[i + 1], accentVar));
+        pair.appendChild(renderCard(visibleCards[i + 1], accentVar));
         row.appendChild(pair);
         i += 2;
       } else {
@@ -155,6 +176,14 @@ function renderLayerCards(layer, accentVar) {
       }
     }
     wrap.appendChild(row);
+  }
+  if (pendingCards.length) {
+    if (!lastRow) {
+      lastRow = document.createElement("div");
+      lastRow.className = "home-cards";
+      wrap.appendChild(lastRow);
+    }
+    pendingCards.forEach((card) => lastRow.appendChild(renderCard(card, accentVar)));
   }
   return wrap;
 }
@@ -211,8 +240,9 @@ function renderHome() {
         const row = document.createElement("div");
         row.className = "home-cards";
         const v4Items = (layer === 1 || layer === 2) ? V4_INDEX.filter((r) => r.layer === layer) : [];
-        const localItems = v4Items.length ? items.filter((r) => r.source !== "tipitaka_v4") : items;
-        row.appendChild(renderCard({ id: "all", label: v4Items.length ? "CBETA 本地文本" : "浏览全部", count: localItems.length, ids: localItems.map((r) => r.id) }, accentVar));
+        const localItems = v4Items.length ? items.filter((r) => r.source !== "tipitaka_v4") : items.filter((r) => r.source !== "modern_theravada");
+        const localLabel = layer === 8 ? "现代法师" : (v4Items.length ? "CBETA 本地文本" : "浏览全部");
+        row.appendChild(renderCard({ id: "all", label: localLabel, count: localItems.length, ids: localItems.map((r) => r.id) }, accentVar));
         if (v4Items.length) row.appendChild(renderCard({ id: `v4-${layer}`, label: "V4 三语本", count: v4Items.length, ids: v4Items.map((r) => r.id) }, accentVar));
         if (layer === 1) row.appendChild(renderExternalCard("早期佛教研究站点 ↗", "https://bayson-create.github.io/Early-Buddhist/"));
         body.appendChild(row);
