@@ -147,7 +147,10 @@ function renderLayerCards(layer, accentVar) {
 
   let lastRow = null;
   const pendingCards = [];
-  for (const [groupLabel, groupCards] of groups) {
+  const groupOrder = layer === 7 ? ["哲学体系", "宗派体系", "补充传统", "__default__"] : Array.from(groups.keys());
+  for (const groupLabel of groupOrder) {
+    const groupCards = groups.get(groupLabel);
+    if (!groupCards) continue;
     const visibleCards = groupCards.filter((card) => card.id !== "pending_review" && card.label !== "待学术复核");
     pendingCards.push(...groupCards.filter((card) => card.id === "pending_review" || card.label === "待学术复核"));
     if (!visibleCards.length) continue;
