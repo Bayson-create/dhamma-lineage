@@ -20,7 +20,12 @@ There are two ways to adjust which layer a text ends up in, and they apply in th
 1. **`text_overrides`** — a per-document correction, keyed by CBETA id (the xml filename without extension, e.g. `"T30n1564"`). Checked *first*, before any canon/volume rule, so this is how you fix one specific text without touching the broader rule that everything else in its canon/volume range still relies on. It's also how you surface an individual text from an otherwise-unmapped canon (A/C/K/L/P/S/U/GA/GB/D/ZS/...) instead of leaving it `null`. See the `A091n1057` entry in `data/layer_mapping.json` for a worked example.
 2. **`canons`** — the broad rule, either a flat `{"layer": N}` for a whole canon (e.g. TX = 太虛大師全書 → layer 8) or `volume_ranges` for the Taishō canon, matching the traditional 部 catalog divisions. Change this when an entire volume range or canon is misclassified, not for a single text — that's what overrides are for.
 
-After editing `data/layer_mapping.json`, re-run `scripts/build_index.py` (see "Running locally" below) to regenerate `data/index.json` and confirm the change took effect for the specific `id` you touched before pushing.
+The published build uses the versioned `data/layer_mapping_v4.json`. The
+original `data/layer_mapping.json` remains as the rollback source. Every
+record in `site/data/index.json` carries `lineage_mapping_version` and an
+explicit `review_status`; records without evidence remain searchable but are
+not silently promoted into an eight-layer card. `data/lineage-v4-audit.json`
+is the per-record audit manifest.
 
 ## Architecture
 
@@ -39,9 +44,10 @@ The raw CBETA corpus (~3.4GB) is **not** committed to this repository. CI (`.git
 
 ```bash
 git clone https://github.com/cbeta-org/xml-p5.git corpus
-python3 scripts/build_index.py corpus -o data/index.json -m data/layer_mapping.json
+python3 scripts/build_index.py corpus -o data/index.json -m data/layer_mapping_v4.json
 python3 scripts/extract_fulltext.py corpus --index data/index.json --out-dir data/fulltext
 python3 scripts/build_search_index.py --df-ceiling 0.35 --buckets 256
+python3 scripts/validate_lineage_v4.py --index data/index.json --mapping data/layer_mapping_v4.json --audit data/lineage-v4-audit.json --search-index data/search_index
 mkdir -p site/data
 cp data/index.json site/data/index.json
 cp -r data/fulltext site/data/fulltext

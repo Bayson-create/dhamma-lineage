@@ -1,13 +1,11 @@
 #!/usr/bin/env python3
-"""Curates the featured-category cards shown on the redesigned homepage
-(site/index.html) for layers 3-7, matching texts in site/data/index.json
-by title keyword (the same style of keyword list build_index.py already
-uses to explain a text's layer assignment - reused here for the finer-
-grained sub-categories the homepage cards need).
+"""Build featured cards from reviewed lineage metadata.
 
-Every text in a layer ends up in exactly one card: a named category if its
-title matches that category's keywords (first match wins, in the order
-listed below), otherwise the layer's catch-all "其他经典" card.
+The former implementation classified every title by a loose first-match
+keyword list, which made a large ``其他经典`` bin and could mislabel a work.
+This version consumes explicit ``lineage_category`` values written by the
+versioned lineage mapping. A title match is a review candidate, not historical
+evidence, so anything without an explicit category is visibly ``待学术复核``.
 
 Output: site/data/layer_cards.json, consumed by home.js.
 """
@@ -22,9 +20,10 @@ OUT_PATH = SITE_DIR / "data" / "layer_cards.json"
 # layers 5 and 7, which the reference design splits into two rows.
 LAYER_CARD_DEFS = {
     3: [
-        ("sarvastivada", "说一切有部阿毗达磨", ["集異門", "法蘊", "識身", "界身", "品類", "發智", "施設", "三法度", "薩婆多", "眾事分", "八犍度", "阿毘達磨"], None),
-        ("other_sectarian", "其他部派阿毗达磨", ["舍利弗", "五法行"], None),
-        ("unresolved", "部派归属未定", ["佛阿毘曇經"], None),
+        ("sarvastivada", "说一切有部阿毗达磨", ["集異門", "法蘊", "識身", "界身", "品類", "發智", "施設", "三法度", "薩婆多", "眾事分", "八犍度"], None),
+        ("dharmaguptaka", "法藏部／分别说系阿毗达磨", [], None),
+        ("pudgalavada", "正量部阿毗达磨（残本）", [], None),
+        ("early_unresolved", "早期阿毗达磨（部派待考）", [], None),
     ],
     4: [
         ("vimuttimagga", "解脫道論", ["解脫道"], None),
@@ -50,18 +49,42 @@ LAYER_CARD_DEFS = {
         ("bodhicaryavatara", "入菩薩行論", ["入菩薩行"], None),
     ],
     7: [
+        # Keep the existing philosophical core cards intact.  The two
+        # Chinese-school cards below collect later school-forming material.
+        ("sanlun", "三论", ["三論", "嘉祥", "吉藏"], "唐代八宗"),
+        ("faxiang", "法相", ["法相", "慈恩", "窺基", "唯識述記"], "唐代八宗"),
         ("madhyamaka_school", "中觀", ["中觀"], "哲学体系"),
         ("yogacara_school", "唯識", ["唯識", "八識規矩", "八識"], "哲学体系"),
         ("tiantai", "天台", ["天台", "止觀", "四教", "法華文句", "法華玄義"], "宗派体系"),
         ("huayan_school", "華嚴", ["華嚴", "法界", "五教", "一乘"], "宗派体系"),
         ("chan", "禪宗", ["禪", "語錄", "祖堂", "傳燈", "壇經", "公案", "頌古", "牧牛"], "宗派体系"),
-        ("tibetan", "藏傳", ["密", "真言", "瑜伽", "壇", "道場儀", "燄口", "大手印", "大圓滿", "道次第", "宗喀巴", "西藏"], "宗派体系"),
+        ("vinaya", "律宗", ["律", "戒", "毘尼", "梵網"], "唐代八宗"),
+        ("pureland", "净土宗", ["淨土", "净土", "念佛", "往生", "阿彌陀", "阿弥陀"], "唐代八宗"),
+        ("esoteric", "密宗", ["真言", "陀羅尼", "曼荼羅", "灌頂", "密教", "金剛頂", "大日經"], "唐代八宗"),
+        ("tibetan", "藏传传统", ["大手印", "大圓滿", "道次第", "宗喀巴", "西藏"], "补充传统"),
     ],
 }
 
 
 def matches(title: str, keywords: list[str]) -> bool:
     return any(k in title for k in keywords)
+
+
+EXPLICIT = {
+    "T28n1548": "dharmaguptaka",  # Śāriputrābhidharma: Dharmaguptaka/Vibhajyavāda evidence lane
+    "T24n1482": "pudgalavada",    # nine-part Pudgalavāda/Saṃmitīya remnant
+    "T28n1557": "early_unresolved",  # early translation; school remains open
+}
+
+
+def category_for(record, defs):
+    explicit = EXPLICIT.get(record["id"])
+    if explicit:
+        return explicit
+    category = record.get("lineage_category")
+    if category and any(category == card_id for card_id, *_ in defs):
+        return category
+    return "pending_review"
 
 
 def main():
@@ -73,20 +96,22 @@ def main():
     out = {}
     for layer, defs in LAYER_CARD_DEFS.items():
         texts = by_layer.get(layer, [])
-        claimed_ids = set()
         cards = []
         for card_id, label, keywords, group in defs:
-            matched = [r for r in texts if r["id"] not in claimed_ids and matches(r.get("title") or "", keywords)]
-            claimed_ids.update(r["id"] for r in matched)
+            matched = []
+            for r in texts:
+                if category_for(r, defs) == card_id:
+                    matched.append(r)
             cards.append({
                 "id": card_id,
                 "label": label,
                 "group": group,
                 "count": len(matched),
                 "ids": [r["id"] for r in matched],
+                "classification": "explicit_lineage_mapping",
             })
-        remainder = [r["id"] for r in texts if r["id"] not in claimed_ids]
-        cards.append({"id": "other", "label": "其他经典", "group": None, "count": len(remainder), "ids": remainder})
+        remainder = [r["id"] for r in texts if category_for(r, defs) == "pending_review"]
+        cards.append({"id": "pending_review", "label": "待学术复核", "group": None, "count": len(remainder), "ids": remainder, "review_status": "pending"})
         out[str(layer)] = cards
 
     OUT_PATH.write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")

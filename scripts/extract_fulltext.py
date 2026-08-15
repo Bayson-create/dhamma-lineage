@@ -90,6 +90,7 @@ def main():
     ap.add_argument("--limit", type=int, default=None)
     ap.add_argument("--index", default=None)
     ap.add_argument("--out-dir", default=None)
+    ap.add_argument("--resume", action="store_true", help="skip text files already extracted")
     args = ap.parse_args()
 
     script_dir = Path(__file__).resolve().parent
@@ -107,6 +108,9 @@ def main():
     for i, rec in enumerate(records, 1):
         xml_path = corpus_root / rec["path"]
         out_path = out_dir / f"{rec['id']}.txt"
+        if args.resume and out_path.exists() and out_path.stat().st_size > 0:
+            ok += 1
+            continue
         try:
             paras = extract_paragraphs(xml_path)
         except ET.ParseError as e:

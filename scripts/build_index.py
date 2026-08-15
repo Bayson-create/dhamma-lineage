@@ -86,25 +86,37 @@ def load_mapping(mapping_path: Path):
 
 
 def assign_layer(doc_id, meta, mapping):
+    review = mapping.get("reviews", {}).get(doc_id, {})
+    category = mapping.get("category_overrides", {}).get(doc_id)
+
+    def with_review(value, source):
+        value = dict(value)
+        value.setdefault("classification_source", source)
+        if category:
+            value.setdefault("lineage_category", category)
+        value.update(review)
+        value.setdefault("review_status", "rule_based" if value.get("layer") is not None else "pending_review")
+        return value
+
     override = mapping.get("text_overrides", {}).get(doc_id)
     if override is not None:
-        return {
+        return with_review({
             "layer": override["layer"],
             "confidence": override.get("confidence", "high"),
             "note": override.get("note", "manual override"),
             "tradition": override.get("tradition"),
             "text_type": override.get("text_type"),
             "evidence": override.get("evidence"),
-        }
+        }, "text_override")
 
     canon = meta.get("canon")
     vol = meta.get("vol")
     rule = mapping.get("canons", {}).get(canon)
     if rule is None:
-        return {"layer": None, "confidence": "unmapped", "note": "canon not in mapping table"}
+        return with_review({"layer": None, "confidence": "unmapped", "note": "canon not in mapping table"}, "unmapped_canon")
 
     if "layer" in rule:
-        return {"layer": rule["layer"], "confidence": rule.get("confidence", "medium"), "note": rule.get("note", "")}
+        return with_review({"layer": rule["layer"], "confidence": rule.get("confidence", "medium"), "note": rule.get("note", "")}, "canon_rule")
 
     if "volume_ranges" in rule and vol is not None:
         try:
@@ -115,10 +127,10 @@ def assign_layer(doc_id, meta, mapping):
             for r in rule["volume_ranges"]:
                 lo, hi = r["range"]
                 if lo <= v <= hi:
-                    return {"layer": r["layer"], "confidence": r.get("confidence", "medium"), "note": r.get("note", "")}
-        return {"layer": None, "confidence": "unmapped", "note": "volume out of known ranges"}
+                    return with_review({"layer": r["layer"], "confidence": r.get("confidence", "medium"), "note": r.get("note", "")}, "volume_rule")
+        return with_review({"layer": None, "confidence": "unmapped", "note": "volume out of known ranges"}, "volume_unmapped")
 
-    return {"layer": None, "confidence": "unmapped", "note": "no applicable rule"}
+    return with_review({"layer": None, "confidence": "unmapped", "note": "no applicable rule"}, "unmapped")
 
 
 def layer_reason(meta, layer, fallback_note):
@@ -253,6 +265,12 @@ def main():
                 "lineage_tradition": layer_info.get("tradition"),
                 "lineage_text_type": layer_info.get("text_type"),
                 "lineage_evidence": layer_info.get("evidence"),
+                "lineage_category": layer_info.get("lineage_category"),
+                "lineage_mapping_version": mapping.get("version"),
+                "review_status": layer_info.get("review_status"),
+                "classification_source": layer_info.get("classification_source"),
+                "review_reason": layer_info.get("review_reason"),
+                "review_basis": layer_info.get("review_basis"),
             }
         )
         if i % 1000 == 0:

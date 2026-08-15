@@ -7,6 +7,8 @@ on:
       - "site/**"
       - "scripts/**"
       - "data/layer_mapping.json"
+      - "data/layer_mapping_v4.json"
+      - "data/lineage-v4-audit.json"
       - "data/v4_layer_mapping.json"
       - ".github/workflows/deploy.yml"
   workflow_dispatch: {}
@@ -31,13 +33,21 @@ jobs:
         run: git clone --depth 1 https://github.com/cbeta-org/xml-p5.git corpus
 
       - name: Build metadata index (8-layer classification)
-        run: python3 scripts/build_index.py corpus -o data/index.json -m data/layer_mapping.json
+        run: python3 scripts/build_index.py corpus -o data/index.json -m data/layer_mapping_v4.json
 
       - name: Extract plain-text paragraphs
         run: python3 scripts/extract_fulltext.py corpus --index data/index.json --out-dir data/fulltext
 
       - name: Build full-text search index
         run: python3 scripts/build_search_index.py --df-ceiling 0.35 --buckets 256
+
+      - name: Validate lineage-v4 artifacts
+        run: |
+          python3 scripts/validate_lineage_v4.py \
+            --index data/index.json \
+            --mapping data/layer_mapping_v4.json \
+            --audit data/lineage-v4-audit.json \
+            --search-index data/search_index
 
       - name: Build light V4 lineage catalog
         run: |
