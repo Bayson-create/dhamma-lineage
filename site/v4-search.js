@@ -21,10 +21,13 @@
   const simplify = value => typeof toSimplified === 'function' ? toSimplified(String(value || '')) : String(value || '');
   const href = (item, query) => item.reader_url || `https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/${encodeURIComponent(item.work_id)}?row=${encodeURIComponent(item.row_id)}&hl=${encodeURIComponent(query)}&hl_lang=zh&hl_anchor=${encodeURIComponent(item.anchor || item.snippet || '')}`;
   const retryButton = query => `<button type="button" class="v4-lineage-retry" data-v4-retry="${escapeHtml(query)}">重试 V4 检索</button>`;
-  function section(data, query) {
+  function section(data, query, visibleCount = 5) {
     const groups = new Map([[1, []], [2, []], [3, []], [4, []]]);
-    (data.results || []).forEach(item => { if (groups.has(Number(item.lineage_layer))) groups.get(Number(item.lineage_layer)).push(item); });
-    let html = `<section class="v4-lineage-results"><div class="v4-lineage-heading">V4 三语本 <span>${Number(data.total || 0).toLocaleString()} 处命中</span><small>正文 · 精确行定位</small></div>`;
+    const results = data.results || [];
+    const visible = results.slice(0, visibleCount);
+    visible.forEach(item => { if (groups.has(Number(item.lineage_layer))) groups.get(Number(item.lineage_layer)).push(item); });
+    const total = Number(data.total || results.length);
+    let html = `<section class="v4-lineage-results"><div class="v4-lineage-heading">V4 三语本 <span>${total.toLocaleString()} 处命中</span><small>正文 · 精确行定位 · 已显示 ${Math.min(visibleCount, results.length).toLocaleString()} 条</small></div>`;
     for (const [layer, items] of groups) {
       if (!items.length) continue;
       html += `<div class="v4-lineage-group"><h3>第${layer}层 · V4 三语本 <small>${items.length} 条</small></h3><ul>`;
@@ -32,7 +35,9 @@
       html += '</ul></div>';
     }
     if (!data.results?.length) html += `<p class="v4-lineage-empty">V4 三语本未找到正文命中。</p>`;
-    if (data.next_cursor) html += `<button class="v4-lineage-next" data-v4-cursor="${escapeHtml(data.next_cursor)}">加载下一页</button>`;
+    const shown = Math.min(visibleCount, results.length);
+    const remaining = Math.max(0, total - shown);
+    if (remaining > 0) html += `<div class="v4-lineage-more"><button class="v4-lineage-expand" data-v4-visible="${shown}" data-v4-cursor="${escapeHtml(data.next_cursor || '')}">展开其余 ${remaining.toLocaleString()} 篇</button><small>本次展开最多 40 篇；结果总数不截断</small></div>`;
     return html + '</section>';
   }
   async function search(query, cursor = null) {
@@ -48,24 +53,35 @@
     box.innerHTML = '<div class="v4-lineage-loading">V4 三语本检索中…</div>';
     try {
       const data = await search(query);
-      box.innerHTML = section(data, query);
-      bindNext(box.querySelector('.v4-lineage-results'), query);
+      renderState({ box, query, data, visibleCount: 5 });
     } catch (error) {
       box.innerHTML = `<div class="v4-lineage-error">V4 三语本暂时不可用：${escapeHtml(error.message)} ${retryButton(query)}</div>`;
       const retry = box.querySelector('[data-v4-retry]');
       retry?.addEventListener('click', () => renderInto(query, box));
     }
   }
-  function bindNext(source, query) {
-    const next = source?.querySelector('.v4-lineage-next');
-    if (!next) return;
-    const container = source.parentElement;
-    next.addEventListener('click', async () => {
-      next.disabled = true; next.textContent = '加载中…';
+  function renderState(state) {
+    state.box.innerHTML = section(state.data, state.query, state.visibleCount);
+    const source = state.box.querySelector('.v4-lineage-results');
+    const expand = source?.querySelector('.v4-lineage-expand');
+    if (!expand) return;
+    expand.addEventListener('click', async () => {
+      expand.disabled = true;
+      expand.textContent = '正在展开…';
       try {
-        const page = await search(query, next.dataset.v4Cursor); source.outerHTML = section(page, query);
-        bindNext(container.querySelector('.v4-lineage-results'), query);
-      } catch (error) { next.disabled = false; next.textContent = `加载失败：${error.message}`; }
+        const shown = Number(expand.dataset.v4Visible || state.visibleCount);
+        if (shown < state.data.results.length) {
+          state.visibleCount = Math.min(shown + 40, state.data.results.length);
+        } else if (state.data.next_cursor) {
+          const page = await search(state.query, state.data.next_cursor);
+          state.data = { ...page, results: [...(state.data.results || []), ...(page.results || [])] };
+          state.visibleCount = Math.min(shown + 40, state.data.results.length);
+        }
+        renderState(state);
+      } catch (error) {
+        expand.disabled = false;
+        expand.textContent = `展开失败，重试（剩余 ${Math.max(0, Number(state.data.total || 0) - Number(expand.dataset.v4Visible || 0)).toLocaleString()} 篇）`;
+      }
     });
   }
   window.V4LineageSearch = { search, renderInto };

@@ -138,7 +138,9 @@ footer a { color: var(--accent); }
 .v4-lineage-group li > span { display: block; color: var(--muted); font-size: .8rem; }
 .v4-lineage-group p { margin: .2rem 0 0; color: var(--ink); font-size: .9rem; }
 .v4-lineage-group mark { background: #f5e2a5; color: inherit; padding: .05rem .15rem; }
-.v4-lineage-next { border: 1px solid var(--line); background: #fffaf2; border-radius: 999px; color: var(--accent); padding: .45rem .9rem; cursor: pointer; }
+.v4-lineage-more { display:flex; align-items:center; gap:.7rem; flex-wrap:wrap; margin:.8rem 0; }
+.v4-lineage-expand { border: 1px solid var(--line); background: #fffaf2; border-radius: 999px; color: var(--accent); padding: .45rem .9rem; cursor: pointer; font: inherit; }
+.v4-lineage-more small { color: var(--muted); }
 .v4-lineage-loading, .v4-lineage-error { color: var(--muted); padding: .7rem 0; }
 .v4-lineage-empty { color: var(--muted); margin: .6rem 0 .2rem; }
 .v4-lineage-retry { margin-left: .5rem; border: 1px solid var(--line); background: #fffaf2; border-radius: 999px; color: var(--accent); padding: .3rem .75rem; cursor: pointer; font: inherit; }

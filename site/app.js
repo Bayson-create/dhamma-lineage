@@ -2,6 +2,9 @@ let INDEX = [];
 let INDEX_BY_ID_MAP = null;
 let LAYER_CARDS = null;
 let V4_INDEX = [];
+let MODERN_INDEX = [];
+let MODERN_ACCESS = false;
+let MODERN_ERROR = '';
 let SEARCH_MODE = new URLSearchParams(location.search).get("mode") || "normal";
 if (!["normal", "keyword", "ai"].includes(SEARCH_MODE)) SEARCH_MODE = "normal";
 const displaySimplified = (value) => typeof toSimplified === "function" ? toSimplified(String(value ?? "")) : String(value ?? "");
@@ -28,13 +31,41 @@ async function loadIndex() {
     layer_confidence: "high",
     layer_note: "V4 不可变三语正文；层级来自 tipitaka lineage v2 映射。",
   }));
-  INDEX_BY_ID_MAP = new Map([...INDEX, ...V4_INDEX].map((r) => [r.id, r]));
   LAYER_CARDS = await cardsRes.json();
+  await loadModernTheravadaCatalog();
+  INDEX_BY_ID_MAP = new Map([...INDEX, ...V4_INDEX, ...MODERN_INDEX].map((r) => [r.id, r]));
   renderHome();
 }
 
+async function loadModernTheravadaCatalog() {
+  MODERN_INDEX = [];
+  MODERN_ACCESS = false;
+  MODERN_ERROR = '';
+  if (typeof isLoggedIn !== 'function' || !isLoggedIn()) return;
+  try {
+    const access = await apiFetch('/api/research/modern-theravada/access');
+    if (!access?.allowed) return;
+    const catalog = await apiFetch('/api/research/modern-theravada/catalog');
+    MODERN_ACCESS = true;
+    MODERN_INDEX = (catalog.works || []).map((work) => ({
+      id: `modern-theravada:${work.id}`,
+      private_work_id: work.id,
+      title: work.title || work.id,
+      author: work.author || '',
+      collection: work.collection || 'modern',
+      page_count: work.page_count || 0,
+      record_count: work.record_count || 0,
+      layer: 8,
+      source: 'modern_theravada',
+      layer_confidence: 'high',
+    }));
+  } catch (error) {
+    if (error?.status !== 401 && error?.status !== 403) MODERN_ERROR = error?.message || String(error);
+  }
+}
+
 function allRecords() {
-  return [...INDEX, ...V4_INDEX];
+  return [...INDEX, ...V4_INDEX, ...MODERN_INDEX];
 }
 
 function groupByLayer(records) {
@@ -87,13 +118,16 @@ function toggleDrilldown(cardEl, card) {
   const listHtml = items
     .map((r) => {
       const isV4 = r.source === "tipitaka_v4";
+      const isModern = r.source === "modern_theravada";
       const href = isV4
         ? (r.reader_url || `https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/${encodeURIComponent(r.id)}`)
+        : isModern
+          ? `https://bayson-create.github.io/Sutta-Study-Guide/#/research/modern-theravada/read/${encodeURIComponent(r.private_work_id)}`
         : `reader.html?id=${encodeURIComponent(r.id)}`;
-      const source = isV4 ? '<span class="source-pill">V4 三语本</span>' : "";
+      const source = isV4 ? '<span class="source-pill">V4 三语本</span>' : isModern ? '<span class="source-pill">现代上座部</span>' : "";
       const tradition = r.lineage_tradition ? `<span class="lineage-tag">${escapeHtml(displaySimplified(r.lineage_tradition))}</span>` : "";
       const textType = r.lineage_text_type ? `<span class="lineage-tag">${escapeHtml(displaySimplified(r.lineage_text_type))}</span>` : "";
-      return `<li><a href="${escapeHtml(href)}"${isV4 ? ' target="_blank" rel="noopener"' : ""} title="${escapeHtml(displaySimplified(r.lineage_evidence || r.layer_note || ""))}">${escapeHtml(displaySimplified(r.title || r.id))}</a>${source}${tradition}${textType}</li>`;
+      return `<li><a href="${escapeHtml(href)}"${isV4 || isModern ? ' target="_blank" rel="noopener"' : ""} title="${escapeHtml(displaySimplified(r.lineage_evidence || r.layer_note || ""))}">${escapeHtml(displaySimplified(r.title || r.id))}</a>${source}${tradition}${textType}</li>`;
     })
     .join("");
   panel.innerHTML = `<button class="home-drilldown-close">收起 ✕</button><h5>${card.label}（${items.length} 篇）</h5><ul class="text-list">${listHtml}</ul>`;
@@ -113,8 +147,8 @@ const PAIRED_CARD_IDS = new Set(["madhyamaka_base", "mahaprajnaparamita_sastra"]
 
 function renderLayerCards(layer, accentVar) {
   let cards = LAYER_CARDS[String(layer)];
-  if (!cards) return null;
-  cards = cards.slice();
+  if (!cards && layer !== 8) return null;
+  cards = (cards || []).slice();
   if (layer === 3 || layer === 4) {
     const byId = Object.fromEntries(cards.map((c) => [c.id, c]));
     cards = layer === 4 ? LAYER4_ORDER.map((id) => byId[id]).filter(Boolean) : cards;
@@ -129,6 +163,9 @@ function renderLayerCards(layer, accentVar) {
     const publicItems = INDEX.filter((r) => Number(r.layer) === 8 && r.source !== "modern_theravada");
     if (publicItems.length && !cards.some((card) => card.id === "modern-public")) {
       cards.unshift({ id: "modern-public", label: "现代法师", count: publicItems.length, ids: publicItems.map((r) => r.id) });
+    }
+    if (MODERN_INDEX.length && !cards.some((card) => card.id === 'modern-theravada')) {
+      cards.push({ id: 'modern-theravada', label: '现代上座部', count: MODERN_INDEX.length, ids: MODERN_INDEX.map((r) => r.id) });
     }
   }
 
@@ -291,13 +328,16 @@ function renderFiltered(records) {
           const li = document.createElement("li");
           const lowConf = r.layer_confidence === "low";
           const isV4 = r.source === "tipitaka_v4";
+          const isModern = r.source === "modern_theravada";
           const href = isV4
             ? (r.reader_url || `https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/${encodeURIComponent(r.id)}`)
+            : isModern
+              ? `https://bayson-create.github.io/Sutta-Study-Guide/#/research/modern-theravada/read/${encodeURIComponent(r.private_work_id)}`
             : `reader.html?id=${encodeURIComponent(r.id)}`;
-          const source = isV4 ? '<span class="source-pill">V4 三语本</span>' : "";
+          const source = isV4 ? '<span class="source-pill">V4 三语本</span>' : isModern ? '<span class="source-pill">现代上座部</span>' : "";
           const tradition = r.lineage_tradition ? `<span class="lineage-tag">${escapeHtml(displaySimplified(r.lineage_tradition))}</span>` : "";
           const textType = r.lineage_text_type ? `<span class="lineage-tag">${escapeHtml(displaySimplified(r.lineage_text_type))}</span>` : "";
-          li.innerHTML = `<a class="${lowConf ? "confidence-low" : ""}" href="${escapeHtml(href)}"${isV4 ? ' target="_blank" rel="noopener"' : ""} title="${escapeHtml(displaySimplified(r.lineage_evidence || r.layer_note || ""))}">${escapeHtml(displaySimplified(r.title || r.id))}</a>${source}${tradition}${textType}`;
+          li.innerHTML = `<a class="${lowConf ? "confidence-low" : ""}" href="${escapeHtml(href)}"${isV4 || isModern ? ' target="_blank" rel="noopener"' : ""} title="${escapeHtml(displaySimplified(r.lineage_evidence || r.layer_note || ""))}">${escapeHtml(displaySimplified(r.title || r.id))}</a>${source}${tradition}${textType}`;
           ul.appendChild(li);
         });
       body.appendChild(ul);
@@ -513,21 +553,40 @@ function v4HighlightSnippet(item, query) {
   return (html + escapeHtml(text.slice(last))).slice(0, 1400);
 }
 
-function renderUnifiedLayerResults(localGroups, v4Run, query, { keyword = false, mode = 'exact' } = {}) {
+function renderUnifiedLayerResults(localGroups, v4Run, query, { keyword = false, mode = 'exact', modernRun = null, visibleCount = 5 } = {}) {
   const v4Groups = {};
   for (const layer of LAYER_ORDER) v4Groups[layer] = [];
   for (const item of v4Run?.results || []) {
     const layer = Number(item.lineage_layer);
     if (v4Groups[layer]) v4Groups[layer].push(item);
   }
+  const rows = [];
+  for (const layer of [...LAYER_ORDER, 0]) {
+    const localItems = localGroups?.[layer] || [];
+    const v4Items = v4Groups[layer] || [];
+    rows.push({ layer, localItems, v4Items, items: [...localItems, ...v4Items] });
+  }
+  let budget = Math.max(0, visibleCount);
+  const visibleByLayer = new Map();
+  for (const row of rows) {
+    const visible = row.items.slice(0, budget);
+    visibleByLayer.set(row.layer, visible);
+    budget -= visible.length;
+  }
+  const loadedCount = rows.reduce((sum, row) => sum + row.items.length, 0);
+  const availableTotal = rows.reduce((sum, row) => sum + row.localItems.length, 0)
+    + Number(v4Run?.total || v4Run?.results?.length || 0)
+    + Number(modernRun?.total || modernRun?.results?.length || 0);
   let html = '<section class="lineage-unified-results">';
   if (v4Run?.error) html += `<p class="fulltext-status">V4 三语本暂时不可用：${escapeHtml(v4Run.error)} <button type="button" data-v4-unified-retry>重试 V4 检索</button></p>`;
   else if (Number(v4Run?.total || 0)) html += `<p class="fulltext-status">CBETA 与 V4 按层统一展示 · V4 当前页 ${Number(v4Run.results?.length || 0)} 条／共 ${Number(v4Run.total).toLocaleString()} 处</p>`;
   for (const layer of [...LAYER_ORDER, 0]) {
-    const localItems = localGroups?.[layer] || [];
-    const v4Items = v4Groups[layer] || [];
-    const hasHits = localItems.length > 0 || v4Items.length > 0;
-    if (!hasHits && !keyword) continue;
+    const row = rows.find(item => item.layer === layer);
+    const visibleItems = visibleByLayer.get(layer) || [];
+    const localItems = visibleItems.filter(item => item.rec);
+    const v4Items = visibleItems.filter(item => !item.rec);
+    const hasHits = visibleItems.length > 0;
+    if (!hasHits) continue;
     const label = layer === 0 ? '未归入八层 · 参考资料' : LAYER_NAMES[layer];
     html += `<div class="layer-block ${hasHits ? 'open' : ''}" data-layer="${layer}"><div class="layer-header"><h2>${escapeHtml(displaySimplified(label))}</h2><span class="layer-count">${hasHits ? `${localItems.length + v4Items.length} 篇命中` : '空白'}</span></div><div class="layer-body">`;
     if (!hasHits) {
@@ -548,12 +607,16 @@ function renderUnifiedLayerResults(localGroups, v4Run, query, { keyword = false,
         const href = item.reader_url || `https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/${encodeURIComponent(item.work_id)}?row=${encodeURIComponent(item.row_id)}&hl=${encodeURIComponent(query)}&hl_lang=zh&hl_anchor=${encodeURIComponent(item.anchor || item.snippet || '')}`;
         return `<li><div class="hit-doc"><a href="${escapeHtml(href)}" target="_blank" rel="noopener">${escapeHtml(displaySimplified(item.title || item.work_id))}${item.paranum ? ` · ${escapeHtml(displaySimplified(item.paranum))}` : ''}</a><span class="source-pill">V4 三语本</span><span class="hit-count">${escapeHtml((item.path || []).map(displaySimplified).join(' / '))}</span></div><p class="snippet">${v4HighlightSnippet(item, query)}</p></li>`;
       });
-      html += `<ul class="fulltext-list">${collapsibleItems([...localLis, ...v4Lis], 5, '篇')}</ul>`;
+      html += `<ul class="fulltext-list">${[...localLis, ...v4Lis].join('')}</ul>`;
     }
     html += '</div></div>';
   }
-  if (!v4Run?.error && v4Run?.next_cursor) html += `<button type="button" data-v4-unified-next="${escapeHtml(v4Run.next_cursor)}">加载下一页 V4 命中</button>`;
-  if (!v4Run?.error && !(v4Run?.results || []).length && !Object.values(localGroups || {}).some(items => items?.length)) html += '<p class="fulltext-status">未检索到相关内容。</p>';
+  const hasMore = visibleCount < loadedCount || (!v4Run?.error && v4Run?.next_cursor) || (!modernRun?.error && modernRun?.next_cursor);
+  if (hasMore) {
+    const remaining = Math.max(0, availableTotal - Math.min(visibleCount, loadedCount));
+    html += `<div class="fulltext-progressive"><button type="button" data-unified-expand data-v4-cursor="${escapeHtml(v4Run?.next_cursor || '')}" data-modern-cursor="${escapeHtml(modernRun?.next_cursor || '')}" data-visible="${Math.min(visibleCount, loadedCount)}">展开其余 ${remaining.toLocaleString()} 篇</button><span class="fulltext-status">已显示 ${Math.min(visibleCount, loadedCount).toLocaleString()} 篇；每次展开最多 40 篇</span></div>`;
+  }
+  if (!v4Run?.error && !(v4Run?.results || []).length && !Object.values(localGroups || {}).some(items => items?.length) && !(modernRun?.results || []).length) html += '<p class="fulltext-status">未检索到相关内容。</p>';
   return html + '</section>';
 }
 
@@ -565,20 +628,30 @@ function bindUnifiedV4Pagination(root, query, state) {
     retry.disabled = true; retry.textContent = '正在重试…';
     try {
       state.run = await window.V4LineageSearch.search(query);
-      wrapper.outerHTML = renderUnifiedLayerResults(state.localGroups, state.run, query, state.options);
+      wrapper.outerHTML = renderUnifiedLayerResults(state.localGroups, state.run, query, { ...state.options, modernRun: state.modernRun, visibleCount: state.visibleCount });
       bindUnifiedV4Pagination(root, query, state);
     } catch (error) { retry.disabled = false; retry.textContent = `重试失败：${error.message}`; }
   });
-  const next = wrapper.querySelector('[data-v4-unified-next]');
+  const next = wrapper.querySelector('[data-unified-expand]');
   if (!next) return;
   next.addEventListener('click', async () => {
-    next.disabled = true; next.textContent = '加载中…';
+    next.disabled = true; next.textContent = '正在展开…';
     try {
-      const page = await window.V4LineageSearch.search(query, next.dataset.v4UnifiedNext);
-      state.run = { ...page, results: [...(state.run.results || []), ...(page.results || [])] };
-      wrapper.outerHTML = renderUnifiedLayerResults(state.localGroups, state.run, query, state.options);
+      const visible = Number(next.dataset.visible || state.visibleCount || 5);
+      const loaded = (state.localGroups ? Object.values(state.localGroups).reduce((sum, items) => sum + (items?.length || 0), 0) : 0)
+        + (state.run?.results?.length || 0) + (state.modernRun?.results?.length || 0);
+      if (visible < loaded) {
+        state.visibleCount = Math.min(visible + 40, loaded);
+      } else {
+        const requests = [];
+        if (state.run?.next_cursor) requests.push(window.V4LineageSearch.search(query, state.run.next_cursor).then(page => { state.run = { ...page, results: [...(state.run.results || []), ...(page.results || [])] }; }));
+        if (state.modernRun?.next_cursor && window.ModernLineageSearch?.search) requests.push(window.ModernLineageSearch.search(query, state.modernRun.next_cursor).then(page => { state.modernRun = { ...page, results: [...(state.modernRun.results || []), ...(page.results || [])] }; }));
+        await Promise.all(requests);
+        state.visibleCount = visible + 40;
+      }
+      wrapper.outerHTML = renderUnifiedLayerResults(state.localGroups, state.run, query, { ...state.options, modernRun: state.modernRun, visibleCount: state.visibleCount });
       bindUnifiedV4Pagination(root, query, state);
-    } catch (error) { next.disabled = false; next.textContent = `加载失败：${error.message}`; }
+    } catch (error) { next.disabled = false; next.textContent = `展开失败，重试（${error.message}）`; }
   });
 }
 
