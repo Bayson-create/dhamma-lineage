@@ -37,17 +37,33 @@
     if (!data.results?.length) html += `<p class="v4-lineage-empty">V4 三语本未找到正文命中。</p>`;
     const shown = Math.min(visibleCount, results.length);
     const remaining = Math.max(0, total - shown);
-    if (remaining > 0) html += `<div class="v4-lineage-more"><button class="v4-lineage-expand" data-v4-visible="${shown}" data-v4-cursor="${escapeHtml(data.next_cursor || '')}">展开其余 ${remaining.toLocaleString()} 篇</button><small>本次展开最多 40 篇；结果总数不截断</small></div>`;
+    if (remaining > 0) html += `<div class="v4-lineage-more"><button class="v4-lineage-expand" data-v4-visible="${shown}" data-v4-cursor="${escapeHtml(data.next_cursor || '')}">展开其余 ${remaining.toLocaleString()} 篇</button></div>`;
     return html + '</section>';
   }
-  async function search(query, cursor = null) {
-    const params = new URLSearchParams({ q: query, lang: 'zh', limit: '40', types: 'corpus', layer: '1|2|3|4' });
+  async function search(query, cursor = null, layer = null) {
+    const params = new URLSearchParams({ q: query, lang: 'zh', limit: '40', types: 'corpus', layer: layer ? String(layer) : '1|2|3|4' });
     if (cursor) params.set('cursor', cursor);
     const response = await fetch(`${API}/api/tipitaka/v1/search?${params}`);
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const data = await response.json();
     if (data.error) throw new Error(data.error);
     return data;
+  }
+  async function searchByLayer(query) {
+    const pages = await Promise.all([1, 2, 3, 4].map(async layer => {
+      try {
+        return { ...(await search(query, null, layer)), layer };
+      } catch (error) {
+        return { results: [], total: 0, next_cursor: null, error: error.message, layer };
+      }
+    }));
+    return {
+      query,
+      layers: Object.fromEntries(pages.map(page => [String(page.layer), page])),
+      results: pages.flatMap(page => page.results || []),
+      total: pages.reduce((sum, page) => sum + Number(page.total || 0), 0),
+      error: pages.every(page => page.error) ? pages[0].error : pages.some(page => page.error) ? '部分层级 V4 检索暂时不可用' : null,
+    };
   }
   async function renderInto(query, box) {
     box.innerHTML = '<div class="v4-lineage-loading">V4 三语本检索中…</div>';
@@ -84,5 +100,5 @@
       }
     });
   }
-  window.V4LineageSearch = { search, renderInto };
+  window.V4LineageSearch = { search, searchByLayer, renderInto };
 })();

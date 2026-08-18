@@ -64,6 +64,87 @@ async function loadModernTheravadaCatalog() {
   }
 }
 
+async function searchModernPrivate(query, cursor = null) {
+  if (!MODERN_ACCESS) return { results: [], total: 0, next_cursor: null, allowed: false };
+  const params = new URLSearchParams({ q: query, page_size: '40' });
+  if (cursor) params.set('cursor', cursor);
+  try {
+    const data = await apiFetch(`/api/research/modern-theravada/search?${params.toString()}`);
+    return { ...data, allowed: true, error: null };
+  } catch (error) {
+    return { results: [], total: 0, next_cursor: null, allowed: true, error: error.message };
+  }
+}
+
+function metadataNeedle(value) {
+  return String(value || '').replace(/\s+/g, '').toLocaleLowerCase();
+}
+
+function metadataVariants(value) {
+  const raw = String(value || '');
+  return [...new Set([raw, toTraditional(raw), displaySimplified(raw)].map(metadataNeedle).filter(Boolean))];
+}
+
+function titleAuthorMatches(query) {
+  const needles = metadataVariants(query);
+  if (!needles.length) return [];
+  return allRecords().flatMap((rec) => {
+    const fields = [];
+    const title = metadataNeedle(rec.title);
+    const author = metadataNeedle(rec.author);
+    const path = metadataNeedle(Array.isArray(rec.path) ? rec.path.join(' / ') : rec.path);
+    if (needles.some((needle) => title.includes(needle))) fields.push('经名');
+    if (needles.some((needle) => path.includes(needle))) fields.push('目录');
+    if (needles.some((needle) => author.includes(needle))) fields.push('作者');
+    return fields.length ? [{ rec, matchFields: [...new Set(fields)] }] : [];
+  });
+}
+
+function mergeTitleAuthorMatches(localGroups, v4Run, modernRun, matches) {
+  const seenLocal = new Set(Object.values(localGroups).flat().map(({ rec }) => rec?.id));
+  for (const { rec, matchFields } of matches) {
+    if (rec.source === 'tipitaka_v4') {
+      const page = v4Run.layers?.[String(rec.layer)] || v4Run.layers?.[rec.layer];
+      if (!page) continue;
+      const existing = page.results.find((item) => item.work_id === rec.id);
+      if (!existing) {
+        page.results.unshift({
+          ...rec,
+          work_id: rec.id,
+          lineage_layer: rec.layer,
+          titleMatch: true,
+          titleMatchOnly: true,
+          matchFields,
+          reader_url: rec.reader_url,
+        });
+        page.total = Number(page.total || 0) + 1;
+      } else {
+        existing.matchFields = [...new Set([...(existing.matchFields || []), ...matchFields])];
+      }
+      continue;
+    }
+    if (rec.source === 'modern_theravada') {
+      if (!modernRun || !MODERN_ACCESS) continue;
+      const existing = modernRun.results.find((item) => item.work_id === rec.private_work_id);
+      if (!existing) {
+        modernRun.results.unshift({ ...rec, work_id: rec.private_work_id, titleMatch: true, titleMatchOnly: true, matchFields });
+        modernRun.total = Number(modernRun.total || 0) + 1;
+      } else {
+        existing.matchFields = [...new Set([...(existing.matchFields || []), ...matchFields])];
+      }
+      continue;
+    }
+    if (seenLocal.has(rec.id)) {
+      const current = Object.values(localGroups).flat().find(({ rec: item }) => item?.id === rec.id);
+      if (current) current.item.matchFields = [...new Set([...(current.item.matchFields || []), ...matchFields])];
+      continue;
+    }
+    const layer = LAYER_ORDER.includes(rec.layer) ? rec.layer : 0;
+    localGroups[layer].unshift({ rec, item: { matches: [], titleMatch: true, matchFields, relevance: 1 } });
+    seenLocal.add(rec.id);
+  }
+}
+
 function allRecords() {
   return [...INDEX, ...V4_INDEX, ...MODERN_INDEX];
 }
@@ -337,7 +418,8 @@ function renderFiltered(records) {
           const source = isV4 ? '<span class="source-pill">V4 三语本</span>' : isModern ? '<span class="source-pill">现代上座部</span>' : "";
           const tradition = r.lineage_tradition ? `<span class="lineage-tag">${escapeHtml(displaySimplified(r.lineage_tradition))}</span>` : "";
           const textType = r.lineage_text_type ? `<span class="lineage-tag">${escapeHtml(displaySimplified(r.lineage_text_type))}</span>` : "";
-          li.innerHTML = `<a class="${lowConf ? "confidence-low" : ""}" href="${escapeHtml(href)}"${isV4 || isModern ? ' target="_blank" rel="noopener"' : ""} title="${escapeHtml(displaySimplified(r.lineage_evidence || r.layer_note || ""))}">${escapeHtml(displaySimplified(r.title || r.id))}</a>${source}${tradition}${textType}`;
+          const matchLabel = r._matchFields?.length ? `<span class="hit-count">${escapeHtml(r._matchFields.join('／'))}命中</span>` : "";
+          li.innerHTML = `<a class="${lowConf ? "confidence-low" : ""}" href="${escapeHtml(href)}"${isV4 || isModern ? ' target="_blank" rel="noopener"' : ""} title="${escapeHtml(displaySimplified(r.lineage_evidence || r.layer_note || ""))}">${escapeHtml(displaySimplified(r.title || r.id))}</a>${source}${matchLabel}${tradition}${textType}`;
           ul.appendChild(li);
         });
       body.appendChild(ul);
@@ -388,13 +470,7 @@ async function runSelectedSearch() {
     return;
   }
 
-  // Titles/authors in the index are Traditional (the corpus is almost
-  // entirely Traditional); normalize the query the same way full-text
-  // search does so typing Simplified still matches.
-  const qTrad = typeof toTraditional === "function" ? toTraditional(q) : q;
-  const filtered = INDEX.filter(
-    (r) => (r.title || "").includes(qTrad) || (r.author || "").includes(qTrad)
-  );
+  const filtered = titleAuthorMatches(q).map(({ rec, matchFields }) => ({ ...rec, _matchFields: matchFields }));
   if (q.length >= 2) {
     document.getElementById("layers").innerHTML = "";
     await runFullTextSearch(q);
@@ -553,105 +629,198 @@ function v4HighlightSnippet(item, query) {
   return (html + escapeHtml(text.slice(last))).slice(0, 1400);
 }
 
-function renderUnifiedLayerResults(localGroups, v4Run, query, { keyword = false, mode = 'exact', modernRun = null, visibleCount = 5 } = {}) {
-  const v4Groups = {};
-  for (const layer of LAYER_ORDER) v4Groups[layer] = [];
-  for (const item of v4Run?.results || []) {
-    const layer = Number(item.lineage_layer);
-    if (v4Groups[layer]) v4Groups[layer].push(item);
+function v4LayerRun(v4Run, layer) {
+  if (v4Run?.layers?.[String(layer)]) return v4Run.layers[String(layer)];
+  if (v4Run?.layers?.[layer]) return v4Run.layers[layer];
+  const results = (v4Run?.results || []).filter(item => Number(item.lineage_layer) === Number(layer));
+  return { results, total: results.length, next_cursor: null, error: v4Run?.error || null, layer };
+}
+
+function ensureV4LayerRuns(v4Run) {
+  const run = v4Run || { results: [], total: 0, next_cursor: null };
+  if (run.layers) return run;
+  run.layers = Object.fromEntries([1, 2, 3, 4].map((layer) => [String(layer), {
+    results: (run.results || []).filter((item) => Number(item.lineage_layer) === layer),
+    total: (run.results || []).filter((item) => Number(item.lineage_layer) === layer).length,
+    next_cursor: null,
+    error: run.error || null,
+    layer,
+  }]));
+  return run;
+}
+
+function interleaveUnifiedItems(localItems, v4Items, modernItems) {
+  const sources = [
+    localItems.map(value => ({ source: 'cbeta', value })),
+    v4Items.map(value => ({ source: 'v4', value })),
+    modernItems.map(value => ({ source: 'modern', value })),
+  ];
+  const output = [];
+  const max = Math.max(...sources.map(source => source.length), 0);
+  for (let index = 0; index < max; index++) for (const source of sources) if (source[index]) output.push(source[index]);
+  return output;
+}
+
+function unifiedLayerTotal(localItems, v4, modernRun, layer) {
+  return localItems.length + Number(v4?.total || v4?.results?.length || 0) + (layer === 8 ? Number(modernRun?.total || modernRun?.results?.length || 0) : 0);
+}
+
+function createUnifiedLayerState(localGroups, v4Run, modernRun) {
+  const state = { layers: {} };
+  for (const layer of [...LAYER_ORDER, 0]) {
+    const total = unifiedLayerTotal(localGroups?.[layer] || [], v4LayerRun(v4Run, layer), modernRun, layer);
+    state.layers[layer] = { visibleCount: Math.min(5, total), total };
   }
-  const rows = [];
+  return state;
+}
+
+function renderUnifiedLayerResults(localGroups, v4Run, query, { keyword = false, mode = 'exact', modernRun = null, state = null } = {}) {
+  const layerState = state || createUnifiedLayerState(localGroups, v4Run, modernRun);
+  let html = '<section class="lineage-unified-results">';
+  let anyVisible = false;
+  let anyError = false;
   for (const layer of [...LAYER_ORDER, 0]) {
     const localItems = localGroups?.[layer] || [];
-    const v4Items = v4Groups[layer] || [];
-    rows.push({ layer, localItems, v4Items, items: [...localItems, ...v4Items] });
-  }
-  let budget = Math.max(0, visibleCount);
-  const visibleByLayer = new Map();
-  for (const row of rows) {
-    const visible = row.items.slice(0, budget);
-    visibleByLayer.set(row.layer, visible);
-    budget -= visible.length;
-  }
-  const loadedCount = rows.reduce((sum, row) => sum + row.items.length, 0);
-  const availableTotal = rows.reduce((sum, row) => sum + row.localItems.length, 0)
-    + Number(v4Run?.total || v4Run?.results?.length || 0)
-    + Number(modernRun?.total || modernRun?.results?.length || 0);
-  let html = '<section class="lineage-unified-results">';
-  if (v4Run?.error) html += `<p class="fulltext-status">V4 三语本暂时不可用：${escapeHtml(v4Run.error)} <button type="button" data-v4-unified-retry>重试 V4 检索</button></p>`;
-  else if (Number(v4Run?.total || 0)) html += `<p class="fulltext-status">CBETA 与 V4 按层统一展示 · V4 当前页 ${Number(v4Run.results?.length || 0)} 条／共 ${Number(v4Run.total).toLocaleString()} 处</p>`;
-  for (const layer of [...LAYER_ORDER, 0]) {
-    const row = rows.find(item => item.layer === layer);
-    const visibleItems = visibleByLayer.get(layer) || [];
-    const localItems = visibleItems.filter(item => item.rec);
-    const v4Items = visibleItems.filter(item => !item.rec);
-    const hasHits = visibleItems.length > 0;
-    if (!hasHits) continue;
+    const v4 = v4LayerRun(v4Run, layer);
+    const v4Items = v4.results || [];
+    const modernItems = layer === 8 ? (modernRun?.results || []) : [];
+    const allItems = interleaveUnifiedItems(localItems, v4Items, modernItems);
+    const current = layerState.layers[layer] || (layerState.layers[layer] = { visibleCount: 5, total: 0 });
+    const total = unifiedLayerTotal(localItems, v4, modernRun, layer);
+    current.total = total;
+    const visibleItems = allItems.slice(0, Math.min(current.visibleCount, total));
+    const v4Error = Boolean(v4?.error);
+    const modernError = layer === 8 && Boolean(modernRun?.error);
+    const hasError = v4Error || modernError;
+    if (!visibleItems.length && !hasError) continue;
+    anyVisible = anyVisible || visibleItems.length > 0;
+    anyError = anyError || hasError;
     const label = layer === 0 ? '未归入八层 · 参考资料' : LAYER_NAMES[layer];
-    html += `<div class="layer-block ${hasHits ? 'open' : ''}" data-layer="${layer}"><div class="layer-header"><h2>${escapeHtml(displaySimplified(label))}</h2><span class="layer-count">${hasHits ? `${localItems.length + v4Items.length} 篇命中` : '空白'}</span></div><div class="layer-body">`;
-    if (!hasHits) {
-      html += '<p class="empty">此层当前没有足够接近的字面命中。</p>';
-    } else {
-      const localLis = localItems.map(({ rec, item }) => {
-        if (item.titleMatch) {
-          return `<li><div class="hit-doc"><a href="reader.html?id=${encodeURIComponent(rec.id)}">${escapeHtml(displaySimplified(rec.title || rec.id))}</a><span class="source-pill">CBETA 本地文本</span><span class="hit-count">经名／作者命中${rec.author ? ` · ${escapeHtml(displaySimplified(rec.author))}` : ''}</span></div></li>`;
+    html += `<div class="layer-block open" data-layer="${layer}"><div class="layer-header"><h2>${escapeHtml(displaySimplified(label))}</h2><span class="layer-count">${visibleItems.length} 篇</span></div><div class="layer-body">`;
+    if (v4Error) html += `<p class="fulltext-status">V4 三语本暂时不可用：${escapeHtml(v4.error)} <button type="button" data-v4-layer-retry="${layer}">重试 V4 检索</button></p>`;
+    if (modernError) html += `<p class="fulltext-status">现代上座部私有检索暂时不可用：${escapeHtml(modernRun.error)} <button type="button" data-modern-layer-retry>重试现代资料</button></p>`;
+    if (visibleItems.length) {
+      const lis = visibleItems.map(({ source, value }) => {
+        if (source === 'cbeta') {
+          const { rec, item } = value;
+          if (item.titleMatch && !item.matches?.length) {
+            const fields = (item.matchFields || ['经名／作者']).join('／');
+            return `<li><div class="hit-doc"><a href="reader.html?id=${encodeURIComponent(rec.id)}">${escapeHtml(displaySimplified(rec.title || rec.id))}</a><span class="source-pill">CBETA 本地文本</span><span class="hit-count">${escapeHtml(fields)}命中${rec.author ? ` · ${escapeHtml(displaySimplified(rec.author))}` : ''}</span></div></li>`;
+          }
+          const rel = mode === 'fuzzy' ? `<span class="relevance">匹配度 ${Math.round(item.relevance * 100)}%</span>` : '';
+          const positionLis = item.matches.map(m => {
+            const href = `reader.html?id=${encodeURIComponent(rec.id)}&off=${m.offset}&len=${m.term.length}`;
+            return `<li><a href="${href}">${m.juan ? `卷${escapeHtml(m.juan)} · ` : ''}${highlightTerm(m.snippet, m.term)}</a></li>`;
+          });
+          const titleMeta = item.matchFields?.length ? `<span class="hit-count">${escapeHtml(item.matchFields.join('／'))}命中</span>` : '';
+          return `<li><div class="hit-doc"><a href="reader.html?id=${encodeURIComponent(rec.id)}">${escapeHtml(displaySimplified(rec.title || rec.id))}</a><span class="source-pill">CBETA 本地文本</span>${titleMeta}${rel}<span class="hit-count">${item.matches.length} 处${item.truncated ? '+' : ''}</span></div><ol class="match-positions">${collapsibleItems(positionLis, 5, '处')}</ol></li>`;
         }
-        const rel = mode === 'fuzzy' ? `<span class="relevance">匹配度 ${Math.round(item.relevance * 100)}%</span>` : '';
-        const positionLis = item.matches.map(m => {
-          const href = `reader.html?id=${encodeURIComponent(rec.id)}&off=${m.offset}&len=${m.term.length}`;
-          return `<li><a href="${href}">${m.juan ? `卷${escapeHtml(m.juan)} · ` : ''}${highlightTerm(m.snippet, m.term)}</a></li>`;
-        });
-        return `<li><div class="hit-doc"><a href="reader.html?id=${encodeURIComponent(rec.id)}">${escapeHtml(displaySimplified(rec.title || rec.id))}</a><span class="source-pill">CBETA 本地文本</span>${rel}<span class="hit-count">${item.matches.length} 处${item.truncated ? '+' : ''}</span></div><ol class="match-positions">${collapsibleItems(positionLis, 5, '处')}</ol></li>`;
-      });
-      const v4Lis = v4Items.map(item => {
-        const href = item.reader_url || `https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/${encodeURIComponent(item.work_id)}?row=${encodeURIComponent(item.row_id)}&hl=${encodeURIComponent(query)}&hl_lang=zh&hl_anchor=${encodeURIComponent(item.anchor || item.snippet || '')}`;
-        return `<li><div class="hit-doc"><a href="${escapeHtml(href)}" target="_blank" rel="noopener">${escapeHtml(displaySimplified(item.title || item.work_id))}${item.paranum ? ` · ${escapeHtml(displaySimplified(item.paranum))}` : ''}</a><span class="source-pill">V4 三语本</span><span class="hit-count">${escapeHtml((item.path || []).map(displaySimplified).join(' / '))}</span></div><p class="snippet">${v4HighlightSnippet(item, query)}</p></li>`;
-      });
-      html += `<ul class="fulltext-list">${[...localLis, ...v4Lis].join('')}</ul>`;
+        if (source === 'v4') {
+          const href = value.reader_url || `https://bayson-create.github.io/Sutta-Study-Guide/#/tipitaka/read/${encodeURIComponent(value.work_id)}?row=${encodeURIComponent(value.row_id || '')}&hl=${encodeURIComponent(query)}&hl_lang=zh&hl_anchor=${encodeURIComponent(value.anchor || value.snippet || '')}`;
+          const titleMeta = value.titleMatch ? `<span class="hit-count">${escapeHtml((value.matchFields || ['经名／作者']).join('／'))}命中</span>` : `<span class="hit-count">${escapeHtml((value.path || []).map(displaySimplified).join(' / '))}</span>`;
+          const snippet = value.titleMatchOnly ? '' : `<p class="snippet">${v4HighlightSnippet(value, query)}</p>`;
+          return `<li><div class="hit-doc"><a href="${escapeHtml(href)}" target="_blank" rel="noopener">${escapeHtml(displaySimplified(value.title || value.work_id))}${value.paranum ? ` · ${escapeHtml(displaySimplified(value.paranum))}` : ''}</a><span class="source-pill">V4 三语本</span>${titleMeta}</div>${snippet}</li>`;
+        }
+        const href = `https://bayson-create.github.io/Sutta-Study-Guide/#/research/modern-theravada/read/${encodeURIComponent(value.work_id || value.private_work_id)}`;
+        const titleMeta = value.titleMatch ? `<span class="hit-count">${escapeHtml((value.matchFields || ['经名／作者']).join('／'))}命中</span>` : `<span class="hit-count">原书第 ${escapeHtml(String(value.page_anchor || ''))} 页 · ${escapeHtml(value.match_level || '')}</span>`;
+        const snippet = value.titleMatchOnly ? '' : `<p class="snippet">${v4HighlightSnippet(value, query)}</p>`;
+        return `<li><div class="hit-doc"><a href="${escapeHtml(href)}" target="_blank" rel="noopener">${escapeHtml(displaySimplified(value.title || value.work_id || value.private_work_id))}${value.chapter_id ? ` · ${escapeHtml(displaySimplified(value.chapter_id))}` : ''}</a><span class="source-pill">现代上座部</span>${titleMeta}</div>${snippet}</li>`;
+      }).join('');
+      html += `<ul class="fulltext-list">${lis}</ul>`;
     }
+    const remaining = Math.max(0, total - visibleItems.length);
+    if (remaining > 0) html += `<div class="fulltext-progressive"><button type="button" data-layer-expand="${layer}">展开其余 ${remaining.toLocaleString()} 篇</button></div>`;
     html += '</div></div>';
   }
-  const hasMore = visibleCount < loadedCount || (!v4Run?.error && v4Run?.next_cursor) || (!modernRun?.error && modernRun?.next_cursor);
-  if (hasMore) {
-    const remaining = Math.max(0, availableTotal - Math.min(visibleCount, loadedCount));
-    html += `<div class="fulltext-progressive"><button type="button" data-unified-expand data-v4-cursor="${escapeHtml(v4Run?.next_cursor || '')}" data-modern-cursor="${escapeHtml(modernRun?.next_cursor || '')}" data-visible="${Math.min(visibleCount, loadedCount)}">展开其余 ${remaining.toLocaleString()} 篇</button><span class="fulltext-status">已显示 ${Math.min(visibleCount, loadedCount).toLocaleString()} 篇；每次展开最多 40 篇</span></div>`;
-  }
-  if (!v4Run?.error && !(v4Run?.results || []).length && !Object.values(localGroups || {}).some(items => items?.length) && !(modernRun?.results || []).length) html += '<p class="fulltext-status">未检索到相关内容。</p>';
+  if (!anyVisible && !anyError) html += '<p class="fulltext-status">未检索到相关内容。</p>';
   return html + '</section>';
 }
 
 function bindUnifiedV4Pagination(root, query, state) {
   const wrapper = root?.querySelector('.lineage-unified-results');
   if (!wrapper) return;
-  const retry = wrapper.querySelector('[data-v4-unified-retry]');
-  if (retry) retry.addEventListener('click', async () => {
-    retry.disabled = true; retry.textContent = '正在重试…';
-    try {
-      state.run = await window.V4LineageSearch.search(query);
-      wrapper.outerHTML = renderUnifiedLayerResults(state.localGroups, state.run, query, { ...state.options, modernRun: state.modernRun, visibleCount: state.visibleCount });
-      bindUnifiedV4Pagination(root, query, state);
-    } catch (error) { retry.disabled = false; retry.textContent = `重试失败：${error.message}`; }
-  });
-  const next = wrapper.querySelector('[data-unified-expand]');
-  if (!next) return;
-  next.addEventListener('click', async () => {
-    next.disabled = true; next.textContent = '正在展开…';
-    try {
-      const visible = Number(next.dataset.visible || state.visibleCount || 5);
-      const loaded = (state.localGroups ? Object.values(state.localGroups).reduce((sum, items) => sum + (items?.length || 0), 0) : 0)
-        + (state.run?.results?.length || 0) + (state.modernRun?.results?.length || 0);
-      if (visible < loaded) {
-        state.visibleCount = Math.min(visible + 40, loaded);
-      } else {
-        const requests = [];
-        if (state.run?.next_cursor) requests.push(window.V4LineageSearch.search(query, state.run.next_cursor).then(page => { state.run = { ...page, results: [...(state.run.results || []), ...(page.results || [])] }; }));
-        if (state.modernRun?.next_cursor && window.ModernLineageSearch?.search) requests.push(window.ModernLineageSearch.search(query, state.modernRun.next_cursor).then(page => { state.modernRun = { ...page, results: [...(state.modernRun.results || []), ...(page.results || [])] }; }));
-        await Promise.all(requests);
-        state.visibleCount = visible + 40;
+  const redraw = () => {
+    wrapper.outerHTML = renderUnifiedLayerResults(state.localGroups, state.run, query, {
+      ...state.options,
+      modernRun: state.modernRun,
+      state: state.layerState,
+    });
+    bindUnifiedV4Pagination(root, query, state);
+  };
+  const getLayerRun = (layer) => {
+    state.run.layers ||= {};
+    state.run.layers[String(layer)] ||= { results: [], total: 0, next_cursor: null, layer };
+    return state.run.layers[String(layer)];
+  };
+  const loadLayerMore = async (layer) => {
+    const layerState = state.layerState.layers[layer] ||= { visibleCount: 5, total: 0 };
+    const run = getLayerRun(layer);
+    const modern = layer === 8 ? (state.modernRun || { results: [], total: 0, next_cursor: null }) : null;
+    const target = layerState.visibleCount + 40;
+    const requests = [];
+    while (interleaveUnifiedItems(state.localGroups?.[layer] || [], run.results || [], modern?.results || []).length < target && run.next_cursor) {
+      const cursor = run.next_cursor;
+      requests.push(window.V4LineageSearch.search(query, cursor, layer).then(page => {
+        run.results = [...(run.results || []), ...(page.results || [])];
+        run.total = Number(page.total ?? run.total);
+        run.next_cursor = page.next_cursor || null;
+        run.error = page.error || null;
+      }));
+      break;
+    }
+    if (modern && interleaveUnifiedItems(state.localGroups?.[layer] || [], run.results || [], modern.results || []).length < target && modern.next_cursor) {
+      const cursor = modern.next_cursor;
+      requests.push(searchModernPrivate(query, cursor).then(page => {
+        state.modernRun.results = [...(state.modernRun.results || []), ...(page.results || [])];
+        state.modernRun.total = Number(page.total ?? state.modernRun.total);
+        state.modernRun.next_cursor = page.next_cursor || null;
+        state.modernRun.error = page.error || null;
+      }));
+    }
+    if (requests.length) await Promise.all(requests);
+    const localCount = (state.localGroups?.[layer] || []).length;
+    const available = interleaveUnifiedItems(state.localGroups?.[layer] || [], run.results || [], modern?.results || []).length;
+    const total = unifiedLayerTotal(state.localGroups?.[layer] || [], run, state.modernRun, layer);
+    layerState.total = total;
+    layerState.visibleCount = Math.min(target, Math.max(available, Math.min(total, target)));
+    if (available < layerState.visibleCount && (run.error || modern?.error)) throw new Error(run.error || modern.error);
+  };
+  wrapper.querySelectorAll('[data-layer-expand]').forEach((button) => {
+    button.addEventListener('click', async () => {
+      const layer = Number(button.dataset.layerExpand);
+      button.disabled = true;
+      button.textContent = '正在展开…';
+      try {
+        await loadLayerMore(layer);
+        redraw();
+      } catch (error) {
+        button.disabled = false;
+        button.textContent = `展开失败，重试（${error.message}）`;
       }
-      wrapper.outerHTML = renderUnifiedLayerResults(state.localGroups, state.run, query, { ...state.options, modernRun: state.modernRun, visibleCount: state.visibleCount });
-      bindUnifiedV4Pagination(root, query, state);
-    } catch (error) { next.disabled = false; next.textContent = `展开失败，重试（${error.message}）`; }
+    });
+  });
+  wrapper.querySelectorAll('[data-v4-layer-retry]').forEach((button) => {
+    button.addEventListener('click', async () => {
+      const layer = Number(button.dataset.v4LayerRetry);
+      button.disabled = true;
+      button.textContent = '正在重试…';
+      try {
+        const page = await window.V4LineageSearch.search(query, null, layer);
+        state.run.layers[String(layer)] = { ...page, layer, error: null };
+        redraw();
+      } catch (error) {
+        button.disabled = false;
+        button.textContent = `重试失败：${error.message}`;
+      }
+    });
+  });
+  wrapper.querySelectorAll('[data-modern-layer-retry]').forEach((button) => {
+    button.addEventListener('click', async () => {
+      button.disabled = true;
+      button.textContent = '正在重试…';
+      state.modernRun = await searchModernPrivate(query);
+      redraw();
+    });
   });
 }
 
@@ -664,11 +833,12 @@ async function runFullTextSearch(q) {
   localBox.className = "lineage-unified-container";
   localBox.innerHTML = `<p class="fulltext-status">CBETA 与 V4 正文检索"${escapeHtml(q)}"中…</p>`;
   box.append(localBox);
-  const v4Promise = window.V4LineageSearch?.search
-    ? window.V4LineageSearch.search(q).catch(error => ({ results: [], total: 0, error: error.message }))
+  const v4Promise = window.V4LineageSearch?.searchByLayer
+    ? window.V4LineageSearch.searchByLayer(q)
+    : window.V4LineageSearch?.search
+      ? window.V4LineageSearch.search(q).catch(error => ({ results: [], total: 0, error: error.message }))
     : Promise.resolve({ results: [], total: 0, error: 'V4 搜索模块未加载' });
-  const qTrad = typeof toTraditional === 'function' ? toTraditional(q) : q;
-  const titleMatches = INDEX.filter((r) => (r.title || '').includes(qTrad) || (r.author || '').includes(qTrad));
+  const modernPromise = searchModernPrivate(q);
 
   const useFuzzy = q.length > FUZZY_THRESHOLD_LEN;
   let results;
@@ -685,36 +855,34 @@ async function runFullTextSearch(q) {
   } catch (err) {
     if (mySeq !== searchSeq) return;
     if (err.code === "NO_INFORMATIVE_TERMS") {
-      const v4Run = await v4Promise;
+      const [rawV4Run, modernRun] = await Promise.all([v4Promise, modernPromise]);
+      const v4Run = ensureV4LayerRuns(rawV4Run);
       const emptyGroups = emptyLayerGroups();
-      localBox.innerHTML = `<p class="fulltext-status">"${escapeHtml(q)}"里没有可用于 CBETA 检索的常见词组，以下仍显示 V4 结果。</p>${renderUnifiedLayerResults(emptyGroups, v4Run, q, { keyword: SEARCH_MODE === 'keyword', mode: 'fuzzy' })}`;
-      bindUnifiedV4Pagination(localBox, q, { run: v4Run, localGroups: emptyGroups, options: { keyword: SEARCH_MODE === 'keyword', mode: 'fuzzy' } });
+      mergeTitleAuthorMatches(emptyGroups, v4Run, modernRun, titleAuthorMatches(q));
+      const layerState = createUnifiedLayerState(emptyGroups, v4Run, modernRun);
+      localBox.innerHTML = `<p class="fulltext-status">"${escapeHtml(q)}"里没有可用于 CBETA 检索的常见词组，以下仍显示可用结果。</p>${renderUnifiedLayerResults(emptyGroups, v4Run, q, { keyword: SEARCH_MODE === 'keyword', mode: 'fuzzy', modernRun, state: layerState })}`;
+      bindUnifiedV4Pagination(localBox, q, { run: v4Run, modernRun, localGroups: emptyGroups, layerState, options: { keyword: SEARCH_MODE === 'keyword', mode: 'fuzzy' } });
       return;
     }
-    const v4Run = await v4Promise;
+    const [rawV4Run, modernRun] = await Promise.all([v4Promise, modernPromise]);
+    const v4Run = ensureV4LayerRuns(rawV4Run);
     const emptyGroups = emptyLayerGroups();
-    localBox.innerHTML = `<p class="fulltext-status">CBETA 正文暂时不可用：${escapeHtml(String(err))}</p>${renderUnifiedLayerResults(emptyGroups, v4Run, q, { keyword: SEARCH_MODE === 'keyword', mode })}`;
-    bindUnifiedV4Pagination(localBox, q, { run: v4Run, localGroups: emptyGroups, options: { keyword: SEARCH_MODE === 'keyword', mode } });
+    mergeTitleAuthorMatches(emptyGroups, v4Run, modernRun, titleAuthorMatches(q));
+    const layerState = createUnifiedLayerState(emptyGroups, v4Run, modernRun);
+    localBox.innerHTML = `<p class="fulltext-status">CBETA 正文暂时不可用：${escapeHtml(String(err))}</p>${renderUnifiedLayerResults(emptyGroups, v4Run, q, { keyword: SEARCH_MODE === 'keyword', mode, modernRun, state: layerState })}`;
+    bindUnifiedV4Pagination(localBox, q, { run: v4Run, modernRun, localGroups: emptyGroups, layerState, options: { keyword: SEARCH_MODE === 'keyword', mode } });
     return;
   }
   if (mySeq !== searchSeq) return; // a newer keystroke superseded this search
 
-  const v4Run = await v4Promise;
-  if (results.length === 0 && titleMatches.length === 0 && SEARCH_MODE !== "keyword" && !(v4Run.results || []).length) {
-    localBox.innerHTML = `<p class="fulltext-status">CBETA 与 V4 正文中未检索到与"${escapeHtml(q)}"相关的内容。</p>${renderUnifiedLayerResults(emptyLayerGroups(), v4Run, q, { mode })}`;
-    bindUnifiedV4Pagination(localBox, q, { run: v4Run, localGroups: emptyLayerGroups(), options: { mode } });
-    return;
-  }
+  const [rawV4Run, modernRun] = await Promise.all([v4Promise, modernPromise]);
+  const v4Run = ensureV4LayerRuns(rawV4Run);
+  const titleMatches = titleAuthorMatches(q);
 
   const byId = new Map(INDEX.map((r) => [r.id, r]));
   const groups = {};
   for (const l of LAYER_ORDER) groups[l] = [];
   groups[0] = []; // unmapped / reference material
-
-  for (const rec of titleMatches.slice(0, 40)) {
-    const layer = LAYER_ORDER.includes(rec.layer) ? rec.layer : 0;
-    groups[layer].push({ rec, item: { matches: [], titleMatch: true, relevance: 1 } });
-  }
 
   for (const item of results) {
     const rec = byId.get(item.docId);
@@ -723,17 +891,27 @@ async function runFullTextSearch(q) {
     groups[layer].push({ rec, item });
   }
 
+  mergeTitleAuthorMatches(groups, v4Run, modernRun, titleMatches);
+  const externalResultCount = (v4Run.results || []).length + (modernRun.results || []).length;
+  if (results.length === 0 && titleMatches.length === 0 && SEARCH_MODE !== "keyword" && externalResultCount === 0) {
+    const emptyState = createUnifiedLayerState(groups, v4Run, modernRun);
+    localBox.innerHTML = `<p class="fulltext-status">未检索到与"${escapeHtml(q)}"相关的内容。</p>${renderUnifiedLayerResults(groups, v4Run, q, { mode, modernRun, state: emptyState })}`;
+    bindUnifiedV4Pagination(localBox, q, { run: v4Run, modernRun, localGroups: groups, layerState: emptyState, options: { mode } });
+    return;
+  }
+
   const modeLabel = mode === "fuzzy" ? "模糊匹配（按关键词覆盖度排序）" : "精确匹配";
   const totalMatches = results.reduce((s, r) => s + r.matches.length, 0);
   const unifiedOptions = { keyword: SEARCH_MODE === 'keyword', mode };
+  const layerState = createUnifiedLayerState(groups, v4Run, modernRun);
   if (SEARCH_MODE === "keyword") {
-    localBox.innerHTML = displaySimplified(`<div class="keyword-trace-summary"><strong>关键词命中</strong>：CBETA 与 V4 按层统一展示；空白层级只表示当前字面未命中。</div>${renderUnifiedLayerResults(groups, v4Run, q, unifiedOptions)}`);
-    bindUnifiedV4Pagination(localBox, q, { run: v4Run, localGroups: groups, options: unifiedOptions });
+    localBox.innerHTML = displaySimplified(`<div class="keyword-trace-summary"><strong>关键词命中</strong>：各层统一展示可用来源；空白层级只表示当前字面未命中。</div>${renderUnifiedLayerResults(groups, v4Run, q, { ...unifiedOptions, modernRun, state: layerState })}`);
+    bindUnifiedV4Pagination(localBox, q, { run: v4Run, modernRun, localGroups: groups, layerState, options: unifiedOptions });
     return;
   }
-  const html = `<h2 class="fulltext-heading">CBETA 与 V4 正文检索结果："${escapeHtml(q)}"（CBETA ${results.length} 篇、${totalMatches} 处匹配；${modeLabel}；按层统一展示）</h2>${renderUnifiedLayerResults(groups, v4Run, q, unifiedOptions)}`;
+  const html = `<h2 class="fulltext-heading">法义资料检索结果："${escapeHtml(q)}"（CBETA ${results.length} 篇、${totalMatches} 处匹配；${modeLabel}；按层统一展示）</h2>${renderUnifiedLayerResults(groups, v4Run, q, { ...unifiedOptions, modernRun, state: layerState })}`;
   localBox.innerHTML = displaySimplified(html);
-  bindUnifiedV4Pagination(localBox, q, { run: v4Run, localGroups: groups, options: unifiedOptions });
+  bindUnifiedV4Pagination(localBox, q, { run: v4Run, modernRun, localGroups: groups, layerState, options: unifiedOptions });
 }
 
 function escapeHtml(s) {
