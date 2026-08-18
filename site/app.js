@@ -921,8 +921,10 @@ function escapeHtml(s) {
 }
 
 function highlightTerm(snippet, term) {
-  const escSnippet = escapeHtml(snippet);
-  const escTerm = escapeHtml(term);
+  const simplifiedSnippet = displaySimplified(snippet);
+  const simplifiedTerm = displaySimplified(term);
+  const escSnippet = escapeHtml(simplifiedSnippet);
+  const escTerm = escapeHtml(simplifiedTerm);
   const idx = escSnippet.indexOf(escTerm);
   if (idx === -1) return escSnippet;
   return (
